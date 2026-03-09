@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  font-family: 'Inter', system-ui, sans-serif;
+  /* Splunk brand colors - always the same */
+  --splunk-orange: #FF6B35;
+  --splunk-pink: #E8478C;
+  --splunk-gold: #FFB347;
+  --splunk-green: #4BDE80;
+  --splunk-red: #FF4C4C;
+  
+  /* Light theme defaults */
+  --splunk-bg: #F5F5F7;
+  --splunk-surface: #FFFFFF;
+  --splunk-card: #FFFFFF;
+  --splunk-border: #E0E0E5;
+  --splunk-muted: #6B6B7B;
+  --splunk-text: #1A1A2E;
+}
+
+/* Dark theme overrides */
+.dark {
+  --splunk-bg: #0C0C0C;
+  --splunk-surface: #111111;
+  --splunk-card: #1A1A2E;
+  --splunk-border: #2A2A3A;
+  --splunk-muted: #8B8FA3;
+  --splunk-text: #FFFFFF;
+}
+
+code, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+body {
+  background: var(--splunk-bg);
+  color: var(--splunk-text);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--splunk-border);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--splunk-muted);
+}
+
+/* Blinking animation for dashboard button */
+@keyframes blink-button {
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+  25%, 75% {
+    opacity: 0.4;
+  }
+}
+
+.blink-animation {
+  animation: blink-button 2s ease-in-out infinite;
+}
+
+/* Select styling */
+select option {
+  background: var(--splunk-card);
+  color: var(--splunk-text);
+}
+
+/* Splunk animated gradient top bar */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.splunk-gradient-bar {
+  height: 3px;
+  background: linear-gradient(90deg, #FF6B35, #E8478C, #FFB347, #FF6B35, #E8478C);
+  background-size: 200% 100%;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Splunk gradient text */
+.splunk-gradient-text {
+  background: linear-gradient(135deg, #FF6B35, #E8478C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Splunk sub-header style */
+.splunk-subheader {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8B8FA3;
+}
+
+/* Fade in animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Pulse glow for active indicators */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 4px rgba(255,107,53,0.4); }
+  50% { box-shadow: 0 0 12px rgba(255,107,53,0.8); }
+}
+
+.splunk-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Shimmer effect for cards on hover */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
