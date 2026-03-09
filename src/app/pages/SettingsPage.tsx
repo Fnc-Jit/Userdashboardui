@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import {
   Wrench, Bell, Clock, Mail, Smartphone,
   CheckCircle, ChevronDown, Shield, Database
@@ -61,11 +61,28 @@ export default function SettingsPage() {
   const [digestMode, setDigestMode] = useState(false);
   const [saved, setSaved] = useState(false);
   const [apiKeyVisible, setApiKeyVisible] = useState(false);
+  const [apiKey, setApiKey] = useState('sk-iot-sentinel-a8f2b91e4c6d0325');
+  const [rotateConfirm, setRotateConfirm] = useState(false);
 
   const handleSave = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
+
+  const handleRotateKey = useCallback(() => {
+    if (!rotateConfirm) {
+      setRotateConfirm(true);
+      setTimeout(() => setRotateConfirm(false), 3000);
+      return;
+    }
+    const chars = 'abcdef0123456789';
+    const newKey = 'sk-iot-sentinel-' + Array.from({ length: 16 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    setApiKey(newKey);
+    setApiKeyVisible(true);
+    setRotateConfirm(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
+  }, [rotateConfirm]);
 
   return (
     <div className="p-6 lg:p-8 space-y-5 min-h-full max-w-3xl mx-auto" style={{ background: 'var(--splunk-bg)' }}>
@@ -156,7 +173,7 @@ export default function SettingsPage() {
       {/* Security Settings */}
       <SettingsSection title="Security & API" icon={Shield} subheader="Access Control">
         <SettingsRow label="Two-Factor Authentication" desc="Require 2FA for all SOC analyst logins">
-          <Toggle checked={true} onChange={() => {}} />
+          <Toggle checked={true} onChange={() => { }} />
         </SettingsRow>
         <SettingsRow label="Session Timeout" desc="Auto-logout after 30 minutes of inactivity">
           <span className="text-xs px-3 py-1 rounded-lg" style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--splunk-orange)' }}>30 min</span>
@@ -165,7 +182,7 @@ export default function SettingsPage() {
           <div className="text-sm mb-2" style={{ color: 'var(--splunk-text)' }}>API Key</div>
           <div className="flex items-center gap-2">
             <div className="flex-1 px-4 py-2.5 rounded-xl text-sm font-mono" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid var(--splunk-border)', color: 'var(--splunk-muted)' }}>
-              {apiKeyVisible ? 'sk-iot-sentinel-a8f2b91e4c6d0325' : '•••••••••••••••••••••••••••••••'}
+              {apiKeyVisible ? apiKey : '•••••••••••••••••••••••••••••••'}
             </div>
             <button
               onClick={() => setApiKeyVisible(v => !v)}
@@ -174,8 +191,12 @@ export default function SettingsPage() {
             >
               {apiKeyVisible ? 'Hide' : 'Reveal'}
             </button>
-            <button className="px-3 py-2 rounded-xl text-xs border hover:bg-white/5 transition-colors" style={{ borderColor: 'var(--splunk-border)', color: 'var(--splunk-orange)' }}>
-              Rotate
+            <button
+              onClick={handleRotateKey}
+              className="px-3 py-2 rounded-xl text-xs border hover:bg-white/5 transition-colors"
+              style={{ borderColor: rotateConfirm ? 'rgba(255,76,76,0.4)' : 'var(--splunk-border)', color: rotateConfirm ? '#FF4C4C' : 'var(--splunk-orange)' }}
+            >
+              {rotateConfirm ? 'Confirm Rotate?' : 'Rotate'}
             </button>
           </div>
         </div>

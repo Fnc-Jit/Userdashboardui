@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router';
 import {
   LayoutDashboard, Cpu, AlertTriangle, Bell, Network, Settings,
-  Shield, LogOut, Menu, X, ChevronDown, Activity, Search, Mail, Github
+  Shield, LogOut, Menu, X, ChevronDown, Activity, Search, Mail, Github,
+  User, Clock, Building2, Key, Fingerprint
 } from 'lucide-react';
 
 const navItems = [
@@ -18,6 +19,7 @@ export function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => navigate('/');
@@ -70,7 +72,7 @@ export function Layout() {
 
           {/* Quick links */}
           <div className="hidden lg:flex items-center gap-2 text-xs" style={{ color: '#8B8FA3' }}>
-            <button 
+            <button
               onClick={() => navigate('/dashboard/alerts')}
               className="flex items-center gap-1 hover:text-white transition-colors"
             >
@@ -79,14 +81,14 @@ export function Layout() {
               <ChevronDown size={10} />
             </button>
             <span style={{ color: '#2A2A3A' }}>|</span>
-            <button 
+            <button
               onClick={() => navigate('/dashboard/settings')}
               className="hover:text-white transition-colors"
             >
               Settings
             </button>
             <span style={{ color: '#2A2A3A' }}>|</span>
-            <button 
+            <button
               onClick={() => navigate('/dashboard')}
               className="hover:text-white transition-colors"
             >
@@ -107,14 +109,87 @@ export function Layout() {
           </div>
 
           {/* User avatar */}
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-semibold" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)', color: '#fff' }}>
-              SA
-            </div>
-            <button onClick={handleLogout} className="hidden sm:flex items-center gap-1 text-xs hover:text-white transition-colors" style={{ color: '#8B8FA3' }}>
-              <LogOut size={12} />
+          <div className="relative">
+            <button
+              onClick={() => setProfileOpen(v => !v)}
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+              <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-semibold" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)', color: '#fff' }}>
+                SA
+              </div>
             </button>
+
+            {/* Profile Dropdown */}
+            {profileOpen && (
+              <>
+                <div className="fixed inset-0 z-[199]" onClick={() => setProfileOpen(false)} />
+                <div
+                  className="absolute top-full right-0 mt-2 w-72 rounded-2xl border overflow-hidden z-[200] animate-fade-in-up"
+                  style={{ background: '#1A1A2E', borderColor: '#2A2A3A', boxShadow: '0 16px 48px rgba(0,0,0,0.5)' }}
+                >
+                  {/* Profile Header */}
+                  <div className="px-5 pt-5 pb-4" style={{ background: 'linear-gradient(135deg, rgba(255,107,53,0.08), rgba(232,71,140,0.08))' }}>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)', color: '#fff' }}>
+                        SA
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>SOC Administrator</div>
+                        <div className="text-xs" style={{ color: '#8B8FA3' }}>admin@iot-sentinel.io</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 mt-3 px-2 py-1 rounded-lg w-fit text-[10px] uppercase tracking-wider font-medium" style={{ background: 'rgba(255,76,76,0.12)', color: '#FF4C4C' }}>
+                      <Fingerprint size={10} />
+                      Super Administrator
+                    </div>
+                  </div>
+
+                  {/* Profile Details */}
+                  <div className="px-5 py-3 space-y-2.5">
+                    {[
+                      { icon: User, label: 'Full Name', value: 'Jit Rajesh' },
+                      { icon: Building2, label: 'Department', value: 'Security Operations Center' },
+                      { icon: Key, label: 'Access Level', value: 'Full Admin (Level 5)' },
+                      { icon: Clock, label: 'Last Login', value: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) },
+                      { icon: Activity, label: 'Session', value: 'Active · 32 min' },
+                    ].map(item => (
+                      <div key={item.label} className="flex items-center gap-3">
+                        <div className="w-6 h-6 rounded-md flex items-center justify-center shrink-0" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                          <item.icon size={11} style={{ color: '#8B8FA3' }} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-[10px] uppercase tracking-wider" style={{ color: '#8B8FA3' }}>{item.label}</div>
+                          <div className="text-xs" style={{ color: '#FFFFFF' }}>{item.value}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="border-t px-3 py-2" style={{ borderColor: '#2A2A3A' }}>
+                    <button
+                      onClick={() => { setProfileOpen(false); navigate('/dashboard/settings'); }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs hover:bg-white/5 transition-colors"
+                      style={{ color: '#8B8FA3' }}
+                    >
+                      <Settings size={13} /> Settings & Preferences
+                    </button>
+                    <button
+                      onClick={() => { setProfileOpen(false); handleLogout(); }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs hover:bg-white/5 transition-colors"
+                      style={{ color: '#FF4C4C' }}
+                    >
+                      <LogOut size={13} /> Sign Out
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
+
+          <button onClick={handleLogout} className="hidden sm:flex items-center gap-1 text-xs hover:text-white transition-colors" style={{ color: '#8B8FA3' }}>
+            <LogOut size={12} />
+          </button>
 
           {/* Search icon */}
           <button
@@ -139,9 +214,8 @@ export function Layout() {
             {({ isActive }) => (
               <div className="relative h-full flex items-center">
                 <span
-                  className={`px-4 py-1 text-[13px] transition-colors whitespace-nowrap ${
-                    isActive ? 'text-white' : 'text-[#8B8FA3] hover:text-white'
-                  }`}
+                  className={`px-4 py-1 text-[13px] transition-colors whitespace-nowrap ${isActive ? 'text-white' : 'text-[#8B8FA3] hover:text-white'
+                    }`}
                 >
                   {item.label}
                 </span>
@@ -173,31 +247,31 @@ export function Layout() {
             {navItems.map(item => {
               const Icon = item.icon;
               return (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.end}
-                onClick={() => setMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
-                    isActive ? 'text-white' : 'text-[#8B8FA3]'
-                  }`
-                }
-                style={({ isActive }) => ({
-                  background: isActive ? 'rgba(255,107,53,0.08)' : undefined,
-                })}
-              >
-                {({ isActive }) => (
-                  <>
-                    <Icon size={16} style={{ color: isActive ? '#FF6B35' : '#8B8FA3' }} />
-                    <span>{item.label}</span>
-                    {isActive && (
-                      <div className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: '#4BDE80' }} />
-                    )}
-                  </>
-                )}
-              </NavLink>
-            )})}
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${isActive ? 'text-white' : 'text-[#8B8FA3]'
+                    }`
+                  }
+                  style={({ isActive }) => ({
+                    background: isActive ? 'rgba(255,107,53,0.08)' : undefined,
+                  })}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <Icon size={16} style={{ color: isActive ? '#FF6B35' : '#8B8FA3' }} />
+                      <span>{item.label}</span>
+                      {isActive && (
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full" style={{ background: '#4BDE80' }} />
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              )
+            })}
             <div className="border-t my-2" style={{ borderColor: '#2A2A3A' }} />
             <button
               onClick={handleLogout}
@@ -218,12 +292,12 @@ export function Layout() {
 
       {/* ===== Search Modal ===== */}
       {searchOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-[200] flex items-start justify-center pt-20 px-4"
           style={{ background: 'rgba(0,0,0,0.85)' }}
           onClick={() => setSearchOpen(false)}
         >
-          <div 
+          <div
             className="w-full max-w-2xl rounded-2xl border p-1 animate-fade-in-up"
             style={{ background: '#1A1A2E', borderColor: '#2A2A3A' }}
             onClick={(e) => e.stopPropagation()}
@@ -239,7 +313,7 @@ export function Layout() {
                 className="flex-1 bg-transparent outline-none text-sm"
                 style={{ color: '#FFFFFF' }}
               />
-              <button 
+              <button
                 onClick={() => setSearchOpen(false)}
                 className="p-1 hover:bg-white/5 rounded transition-colors"
                 style={{ color: '#8B8FA3' }}
@@ -247,13 +321,13 @@ export function Layout() {
                 <X size={16} />
               </button>
             </div>
-            
+
             {searchQuery.length > 0 ? (
               <div className="p-4 space-y-3 max-h-96 overflow-y-auto">
                 <div className="text-xs uppercase tracking-wider mb-2" style={{ color: '#8B8FA3' }}>
                   Quick Actions
                 </div>
-                
+
                 {/* Sample search results */}
                 <button
                   onClick={() => {

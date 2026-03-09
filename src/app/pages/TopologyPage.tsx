@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { Network, ZoomIn, ZoomOut, Maximize2, Info, X } from 'lucide-react';
 import { devices, riskColors, RiskLevel } from '../data/mockData';
@@ -74,7 +74,51 @@ export default function TopologyPage() {
   const [selectedNode, setSelectedNode] = useState<NodePos | null>(null);
   const [selectedEdge, setSelectedEdge] = useState<Edge | null>(null);
   const [dashOffset, setDashOffset] = useState(0);
-  const animRef = useRef<number>();
+  const animRef = useRef<number | undefined>(undefined);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Calculate graph bounding box
+  const graphBounds = (() => {
+    const padding = 50;
+    const minX = nodePositions.reduce((m, n) => Math.min(m, n.x), Infinity) - padding;
+    const maxX = nodePositions.reduce((m, n) => Math.max(m, n.x), -Infinity) + padding;
+    const minY = nodePositions.reduce((m, n) => Math.min(m, n.y), Infinity) - padding;
+    const maxY = nodePositions.reduce((m, n) => Math.max(m, n.y), -Infinity) + padding;
+    return { minX, maxX, minY, maxY, width: maxX - minX, height: maxY - minY, cx: (minX + maxX) / 2, cy: (minY + maxY) / 2 };
+  })();
+
+  // Center graph in container
+  const centerGraph = useCallback((containerEl?: HTMLDivElement | null, newScale?: number) => {
+    const el = containerEl || containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const s = newScale ?? scale;
+    setOffset({
+      x: rect.width / 2 - graphBounds.cx * s,
+      y: rect.height / 2 - graphBounds.cy * s,
+    });
+  }, [graphBounds.cx, graphBounds.cy, scale]);
+
+  // Center on mount and window resize
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    // Initial center with fit-to-view scale
+    const rect = el.getBoundingClientRect();
+    const scaleX = rect.width / graphBounds.width;
+    const scaleY = rect.height / graphBounds.height;
+    const fitScale = Math.min(scaleX, scaleY, 1.2) * 0.85; // Cap at 1.2x, add 85% padding
+    setScale(fitScale);
+    setOffset({
+      x: rect.width / 2 - graphBounds.cx * fitScale,
+      y: rect.height / 2 - graphBounds.cy * fitScale,
+    });
+
+    const observer = new ResizeObserver(() => centerGraph(el));
+    observer.observe(el);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Animate suspicious edges
   useEffect(() => {
@@ -140,14 +184,23 @@ export default function TopologyPage() {
           <button onClick={() => setScale(s => Math.max(0.4, s - 0.2))} className="p-2 rounded-lg border hover:bg-white/5 transition-colors" style={{ borderColor: 'var(--splunk-border)', color: 'var(--splunk-muted)' }}>
             <ZoomOut size={16} />
           </button>
-          <button onClick={() => { setScale(1); setOffset({ x: 0, y: 0 }); }} className="p-2 rounded-lg border hover:bg-white/5 transition-colors" style={{ borderColor: 'var(--splunk-border)', color: 'var(--splunk-muted)' }}>
+          <button onClick={() => {
+            const el = containerRef.current;
+            if (!el) return;
+            const rect = el.getBoundingClientRect();
+            const scaleX = rect.width / graphBounds.width;
+            const scaleY = rect.height / graphBounds.height;
+            const fitScale = Math.min(scaleX, scaleY, 1.2) * 0.85;
+            setScale(fitScale);
+            setOffset({ x: rect.width / 2 - graphBounds.cx * fitScale, y: rect.height / 2 - graphBounds.cy * fitScale });
+          }} className="p-2 rounded-lg border hover:bg-white/5 transition-colors" style={{ borderColor: 'var(--splunk-border)', color: 'var(--splunk-muted)' }}>
             <Maximize2 size={16} />
           </button>
         </div>
       </div>
 
       {/* Canvas */}
-      <div className="flex-1 relative overflow-hidden">
+      <div ref={containerRef} className="flex-1 relative overflow-hidden">
         <svg
           ref={svgRef}
           className="w-full h-full select-none"
@@ -167,31 +220,31 @@ export default function TopologyPage() {
             ))}
             {/* Glow filters for edges */}
             <filter id="edge-glow-red" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
               <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
             <filter id="edge-glow-green" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
               <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
             <filter id="edge-glow-blue" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
               <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
             <filter id="edge-glow-gray" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="2" result="coloredBlur" />
               <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
           </defs>
@@ -212,7 +265,7 @@ export default function TopologyPage() {
               if (!from || !to) return null;
               const midX = (from.x + to.x) / 2;
               const midY = (from.y + to.y) / 2;
-              
+
               // Determine edge color and style based on type
               let edgeColor = 'rgba(255,255,255,0.08)';
               let strokeWidth = 1;
@@ -220,7 +273,7 @@ export default function TopologyPage() {
               let dashOffsetValue: number | undefined = undefined;
               let isClickable = false;
               let glowFilter = '';
-              
+
               if (edge.suspicious) {
                 edgeColor = '#FF4C4C';
                 strokeWidth = 2;
@@ -247,7 +300,7 @@ export default function TopologyPage() {
                 dashOffsetValue = -dashOffset;
                 glowFilter = 'url(#edge-glow-gray)';
               }
-              
+
               return (
                 <g key={`edge-${edge.from}-${edge.to}-${i}`}>
                   <line
@@ -290,7 +343,7 @@ export default function TopologyPage() {
                   {/* Pulse ring for critical */}
                   {(node.risk === 'critical' || node.risk === 'high') && (
                     <circle r={r + 8} fill="none" stroke={color} strokeWidth="1" opacity="0.3">
-                      <animate attributeName="r" values={`${r+6};${r+14};${r+6}`} dur="2s" repeatCount="indefinite" />
+                      <animate attributeName="r" values={`${r + 6};${r + 14};${r + 6}`} dur="2s" repeatCount="indefinite" />
                       <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite" />
                     </circle>
                   )}

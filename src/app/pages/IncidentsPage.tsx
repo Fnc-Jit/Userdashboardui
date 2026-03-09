@@ -6,7 +6,7 @@ import {
 import {
   Search, ChevronDown, ChevronRight,
   SlidersHorizontal, RefreshCw, ExternalLink,
-  Eye, EyeOff
+  Eye, EyeOff, CheckCircle, CheckSquare, Square
 } from 'lucide-react';
 import { incidents, getDeviceById } from '../data/mockData';
 
@@ -143,9 +143,9 @@ function DonutChart({ title, data }: { title: string; data: { name: string; valu
 /* ──────────────── urgency / domain / type maps ──────────────── */
 const urgencyConfig: Record<string, { label: string; color: string; arrow: string }> = {
   critical: { label: 'Critical', color: '#FF4C4C', arrow: '▲' },
-  high:     { label: 'High',     color: '#FF6B35', arrow: '▲' },
-  medium:   { label: 'Medium',   color: '#FFB347', arrow: '▲' },
-  low:      { label: 'Low',      color: '#4BDE80', arrow: '' },
+  high: { label: 'High', color: '#FF6B35', arrow: '▲' },
+  medium: { label: 'Medium', color: '#FFB347', arrow: '▲' },
+  low: { label: 'Low', color: '#4BDE80', arrow: '' },
 };
 
 const domainMap: Record<string, string> = {
@@ -167,10 +167,10 @@ const typeMap: Record<string, string> = {
 };
 
 const dispositionMap: Record<string, string> = {
-  open:         'Undetermined',
-  investigating:'True Positive',
-  resolved:     'Resolved',
-  closed:       'Benign',
+  open: 'Undetermined',
+  investigating: 'True Positive',
+  resolved: 'Resolved',
+  closed: 'Benign',
 };
 
 /* ──────────────── main component ──────────────── */
@@ -189,6 +189,38 @@ export default function IncidentsPage() {
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const perPage = 20;
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [refreshing, setRefreshing] = useState(false);
+  const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: '', visible: false });
+
+  const showToast = (message: string) => {
+    setToast({ message, visible: true });
+    setTimeout(() => setToast(prev => ({ ...prev, visible: false })), 2500);
+  };
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === paged.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(paged.map(i => i.id)));
+    }
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      showToast('Data refreshed');
+    }, 800);
+  };
 
   const filtered = useMemo(() => {
     let result = [...incidents];
@@ -261,30 +293,44 @@ export default function IncidentsPage() {
           <div className="space-y-3 pb-4 border-b" style={{ borderColor: '#2A2A3A' }}>
             <div className="flex flex-wrap gap-3 items-end">
               {[
-                { label: 'Saved filters', value: 'all', setter: () => {}, options: [{ key: 'all', label: 'Select...' }] },
-                { label: 'Tag', value: 'all', setter: () => {}, options: [{ key: 'all', label: 'Add tags...' }] },
-                { label: 'Urgency', value: severityFilter, setter: setSeverityFilter, options: [
-                  { key: 'all', label: 'Select...' }, { key: 'critical', label: 'Critical' }, { key: 'high', label: 'High' }, { key: 'medium', label: 'Medium' }, { key: 'low', label: 'Low' },
-                ] },
-                { label: 'Status', value: statusFilter, setter: setStatusFilter, options: [
-                  { key: 'all', label: 'Select...' }, { key: 'open', label: 'New' }, { key: 'investigating', label: 'In Progress' }, { key: 'resolved', label: 'Resolved' }, { key: 'closed', label: 'Closed' },
-                ] },
-                { label: 'Owner', value: ownerFilter, setter: setOwnerFilter, options: [
-                  { key: 'all', label: 'Select...' }, { key: 'admin', label: 'Administrator' }, { key: 'eventbot', label: 'eventbot' },
-                ] },
-                { label: 'Security Domain', value: domainFilter, setter: setDomainFilter, options: [
-                  { key: 'all', label: 'Select...' }, { key: 'access', label: 'Access' }, { key: 'endpoint', label: 'Endpoint' }, { key: 'network', label: 'Network' }, { key: 'threat', label: 'Threat' },
-                ] },
-                { label: 'Type', value: typeFilterVal, setter: setTypeFilterVal, options: [
-                  { key: 'all', label: 'Select...' }, { key: 'notable', label: 'Risk Notable' }, { key: 'event', label: 'Notable Event' },
-                ] },
-                { label: 'Search Type', value: searchType, setter: setSearchType, options: [
-                  { key: 'Correlation', label: 'Correlatio...' }, { key: 'Manual', label: 'Manual' },
-                ] },
-                { label: 'Time', value: 'time', setter: () => {}, options: [{ key: 'time', label: 'Time' }] },
-                { label: 'Time or Associations', value: timeRange, setter: setTimeRange, options: [
-                  { key: 'Last 24 h', label: 'Last 24 h' }, { key: 'Last 7 d', label: 'Last 7 d' }, { key: 'Last 30 d', label: 'Last 30 d' },
-                ] },
+                { label: 'Saved filters', value: 'all', setter: () => { }, options: [{ key: 'all', label: 'Select...' }] },
+                { label: 'Tag', value: 'all', setter: () => { }, options: [{ key: 'all', label: 'Add tags...' }] },
+                {
+                  label: 'Urgency', value: severityFilter, setter: setSeverityFilter, options: [
+                    { key: 'all', label: 'Select...' }, { key: 'critical', label: 'Critical' }, { key: 'high', label: 'High' }, { key: 'medium', label: 'Medium' }, { key: 'low', label: 'Low' },
+                  ]
+                },
+                {
+                  label: 'Status', value: statusFilter, setter: setStatusFilter, options: [
+                    { key: 'all', label: 'Select...' }, { key: 'open', label: 'New' }, { key: 'investigating', label: 'In Progress' }, { key: 'resolved', label: 'Resolved' }, { key: 'closed', label: 'Closed' },
+                  ]
+                },
+                {
+                  label: 'Owner', value: ownerFilter, setter: setOwnerFilter, options: [
+                    { key: 'all', label: 'Select...' }, { key: 'admin', label: 'Administrator' }, { key: 'eventbot', label: 'eventbot' },
+                  ]
+                },
+                {
+                  label: 'Security Domain', value: domainFilter, setter: setDomainFilter, options: [
+                    { key: 'all', label: 'Select...' }, { key: 'access', label: 'Access' }, { key: 'endpoint', label: 'Endpoint' }, { key: 'network', label: 'Network' }, { key: 'threat', label: 'Threat' },
+                  ]
+                },
+                {
+                  label: 'Type', value: typeFilterVal, setter: setTypeFilterVal, options: [
+                    { key: 'all', label: 'Select...' }, { key: 'notable', label: 'Risk Notable' }, { key: 'event', label: 'Notable Event' },
+                  ]
+                },
+                {
+                  label: 'Search Type', value: searchType, setter: setSearchType, options: [
+                    { key: 'Correlation', label: 'Correlatio...' }, { key: 'Manual', label: 'Manual' },
+                  ]
+                },
+                { label: 'Time', value: 'time', setter: () => { }, options: [{ key: 'time', label: 'Time' }] },
+                {
+                  label: 'Time or Associations', value: timeRange, setter: setTimeRange, options: [
+                    { key: 'Last 24 h', label: 'Last 24 h' }, { key: 'Last 7 d', label: 'Last 7 d' }, { key: 'Last 30 d', label: 'Last 30 d' },
+                  ]
+                },
               ].map(f => (
                 <div key={f.label} className="min-w-[90px]">
                   <div className="text-[10px] mb-1 uppercase tracking-wider" style={{ color: '#8B8FA3' }}>{f.label}</div>
@@ -306,14 +352,36 @@ export default function IncidentsPage() {
           <div className="flex items-center gap-3 text-sm">
             <span style={{ color: '#FFFFFF' }}>
               <strong>{totalNotables}</strong> Notables
+              {selectedIds.size > 0 && <span className="text-xs ml-1" style={{ color: '#FF6B35' }}>({selectedIds.size} selected)</span>}
             </span>
-            <span className="text-xs" style={{ color: '#8B8FA3' }}>Edit Selected</span>
-            <span className="text-xs" style={{ color: '#3B82F6', cursor: 'pointer' }}>
+            <button
+              onClick={() => {
+                if (selectedIds.size === 0) return showToast('Select incidents first');
+                showToast(`Editing ${selectedIds.size} selected event${selectedIds.size > 1 ? 's' : ''}`);
+              }}
+              className="text-xs px-2 py-0.5 rounded transition-colors hover:bg-white/5"
+              style={{ color: selectedIds.size > 0 ? '#FF6B35' : '#8B8FA3', cursor: selectedIds.size > 0 ? 'pointer' : 'default' }}
+            >
+              Edit Selected
+            </button>
+            <button
+              onClick={() => showToast(`Editing all ${totalNotables} matching events`)}
+              className="text-xs hover:opacity-80 transition-opacity"
+              style={{ color: '#3B82F6', cursor: 'pointer' }}
+            >
               Edit All Matching Events ({totalNotables})
-            </span>
-            <span className="text-xs" style={{ color: '#3B82F6', cursor: 'pointer' }}>
+            </button>
+            <button
+              onClick={() => {
+                if (selectedIds.size === 0) return showToast('Select incidents first');
+                showToast(`${selectedIds.size} notable${selectedIds.size > 1 ? 's' : ''} added to investigation`);
+                setSelectedIds(new Set());
+              }}
+              className="text-xs hover:opacity-80 transition-opacity"
+              style={{ color: selectedIds.size > 0 ? '#4BDE80' : '#3B82F6', cursor: 'pointer' }}
+            >
               Add Selected to Investigation
-            </span>
+            </button>
           </div>
           <div className="flex items-center gap-2 text-xs" style={{ color: '#8B8FA3' }}>
             <button
@@ -343,8 +411,8 @@ export default function IncidentsPage() {
             <span className="mx-1" style={{ color: '#2A2A3A' }}>|</span>
             <span>20 per page</span>
             <span className="mx-1" style={{ color: '#2A2A3A' }}>|</span>
-            <button className="flex items-center gap-1 hover:text-white transition-colors">
-              Refresh <RefreshCw size={11} />
+            <button onClick={handleRefresh} className="flex items-center gap-1 hover:text-white transition-colors">
+              Refresh <RefreshCw size={11} className={refreshing ? 'animate-spin' : ''} />
             </button>
           </div>
         </div>
@@ -357,24 +425,32 @@ export default function IncidentsPage() {
               <thead>
                 <tr style={{ background: '#1A1A2E', borderBottom: '1px solid #2A2A3A' }}>
                   {[
-                    { label: '',                        width: 'w-8' },
-                    { label: 'Title ▾',                 width: '' },
-                    { label: 'Risk Object ▾',           width: '' },
+                    { label: 'check', width: 'w-8', isCheck: true },
+                    { label: '', width: 'w-8' },
+                    { label: 'Title ▾', width: '' },
+                    { label: 'Risk Object ▾', width: '' },
                     { label: 'Aggregated Risk Score ▾', width: '' },
-                    { label: 'Risk Events ▾',           width: '' },
-                    { label: 'Type ▾',                  width: '' },
-                    { label: 'Time ▾',                  width: '' },
-                    { label: 'Disposition ▾',           width: '' },
-                    { label: 'Security Domain ▾',       width: '' },
-                    { label: 'Urgency ▾',               width: '' },
-                    { label: 'Status ▾',                width: '' },
-                  ].map(col => (
+                    { label: 'Risk Events ▾', width: '' },
+                    { label: 'Type ▾', width: '' },
+                    { label: 'Time ▾', width: '' },
+                    { label: 'Disposition ▾', width: '' },
+                    { label: 'Security Domain ▾', width: '' },
+                    { label: 'Urgency ▾', width: '' },
+                    { label: 'Status ▾', width: '' },
+                  ].map((col: any) => (
                     <th
                       key={col.label || 'check'}
                       className={`text-left px-3 py-2.5 font-medium whitespace-nowrap ${col.width}`}
                       style={{ color: '#8B8FA3', borderBottom: '1px solid #2A2A3A' }}
                     >
-                      {col.label}
+                      {col.isCheck ? (
+                        <button onClick={(e) => { e.stopPropagation(); toggleSelectAll(); }} className="hover:opacity-80">
+                          {selectedIds.size === paged.length && paged.length > 0
+                            ? <CheckSquare size={14} style={{ color: '#FF6B35' }} />
+                            : <Square size={14} style={{ color: '#8B8FA3' }} />
+                          }
+                        </button>
+                      ) : col.label}
                     </th>
                   ))}
                 </tr>
@@ -394,9 +470,17 @@ export default function IncidentsPage() {
                     {/* Main row */}
                     <tr
                       className="border-b hover:bg-white/[0.02] cursor-pointer transition-colors"
-                      style={{ borderColor: '#2A2A3A' }}
+                      style={{ borderColor: '#2A2A3A', background: selectedIds.has(inc.id) ? 'rgba(255,107,53,0.04)' : undefined }}
                       onClick={() => setExpandedRow(isExpanded ? null : inc.id)}
                     >
+                      <td className="px-3 py-2.5 w-8" onClick={e => e.stopPropagation()}>
+                        <button onClick={() => toggleSelect(inc.id)} className="hover:opacity-80">
+                          {selectedIds.has(inc.id)
+                            ? <CheckSquare size={14} style={{ color: '#FF6B35' }} />
+                            : <Square size={14} style={{ color: '#8B8FA3' }} />
+                          }
+                        </button>
+                      </td>
                       <td className="px-3 py-2.5 w-8">
                         {isExpanded
                           ? <ChevronDown size={12} style={{ color: '#FF6B35' }} />
@@ -448,7 +532,7 @@ export default function IncidentsPage() {
                     {/* Expanded detail row */}
                     {isExpanded && (
                       <tr style={{ background: '#0C0C0C' }}>
-                        <td colSpan={11} className="px-5 py-5">
+                        <td colSpan={12} className="px-5 py-5">
                           <div className="grid lg:grid-cols-2 gap-x-10 gap-y-5">
                             {/* Left column */}
                             <div className="space-y-5">
@@ -519,7 +603,7 @@ export default function IncidentsPage() {
 
                               <div>
                                 <h4 className="text-xs font-semibold mb-1" style={{ color: '#FFFFFF' }}>Correlation Search:</h4>
-                                <button onClick={(e) => { e.stopPropagation(); navigate('/'); }} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B82F6' }}>
+                                <button onClick={(e) => { e.stopPropagation(); navigate(`/dashboard/incidents/${inc.id}`); }} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B82F6' }}>
                                   Risk - IoT Trust Score Threshold Exceeded - Rule
                                   <ExternalLink size={10} />
                                 </button>
@@ -527,7 +611,7 @@ export default function IncidentsPage() {
 
                               <div>
                                 <h4 className="text-xs font-semibold mb-1" style={{ color: '#FFFFFF' }}>History:</h4>
-                                <button onClick={(e) => { e.stopPropagation(); navigate('/'); }} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B82F6' }}>
+                                <button onClick={(e) => { e.stopPropagation(); navigate(`/dashboard/incidents/${inc.id}`); }} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B82F6' }}>
                                   View all review activity for this Notable Event
                                   <ExternalLink size={10} />
                                 </button>
@@ -535,7 +619,7 @@ export default function IncidentsPage() {
 
                               <div>
                                 <h4 className="text-xs font-semibold mb-1" style={{ color: '#FFFFFF' }}>Contributing Events:</h4>
-                                <button onClick={(e) => { e.stopPropagation(); navigate('/'); }} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B82F6' }}>
+                                <button onClick={(e) => { e.stopPropagation(); navigate(`/dashboard/incidents/${inc.id}`); }} className="text-xs flex items-center gap-1 hover:underline" style={{ color: '#3B82F6' }}>
                                   View the Individual Risk Attributions
                                   <ExternalLink size={10} />
                                 </button>
@@ -570,7 +654,7 @@ export default function IncidentsPage() {
                                     </tbody>
                                   </table>
                                 </div>
-                                <button onClick={(e) => { e.stopPropagation(); navigate('/'); }} className="text-[11px] flex items-center gap-1 mt-2 hover:underline" style={{ color: '#3B82F6' }}>
+                                <button onClick={(e) => { e.stopPropagation(); navigate(`/dashboard/incidents/${inc.id}`); }} className="text-[11px] flex items-center gap-1 mt-2 hover:underline" style={{ color: '#3B82F6' }}>
                                   View Adaptive Response Invocations
                                   <ExternalLink size={9} />
                                 </button>
@@ -677,6 +761,21 @@ export default function IncidentsPage() {
               <p style={{ color: '#8B8FA3' }}>No incidents match your filters</p>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Toast notification */}
+      <div
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300"
+        style={{
+          opacity: toast.visible ? 1 : 0,
+          transform: `translateX(-50%) translateY(${toast.visible ? '0' : '20px'})`,
+          pointerEvents: toast.visible ? 'auto' : 'none',
+        }}
+      >
+        <div className="flex items-center gap-2 px-5 py-3 rounded-xl text-sm" style={{ background: '#1A1A2E', border: '1px solid #2A2A3A', color: '#FFFFFF', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+          <CheckCircle size={14} style={{ color: '#4BDE80' }} />
+          {toast.message}
         </div>
       </div>
     </div>
