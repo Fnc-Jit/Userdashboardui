@@ -200,7 +200,7 @@ export default function DevicesPage() {
         </div>
 
         {/* Mobile cards */}
-        <div className="lg:hidden divide-y" style={{ divideColor: '#2A2A3A' }}>
+        <div className="lg:hidden divide-y" style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}>
           {filtered.map(d => (
             <div
               key={d.id}

@@ -10,6 +10,12 @@ import IncidentDetailPage from './pages/IncidentDetailPage';
 import AlertsPage from './pages/AlertsPage';
 import TopologyPage from './pages/TopologyPage';
 import SettingsPage from './pages/SettingsPage';
+import ThreatIntelPage from './pages/ThreatIntelPage';
+import UEBAPage from './pages/UEBAPage';
+import KillChainPage from './pages/KillChainPage';
+import LogExplorerPage from './pages/LogExplorerPage';
+import CompliancePage from './pages/CompliancePage';
+import SOCWorkbenchPage from './pages/SOCWorkbenchPage';
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +37,14 @@ export const router = createBrowserRouter([
       { path: 'incidents/:id', Component: IncidentDetailPage },
       { path: 'alerts', Component: AlertsPage },
       { path: 'topology', Component: TopologyPage },
+      { path: 'log-explorer', Component: LogExplorerPage },
+      { path: 'ueba', Component: UEBAPage },
+      { path: 'kill-chain', Component: KillChainPage },
+      { path: 'threat-intel', Component: ThreatIntelPage },
+      { path: 'compliance', Component: CompliancePage },
+      { path: 'soc', Component: SOCWorkbenchPage },
       { path: 'settings', Component: SettingsPage },
     ],
   },
 ]);
+

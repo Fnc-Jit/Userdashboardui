@@ -6,7 +6,7 @@ import {
   BarChart, Bar, Legend
 } from 'recharts';
 import { Cpu, AlertTriangle, Shield, Activity, TrendingUp, TrendingDown, ArrowRight, Clock, CheckCircle2 } from 'lucide-react';
-import { devices, incidents, riskDistribution, dashboardStats, riskColors } from '../data/mockData';
+import { devices, incidents, riskDistribution, dashboardStats, riskColors, siemLayerStatus, correlatedAlerts } from '../data/mockData';
 import { RiskBadge, StatusBadge } from '../components/RiskBadge';
 
 const trendData = [
@@ -114,6 +114,34 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col h-full" style={{ background: '#0C0C0C' }}>
+      {/* SIEM Health Strip */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 px-6 lg:px-8 pt-4">
+        {siemLayerStatus.map(s => (
+          <div key={s.layer} className="flex items-center gap-3 rounded-lg px-3 py-2 border" style={{ background: '#141414', borderColor: s.status === 'alert' ? `${s.color}40` : '#2A2A3A' }}>
+            <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: s.status === 'live' ? '#4BDE80' : s.status === 'warning' ? '#FFB347' : '#FF4C4C' }} />
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] font-bold text-white">{s.layer} · {s.name}</div>
+              <div className="text-[9px]" style={{ color: '#8B8FA3' }}>{s.detail}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Correlated Alerts Banner */}
+      {correlatedAlerts.length > 0 && (
+        <div className="mx-6 lg:mx-8 mt-3 rounded-lg border px-4 py-2.5" style={{ background: '#FF4C4C08', borderColor: '#FF4C4C30' }}>
+          <div className="flex items-center gap-2 text-xs">
+            <span className="w-2 h-2 rounded-full bg-[#FF4C4C] animate-pulse" />
+            <span className="font-semibold text-white">Correlated Alert</span>
+            <span style={{ color: '#FF4C4C' }}>{correlatedAlerts[0].message}</span>
+            <span className="ml-auto flex gap-1">
+              {correlatedAlerts[0].layers.map(l => (
+                <span key={l} className="px-1 py-0.5 rounded text-[9px] font-bold" style={{ background: '#1A56DB30', color: '#3B82F6' }}>{l}</span>
+              ))}
+            </span>
+          </div>
+        </div>
+      )}
       {/* Tabs */}
       <div className="border-b shrink-0" style={{ borderColor: '#2A2A3A', background: '#0C0C0C' }}>
         <div className="flex items-center px-6 lg:px-8">
@@ -246,7 +274,7 @@ export default function DashboardPage() {
                     View All <ArrowRight size={12} />
                   </button>
                 </div>
-                <div className="divide-y" style={{ divideColor: '#2A2A3A' }}>
+                <div className="divide-y" style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}>
                   {highRiskDevices.map(d => (
                     <div
                       key={d.id}
@@ -285,7 +313,7 @@ export default function DashboardPage() {
                     View All <ArrowRight size={12} />
                   </button>
                 </div>
-                <div className="divide-y" style={{ divideColor: '#2A2A3A' }}>
+                <div className="divide-y" style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}>
                   {recentIncidents.map(inc => (
                     <div
                       key={inc.id}

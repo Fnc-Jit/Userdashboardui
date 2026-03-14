@@ -225,7 +225,7 @@ export default function DeviceDetailPage() {
             <span className="splunk-subheader block mb-1" style={{ color: '#FF4C4C' }}>Forensics</span>
             <h2 className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>Evidence & Violations ({device.evidence.length})</h2>
           </div>
-          <div className="divide-y" style={{ divideColor: '#2A2A3A' }}>
+          <div className="divide-y" style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}>
             {device.evidence.map(ev => {
               const sevColor = ev.severity === 'critical' ? '#FF4C4C' : ev.severity === 'high' ? '#FF6B35' : ev.severity === 'medium' ? '#FFB347' : '#3B82F6';
               return (

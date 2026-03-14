@@ -49,7 +49,7 @@ export default function AlertsPage() {
   const [filter, setFilter] = useState<Alert['severity'] | 'all'>('all');
   const [typeFilter, setTypeFilter] = useState<Alert['type'] | 'all'>('all');
   const counterRef = useRef(100);
-  const intervalRef = useRef<ReturnType<typeof setInterval>>();
+  const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
   useEffect(() => {
     if (!paused) {
@@ -131,6 +131,26 @@ export default function AlertsPage() {
               <div className="text-[10px] uppercase tracking-wider" style={{ color: '#8B8FA3' }}>{cfg.label}</div>
             </button>
           );
+        })}
+      </div>
+
+      {/* SIEM Source Filter Pills */}
+      <div className="flex items-center gap-2">
+        <span className="splunk-subheader">Source:</span>
+        {['All', 'L1 Network', 'L2 UEBA', 'L3 Correlation', 'IOC'].map(s => (
+          <button key={s} className="px-2.5 py-1 rounded-full text-[10px] uppercase tracking-wider font-medium transition-all" style={{ background: s === 'All' ? '#1A56DB30' : '#1A1A2E', color: s === 'All' ? '#3B82F6' : '#8B8FA3' }}>
+            {s}
+          </button>
+        ))}
+      </div>
+
+      {/* Severity Heatmap Strip */}
+      <div className="flex items-center gap-1">
+        <span className="text-[10px] mr-2" style={{ color: '#8B8FA3' }}>Heatmap (1h):</span>
+        {Array.from({ length: 12 }, (_, i) => {
+          const h = Math.floor(Math.random() * 4);
+          const colors = ['#1A1A2E', '#1A56DB50', '#FFB34770', '#FF4C4C90'];
+          return <div key={i} className="h-4 flex-1 rounded-sm" style={{ background: colors[h] }} title={`${2 * i}:00 — ${h === 0 ? 'low' : h === 3 ? 'critical' : 'medium'}`} />;
         })}
       </div>
 

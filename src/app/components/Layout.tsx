@@ -3,15 +3,26 @@ import { Outlet, NavLink, useNavigate } from 'react-router';
 import {
   LayoutDashboard, Cpu, AlertTriangle, Bell, Network, Settings,
   Shield, LogOut, Menu, X, ChevronDown, Activity, Search, Mail, Github,
-  User, Clock, Building2, Key, Fingerprint
+  User, Clock, Building2, Key, Fingerprint,
+  FileText, Brain, Link2, Globe, ClipboardCheck, Wrench
 } from 'lucide-react';
 
-const navItems = [
+type NavItemType = { to: string; label: string; icon: typeof LayoutDashboard; end?: boolean } | { divider: string };
+
+const navItems: NavItemType[] = [
   { to: '/dashboard', label: 'Security Posture', icon: LayoutDashboard, end: true },
   { to: '/dashboard/devices', label: 'Device Inventory', icon: Cpu },
   { to: '/dashboard/incidents', label: 'Investigations', icon: AlertTriangle },
   { to: '/dashboard/alerts', label: 'Live Alerts', icon: Bell },
   { to: '/dashboard/topology', label: 'Network Topology', icon: Network },
+  { divider: 'SIEM LAYERS' },
+  { to: '/dashboard/log-explorer', label: 'Log Explorer', icon: FileText },
+  { to: '/dashboard/ueba', label: 'UEBA', icon: Brain },
+  { to: '/dashboard/kill-chain', label: 'Kill Chain', icon: Link2 },
+  { to: '/dashboard/threat-intel', label: 'Threat Intel', icon: Globe },
+  { to: '/dashboard/compliance', label: 'Compliance', icon: ClipboardCheck },
+  { to: '/dashboard/soc', label: 'SOC Workbench', icon: Wrench },
+  { divider: 'ADMIN' },
   { to: '/dashboard/settings', label: 'Configure', icon: Settings },
 ];
 
@@ -204,32 +215,36 @@ export function Layout() {
 
       {/* ===== TOP BAR ROW 2: Navigation Tabs ===== */}
       <nav className="hidden md:flex items-center gap-0 px-4 lg:px-5 h-10 shrink-0 overflow-x-auto" style={{ background: '#111111', borderBottom: '1px solid #2A2A3A' }}>
-        {navItems.map(item => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.end}
-            className="relative h-full flex items-center"
-          >
-            {({ isActive }) => (
-              <div className="relative h-full flex items-center">
-                <span
-                  className={`px-4 py-1 text-[13px] transition-colors whitespace-nowrap ${isActive ? 'text-white' : 'text-[#8B8FA3] hover:text-white'
-                    }`}
-                >
-                  {item.label}
-                </span>
-                {/* Active indicator - green underline like Splunk */}
-                {isActive && (
-                  <div
-                    className="absolute bottom-0 left-3 right-3 h-[2px] rounded-t-full"
-                    style={{ background: '#4BDE80' }}
-                  />
-                )}
-              </div>
-            )}
-          </NavLink>
-        ))}
+        {navItems.map((item, idx) => {
+          if ('divider' in item) {
+            return <span key={`div-${idx}`} className="px-2 text-[9px] uppercase tracking-widest font-medium" style={{ color: '#4B5563' }}>{item.divider}</span>;
+          }
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className="relative h-full flex items-center"
+            >
+              {({ isActive }) => (
+                <div className="relative h-full flex items-center">
+                  <span
+                    className={`px-4 py-1 text-[13px] transition-colors whitespace-nowrap ${isActive ? 'text-white' : 'text-[#8B8FA3] hover:text-white'
+                      }`}
+                  >
+                    {item.label}
+                  </span>
+                  {isActive && (
+                    <div
+                      className="absolute bottom-0 left-3 right-3 h-[2px] rounded-t-full"
+                      style={{ background: '#4BDE80' }}
+                    />
+                  )}
+                </div>
+              )}
+            </NavLink>
+          );
+        })}
 
         {/* Right side: Enterprise Security badge */}
         <div className="ml-auto hidden xl:flex items-center gap-2 pl-4" style={{ color: '#8B8FA3' }}>
@@ -244,7 +259,10 @@ export function Layout() {
       {mobileMenuOpen && (
         <div className="md:hidden border-b" style={{ background: '#111111', borderColor: '#2A2A3A' }}>
           <div className="py-2 px-3 space-y-0.5">
-            {navItems.map(item => {
+            {navItems.map((item, idx) => {
+              if ('divider' in item) {
+                return <div key={`div-${idx}`} className="pt-2 pb-1 px-3 text-[9px] uppercase tracking-widest font-medium" style={{ color: '#4B5563' }}>{item.divider}</div>;
+              }
               const Icon = item.icon;
               return (
                 <NavLink
@@ -418,7 +436,7 @@ export function Layout() {
 
       {/* ===== Mobile bottom nav ===== */}
       <nav className="md:hidden flex border-t shrink-0" style={{ background: '#111111', borderColor: '#2A2A3A' }}>
-        {navItems.slice(0, 5).map(item => (
+        {navItems.filter((item): item is Exclude<NavItemType, { divider: string }> => !('divider' in item)).slice(0, 5).map(item => (
           <NavLink
             key={item.to}
             to={item.to}

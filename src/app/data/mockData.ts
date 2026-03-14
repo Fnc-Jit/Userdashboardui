@@ -332,3 +332,387 @@ export const riskDistribution = [
   { name: 'High', value: devices.filter(d => d.riskLevel === 'high').length, color: '#FF6B35' },
   { name: 'Critical', value: devices.filter(d => d.riskLevel === 'critical').length, color: '#FF4C4C' },
 ];
+
+// ════════════════════════════════════════════════════════════════
+// SIEM LAYER DATA
+// ════════════════════════════════════════════════════════════════
+
+// ── THREAT INTEL (IOCs) ──
+export type IOCSeverity = 'low' | 'medium' | 'high' | 'critical';
+export type IOCType = 'ip' | 'domain' | 'hash' | 'cve';
+
+export interface IOC {
+  id: string;
+  type: IOCType;
+  value: string;
+  source: string;
+  severity: IOCSeverity;
+  hits: number;
+  firstSeen: string;
+  lastSeen: string;
+  active: boolean;
+  linkedDevices: string[];
+  country?: string;
+}
+
+export const iocs: IOC[] = [
+  { id: 'IOC-001', type: 'ip', value: '185.220.101.34', source: 'OTX', severity: 'critical', hits: 3, firstSeen: '2026-03-07T12:00:00Z', lastSeen: '2026-03-09T13:00:00Z', active: true, linkedDevices: ['DEV-005'], country: 'DE' },
+  { id: 'IOC-002', type: 'domain', value: 'update-service.xyz', source: 'MISP', severity: 'critical', hits: 2, firstSeen: '2026-03-08T08:00:00Z', lastSeen: '2026-03-09T07:00:00Z', active: true, linkedDevices: ['DEV-004'], country: 'RU' },
+  { id: 'IOC-003', type: 'ip', value: '198.51.100.42', source: 'OTX', severity: 'high', hits: 1, firstSeen: '2026-03-09T05:15:00Z', lastSeen: '2026-03-09T05:15:00Z', active: true, linkedDevices: ['DEV-005'], country: 'CN' },
+  { id: 'IOC-004', type: 'hash', value: 'a1b2c3d4e5f6789012345678abcdef01', source: 'Manual', severity: 'high', hits: 0, firstSeen: '2026-03-06T10:00:00Z', lastSeen: '2026-03-06T10:00:00Z', active: true, linkedDevices: [], country: undefined },
+  { id: 'IOC-005', type: 'domain', value: 'malware.c2-relay.net', source: 'OTX', severity: 'critical', hits: 5, firstSeen: '2026-03-05T14:00:00Z', lastSeen: '2026-03-09T09:00:00Z', active: true, linkedDevices: ['DEV-012'], country: 'KP' },
+  { id: 'IOC-006', type: 'ip', value: '203.0.113.42', source: 'MISP', severity: 'high', hits: 1, firstSeen: '2026-03-09T09:15:00Z', lastSeen: '2026-03-09T09:15:00Z', active: true, linkedDevices: ['DEV-012'], country: 'IR' },
+  { id: 'IOC-007', type: 'cve', value: 'CVE-2024-11382', source: 'NVD', severity: 'critical', hits: 1, firstSeen: '2026-03-01T00:00:00Z', lastSeen: '2026-03-09T05:00:00Z', active: true, linkedDevices: ['DEV-005'], country: undefined },
+  { id: 'IOC-008', type: 'ip', value: '45.33.32.156', source: 'Manual', severity: 'medium', hits: 1, firstSeen: '2026-03-09T08:15:00Z', lastSeen: '2026-03-09T08:15:00Z', active: false, linkedDevices: ['DEV-002'], country: 'US' },
+];
+
+export const threatScoreTrend = [
+  { day: 'Mar 3', network: 12, c2: 3, exploit: 1, exfil: 0 },
+  { day: 'Mar 4', network: 15, c2: 5, exploit: 2, exfil: 1 },
+  { day: 'Mar 5', network: 8, c2: 7, exploit: 3, exfil: 2 },
+  { day: 'Mar 6', network: 22, c2: 4, exploit: 1, exfil: 0 },
+  { day: 'Mar 7', network: 18, c2: 12, exploit: 5, exfil: 3 },
+  { day: 'Mar 8', network: 25, c2: 9, exploit: 4, exfil: 2 },
+  { day: 'Mar 9', network: 31, c2: 15, exploit: 7, exfil: 4 },
+];
+
+export const geoHits: Record<string, number> = {
+  DE: 3, RU: 2, CN: 1, KP: 5, IR: 1, US: 1
+};
+
+// ── UEBA ──
+export interface UEBAFeature {
+  name: string;
+  baseline: number;
+  current: number;
+  unit: string;
+}
+
+export interface UEBAEntity {
+  deviceId: string;
+  deviceName: string;
+  driftSigma: number;
+  status: 'normal' | 'drift' | 'alert';
+  features: UEBAFeature[];
+  cusumHistory: { day: string; value: number }[];
+}
+
+export const uebaEntities: UEBAEntity[] = [
+  {
+    deviceId: 'DEV-005', deviceName: 'Smart Lock - Server Room', driftSigma: 4.2, status: 'alert',
+    features: [
+      { name: 'conn_rate', baseline: 5.2, current: 48.7, unit: '/hr' },
+      { name: 'dns_entropy', baseline: 0.31, current: 2.87, unit: '' },
+      { name: 'iat_mean', baseline: 120, current: 15, unit: 'ms' },
+      { name: 'bytes_ratio', baseline: 0.8, current: 3.2, unit: '' },
+      { name: 'off_hours', baseline: 0.05, current: 0.72, unit: '%' },
+      { name: 'unique_dst', baseline: 3, current: 24, unit: '' },
+    ],
+    cusumHistory: [
+      { day: 'Mar 3', value: 0.2 }, { day: 'Mar 4', value: 0.5 }, { day: 'Mar 5', value: 1.1 },
+      { day: 'Mar 6', value: 1.8 }, { day: 'Mar 7', value: 2.5 }, { day: 'Mar 8', value: 3.4 }, { day: 'Mar 9', value: 4.2 },
+    ],
+  },
+  {
+    deviceId: 'DEV-004', deviceName: 'Medical Monitor', driftSigma: 2.8, status: 'drift',
+    features: [
+      { name: 'conn_rate', baseline: 8.1, current: 32.4, unit: '/hr' },
+      { name: 'dns_entropy', baseline: 0.45, current: 1.92, unit: '' },
+      { name: 'iat_mean', baseline: 200, current: 60, unit: 'ms' },
+      { name: 'bytes_ratio', baseline: 1.0, current: 2.5, unit: '' },
+      { name: 'off_hours', baseline: 0.1, current: 0.45, unit: '%' },
+      { name: 'unique_dst', baseline: 5, current: 14, unit: '' },
+    ],
+    cusumHistory: [
+      { day: 'Mar 3', value: 0.1 }, { day: 'Mar 4', value: 0.4 }, { day: 'Mar 5', value: 0.8 },
+      { day: 'Mar 6', value: 1.2 }, { day: 'Mar 7', value: 1.7 }, { day: 'Mar 8', value: 2.3 }, { day: 'Mar 9', value: 2.8 },
+    ],
+  },
+  {
+    deviceId: 'DEV-012', deviceName: 'Infusion Pump', driftSigma: 3.6, status: 'alert',
+    features: [
+      { name: 'conn_rate', baseline: 2.0, current: 22.1, unit: '/hr' },
+      { name: 'dns_entropy', baseline: 0.2, current: 2.1, unit: '' },
+      { name: 'iat_mean', baseline: 300, current: 55, unit: 'ms' },
+      { name: 'bytes_ratio', baseline: 0.5, current: 4.8, unit: '' },
+      { name: 'off_hours', baseline: 0.02, current: 0.65, unit: '%' },
+      { name: 'unique_dst', baseline: 2, current: 18, unit: '' },
+    ],
+    cusumHistory: [
+      { day: 'Mar 3', value: 0.3 }, { day: 'Mar 4', value: 0.7 }, { day: 'Mar 5', value: 1.5 },
+      { day: 'Mar 6', value: 2.1 }, { day: 'Mar 7', value: 2.6 }, { day: 'Mar 8', value: 3.1 }, { day: 'Mar 9', value: 3.6 },
+    ],
+  },
+  {
+    deviceId: 'DEV-010', deviceName: 'Smart Elevator Panel', driftSigma: 1.9, status: 'drift',
+    features: [
+      { name: 'conn_rate', baseline: 12.4, current: 28.9, unit: '/hr' },
+      { name: 'dns_entropy', baseline: 0.55, current: 1.1, unit: '' },
+      { name: 'iat_mean', baseline: 150, current: 80, unit: 'ms' },
+      { name: 'bytes_ratio', baseline: 0.9, current: 1.8, unit: '' },
+      { name: 'off_hours', baseline: 0.08, current: 0.3, unit: '%' },
+      { name: 'unique_dst', baseline: 6, current: 11, unit: '' },
+    ],
+    cusumHistory: [
+      { day: 'Mar 3', value: 0.1 }, { day: 'Mar 4', value: 0.3 }, { day: 'Mar 5', value: 0.6 },
+      { day: 'Mar 6', value: 0.9 }, { day: 'Mar 7', value: 1.2 }, { day: 'Mar 8', value: 1.5 }, { day: 'Mar 9', value: 1.9 },
+    ],
+  },
+  {
+    deviceId: 'DEV-003', deviceName: 'Industrial PLC #1', driftSigma: 1.1, status: 'drift',
+    features: [
+      { name: 'conn_rate', baseline: 6.0, current: 11.2, unit: '/hr' },
+      { name: 'dns_entropy', baseline: 0.3, current: 0.6, unit: '' },
+      { name: 'iat_mean', baseline: 250, current: 180, unit: 'ms' },
+      { name: 'bytes_ratio', baseline: 0.7, current: 1.1, unit: '' },
+      { name: 'off_hours', baseline: 0.15, current: 0.28, unit: '%' },
+      { name: 'unique_dst', baseline: 4, current: 7, unit: '' },
+    ],
+    cusumHistory: [
+      { day: 'Mar 3', value: 0.0 }, { day: 'Mar 4', value: 0.1 }, { day: 'Mar 5', value: 0.3 },
+      { day: 'Mar 6', value: 0.5 }, { day: 'Mar 7', value: 0.7 }, { day: 'Mar 8', value: 0.9 }, { day: 'Mar 9', value: 1.1 },
+    ],
+  },
+];
+
+// ── KILL CHAIN ──
+export type ATTACKTactic = 'Reconnaissance' | 'Initial Access' | 'Execution' | 'Persistence' | 'Privilege Escalation' | 'Defense Evasion' | 'Credential Access' | 'Discovery' | 'Lateral Movement' | 'Collection' | 'Command & Control' | 'Exfiltration' | 'Impact';
+
+export interface KillChainStage {
+  tactic: ATTACKTactic;
+  technique: string;
+  deviceId: string;
+  timestamp: string;
+  confirmed: boolean;
+}
+
+export interface KillChain {
+  id: string;
+  name: string;
+  severity: 'high' | 'critical';
+  stages: KillChainStage[];
+  devices: string[];
+  startTime: string;
+  duration: string;
+  status: 'active' | 'contained' | 'resolved';
+}
+
+export const killChains: KillChain[] = [
+  {
+    id: 'KC-001', name: 'Server Room Lock Compromise', severity: 'critical', status: 'active',
+    startTime: '2026-03-09T04:58:00Z', duration: '8h 34m', devices: ['DEV-005', 'DEV-010', 'DEV-012'],
+    stages: [
+      { tactic: 'Reconnaissance', technique: 'Port Scanning', deviceId: 'DEV-005', timestamp: '2026-03-09T04:58:00Z', confirmed: true },
+      { tactic: 'Initial Access', technique: 'Exploit Public-Facing App (CVE-2024-11382)', deviceId: 'DEV-005', timestamp: '2026-03-09T05:00:00Z', confirmed: true },
+      { tactic: 'Credential Access', technique: 'LDAP Credential Dump', deviceId: 'DEV-005', timestamp: '2026-03-09T05:15:00Z', confirmed: true },
+      { tactic: 'Lateral Movement', technique: 'Remote Service Exploitation', deviceId: 'DEV-010', timestamp: '2026-03-09T06:30:00Z', confirmed: true },
+      { tactic: 'Command & Control', technique: 'Tor Proxy', deviceId: 'DEV-005', timestamp: '2026-03-09T07:00:00Z', confirmed: true },
+      { tactic: 'Exfiltration', technique: 'Exfiltration Over C2 Channel', deviceId: 'DEV-005', timestamp: '2026-03-09T07:45:00Z', confirmed: false },
+    ],
+  },
+  {
+    id: 'KC-002', name: 'Medical Device Ransomware', severity: 'critical', status: 'active',
+    startTime: '2026-03-09T02:00:00Z', duration: '11h 30m', devices: ['DEV-012', 'DEV-004'],
+    stages: [
+      { tactic: 'Initial Access', technique: 'Unauthorized Firmware Update', deviceId: 'DEV-012', timestamp: '2026-03-09T02:00:00Z', confirmed: true },
+      { tactic: 'Execution', technique: 'SNMP Write Exploitation', deviceId: 'DEV-012', timestamp: '2026-03-09T02:15:00Z', confirmed: true },
+      { tactic: 'Persistence', technique: 'Create Account (svc_backup)', deviceId: 'DEV-012', timestamp: '2026-03-09T02:30:00Z', confirmed: true },
+      { tactic: 'Command & Control', technique: 'DNS Tunneling to C2', deviceId: 'DEV-012', timestamp: '2026-03-09T03:00:00Z', confirmed: true },
+      { tactic: 'Impact', technique: 'Data Encrypted for Impact (LockBit 3.0)', deviceId: 'DEV-012', timestamp: '2026-03-09T03:30:00Z', confirmed: true },
+      { tactic: 'Lateral Movement', technique: 'Beaconing to Adjacent Device', deviceId: 'DEV-004', timestamp: '2026-03-09T06:30:00Z', confirmed: false },
+    ],
+  },
+];
+
+export const attackHeatmap: { tactic: ATTACKTactic; detections: number }[] = [
+  { tactic: 'Reconnaissance', detections: 8 },
+  { tactic: 'Initial Access', detections: 4 },
+  { tactic: 'Execution', detections: 3 },
+  { tactic: 'Persistence', detections: 2 },
+  { tactic: 'Privilege Escalation', detections: 1 },
+  { tactic: 'Defense Evasion', detections: 0 },
+  { tactic: 'Credential Access', detections: 3 },
+  { tactic: 'Discovery', detections: 6 },
+  { tactic: 'Lateral Movement', detections: 5 },
+  { tactic: 'Collection', detections: 1 },
+  { tactic: 'Command & Control', detections: 7 },
+  { tactic: 'Exfiltration', detections: 4 },
+  { tactic: 'Impact', detections: 2 },
+];
+
+// ── LOG EXPLORER ──
+export interface LogEvent {
+  id: string;
+  timestamp: string;
+  deviceId: string;
+  eventType: string;
+  severity: 'info' | 'warning' | 'high' | 'critical';
+  message: string;
+  raw: Record<string, unknown>;
+}
+
+function generateLogEvents(): LogEvent[] {
+  const types = ['trust_update', 'policy_violation', 'dns_query', 'connection', 'firmware_check', 'auth_attempt', 'config_change', 'scan_detected'];
+  const sevs: LogEvent['severity'][] = ['info', 'warning', 'high', 'critical'];
+  const events: LogEvent[] = [];
+  const devIds = devices.map(d => d.id);
+  const base = new Date('2026-03-09T14:00:00Z');
+  for (let i = 0; i < 50; i++) {
+    const t = new Date(base.getTime() - i * 60000 * (1 + Math.random() * 3));
+    const devId = devIds[Math.floor(Math.random() * devIds.length)];
+    const evtType = types[Math.floor(Math.random() * types.length)];
+    const sev = sevs[Math.floor(Math.random() * sevs.length)];
+    events.push({
+      id: `LOG-${String(i + 1).padStart(3, '0')}`,
+      timestamp: t.toISOString(),
+      deviceId: devId,
+      eventType: evtType,
+      severity: sev,
+      message: `${evtType.replace(/_/g, ' ')} on ${devId}`,
+      raw: { src_ip: `192.168.${Math.floor(Math.random() * 5)}.${Math.floor(Math.random() * 255)}`, dst_port: [22, 80, 443, 8080, 5022][Math.floor(Math.random() * 5)], bytes: Math.floor(Math.random() * 50000), protocol: ['TCP', 'UDP', 'ICMP'][Math.floor(Math.random() * 3)] },
+    });
+  }
+  return events.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+}
+
+export const logEvents: LogEvent[] = generateLogEvents();
+
+export const logHistogram = Array.from({ length: 60 }, (_, i) => ({
+  minute: `${String(13 + Math.floor(i / 60)).padStart(2, '0')}:${String(i % 60).padStart(2, '0')}`,
+  count: Math.floor(Math.random() * 25) + 1,
+}));
+
+// ── COMPLIANCE ──
+export type ComplianceStatus = 'pass' | 'fail' | 'partial';
+
+export interface ComplianceControl {
+  id: string;
+  function: string;
+  requirement: string;
+  status: ComplianceStatus;
+  score: number;
+}
+
+export const complianceControls: ComplianceControl[] = [
+  { id: 'ID.AM-1', function: 'Identify', requirement: 'Physical devices inventoried', status: 'pass', score: 95 },
+  { id: 'ID.AM-2', function: 'Identify', requirement: 'Software platforms mapped', status: 'pass', score: 88 },
+  { id: 'ID.RA-1', function: 'Identify', requirement: 'Asset vulnerabilities identified', status: 'partial', score: 62 },
+  { id: 'PR.AC-1', function: 'Protect', requirement: 'Identities & credentials managed', status: 'pass', score: 82 },
+  { id: 'PR.AC-4', function: 'Protect', requirement: 'Access permissions managed', status: 'pass', score: 78 },
+  { id: 'PR.DS-1', function: 'Protect', requirement: 'Data-at-rest protected', status: 'fail', score: 35 },
+  { id: 'PR.IP-1', function: 'Protect', requirement: 'Baseline config maintained', status: 'partial', score: 55 },
+  { id: 'DE.AE-1', function: 'Detect', requirement: 'Network operations baseline', status: 'pass', score: 95 },
+  { id: 'DE.CM-1', function: 'Detect', requirement: 'Network monitored for events', status: 'pass', score: 98 },
+  { id: 'DE.CM-7', function: 'Detect', requirement: 'Unauthorized activity monitored', status: 'pass', score: 92 },
+  { id: 'DE.DP-4', function: 'Detect', requirement: 'Event detection communicated', status: 'pass', score: 85 },
+  { id: 'RS.RP-1', function: 'Respond', requirement: 'Response plan executed', status: 'fail', score: 28 },
+  { id: 'RS.CO-2', function: 'Respond', requirement: 'Incidents reported', status: 'fail', score: 32 },
+  { id: 'RS.AN-1', function: 'Respond', requirement: 'Notifications from detection', status: 'partial', score: 45 },
+  { id: 'RC.RP-1', function: 'Recover', requirement: 'Recovery plan executed', status: 'fail', score: 15 },
+  { id: 'RC.CO-3', function: 'Recover', requirement: 'Recovery activities communicated', status: 'fail', score: 25 },
+];
+
+export const complianceFunctions = [
+  { name: 'Identify', score: 78, color: '#3B82F6' },
+  { name: 'Protect', score: 61, color: '#8B5CF6' },
+  { name: 'Detect', score: 91, color: '#10B981' },
+  { name: 'Respond', score: 34, color: '#F59E0B' },
+  { name: 'Recover', score: 22, color: '#EF4444' },
+];
+
+export const overallComplianceScore = 72;
+
+// ── SOC WORKBENCH ──
+export type PlaybookStepStatus = 'done' | 'active' | 'pending' | 'failed';
+
+export interface PlaybookStep {
+  id: string;
+  label: string;
+  status: PlaybookStepStatus;
+}
+
+export interface SOCQueueItem {
+  incidentId: string;
+  deviceId: string;
+  severity: IncidentSeverity;
+  assignedTo: string;
+  playbook: string;
+  steps: PlaybookStep[];
+  notes: string;
+}
+
+export const socQueue: SOCQueueItem[] = [
+  {
+    incidentId: 'INC-001', deviceId: 'DEV-005', severity: 'critical', assignedTo: 'jitraj_esh', playbook: 'VLAN_ISOLATION',
+    steps: [
+      { id: 'S1', label: 'Confirm anomaly source', status: 'done' },
+      { id: 'S2', label: 'Isolate device to VLAN 99', status: 'active' },
+      { id: 'S3', label: 'Notify NOC team', status: 'pending' },
+      { id: 'S4', label: 'File incident report', status: 'pending' },
+    ],
+    notes: '# Investigation Notes\nDevice contacted Tor exit node at 13:00. Confirmed lateral movement to DEV-010.',
+  },
+  {
+    incidentId: 'INC-003', deviceId: 'DEV-012', severity: 'critical', assignedTo: 'jitraj_esh', playbook: 'RANSOMWARE_RESPONSE',
+    steps: [
+      { id: 'S1', label: 'Isolate device immediately', status: 'done' },
+      { id: 'S2', label: 'Capture memory dump', status: 'done' },
+      { id: 'S3', label: 'Block C2 domains at firewall', status: 'active' },
+      { id: 'S4', label: 'Factory reset device', status: 'pending' },
+      { id: 'S5', label: 'Restore from known-good firmware', status: 'pending' },
+    ],
+    notes: '# Ransomware Analysis\nLockBit 3.0 pattern confirmed. Admin account "svc_backup" created via SNMP.',
+  },
+  {
+    incidentId: 'INC-002', deviceId: 'DEV-004', severity: 'high', assignedTo: 'jitraj_esh', playbook: 'NETWORK_SEGMENTATION',
+    steps: [
+      { id: 'S1', label: 'Analyze C2 beaconing pattern', status: 'done' },
+      { id: 'S2', label: 'Apply network segmentation', status: 'pending' },
+      { id: 'S3', label: 'Deploy deep packet inspection', status: 'pending' },
+    ],
+    notes: '',
+  },
+  {
+    incidentId: 'INC-004', deviceId: 'DEV-010', severity: 'high', assignedTo: 'jitraj_esh', playbook: 'CONFIG_ROLLBACK',
+    steps: [
+      { id: 'S1', label: 'Review config diff', status: 'done' },
+      { id: 'S2', label: 'Rollback to last known-good', status: 'pending' },
+      { id: 'S3', label: 'Audit access permissions', status: 'pending' },
+    ],
+    notes: '',
+  },
+];
+
+export const auditLog = [
+  { time: '14:31', analyst: 'jitraj_esh', action: 'Cleared INC-006 — confirmed false positive' },
+  { time: '14:28', analyst: 'jitraj_esh', action: 'Executed Step 1 on INC-001 (Confirm anomaly)' },
+  { time: '14:15', analyst: 'jitraj_esh', action: 'Assigned INC-004 to self from queue' },
+  { time: '13:50', analyst: 'system', action: 'Auto-isolated DEV-005 via policy trigger' },
+  { time: '13:10', analyst: 'system', action: 'Auto-isolated DEV-012 via ransomware detection' },
+  { time: '12:45', analyst: 'jitraj_esh', action: 'Opened SOC Workbench session' },
+];
+
+// ── SIEM LAYER STATUS ──
+export const siemLayerStatus = [
+  { layer: 'Layer 1', name: 'Network', status: 'live' as const, detail: 'All flows monitored', color: '#1A56DB' },
+  { layer: 'Layer 2', name: 'UEBA', status: 'live' as const, detail: `${uebaEntities.filter(e => e.status === 'alert').length} alert(s)`, color: '#7E3AF2' },
+  { layer: 'Layer 3', name: 'Correlation', status: 'warning' as const, detail: `${killChains.filter(k => k.status === 'active').length} active chain(s)`, color: '#E02424' },
+  { layer: 'Threat Intel', name: 'IOC Feed', status: 'alert' as const, detail: `${iocs.filter(i => i.hits > 0).length} IOC hit(s)`, color: '#FF5A1F' },
+];
+
+// ── CORRELATED ALERTS ──
+export interface CorrelatedAlert {
+  id: string;
+  layers: string[];
+  deviceId: string;
+  deviceName: string;
+  severity: 'high' | 'critical';
+  message: string;
+  timestamp: string;
+}
+
+export const correlatedAlerts: CorrelatedAlert[] = [
+  { id: 'CA-001', layers: ['L1', 'L2', 'L3'], deviceId: 'DEV-005', deviceName: 'Smart Lock', severity: 'critical', message: '3-layer correlated — Tor contact + behavioral drift + kill chain progression', timestamp: '2026-03-09T13:32:00Z' },
+  { id: 'CA-002', layers: ['L1', 'L3'], deviceId: 'DEV-012', deviceName: 'Infusion Pump', severity: 'critical', message: 'Network anomaly + ransomware kill chain active', timestamp: '2026-03-09T09:18:00Z' },
+  { id: 'CA-003', layers: ['L1', 'L2'], deviceId: 'DEV-004', deviceName: 'Medical Monitor', severity: 'high', message: 'Network + UEBA drift — C2 beaconing with behavioral anomaly', timestamp: '2026-03-09T12:05:00Z' },
+];

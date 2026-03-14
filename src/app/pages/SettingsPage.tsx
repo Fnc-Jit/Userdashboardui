@@ -202,6 +202,70 @@ export default function SettingsPage() {
         </div>
       </SettingsSection>
 
+      {/* Integrations */}
+      <SettingsSection title="SIEM Integrations" icon={Database} subheader="Connectors">
+        {[
+          { name: 'OTX (AlienVault)', status: 'connected', color: '#4BDE80' },
+          { name: 'MISP (Threat Sharing)', status: 'connected', color: '#4BDE80' },
+          { name: 'Splunk SOAR', status: 'pending', color: '#FFB347' },
+          { name: 'PagerDuty', status: 'disconnected', color: '#FF4C4C' },
+        ].map(integ => (
+          <SettingsRow key={integ.name} label={integ.name} desc={`Status: ${integ.status}`}>
+            <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold" style={{ background: `${integ.color}15`, color: integ.color }}>
+              {integ.status}
+            </span>
+          </SettingsRow>
+        ))}
+      </SettingsSection>
+
+      {/* Policies */}
+      <SettingsSection title="Detection Policies" icon={Shield} subheader="UEBA / Correlation">
+        <SettingsRow label="UEBA Drift Threshold" desc="Alert when CUSUM exceeds this σ value">
+          <span className="text-xs px-3 py-1 rounded-lg" style={{ background: 'rgba(126,58,242,0.1)', color: '#7E3AF2' }}>3.0σ</span>
+        </SettingsRow>
+        <SettingsRow label="Auto-Isolate Critical Devices" desc="Automatically quarantine devices when trust score drops below 15">
+          <Toggle checked={true} onChange={() => {}} />
+        </SettingsRow>
+        <SettingsRow label="Kill Chain Auto-Correlation" desc="Automatically correlate alerts across SIEM layers">
+          <Toggle checked={true} onChange={() => {}} />
+        </SettingsRow>
+        <SettingsRow label="IOC Auto-Block" desc="Automatically block IOCs with severity ≥ high in the firewall">
+          <Toggle checked={false} onChange={() => {}} />
+        </SettingsRow>
+      </SettingsSection>
+
+      {/* RBAC */}
+      <SettingsSection title="Users & RBAC" icon={Shield} subheader="Access Management">
+        <div className="space-y-2">
+          {[
+            { user: 'jitraj_esh', role: 'Super Admin', level: 5 },
+            { user: 'soc_analyst_1', role: 'SOC Analyst', level: 3 },
+            { user: 'viewer_01', role: 'Read-Only', level: 1 },
+          ].map(u => (
+            <div key={u.user} className="flex items-center justify-between py-2 border-b" style={{ borderColor: 'var(--splunk-border)' }}>
+              <div>
+                <div className="text-sm" style={{ color: 'var(--splunk-text)' }}>{u.user}</div>
+                <div className="text-xs" style={{ color: 'var(--splunk-muted)' }}>{u.role} · Level {u.level}</div>
+              </div>
+              <button className="px-2 py-0.5 rounded text-[10px] border" style={{ borderColor: 'var(--splunk-border)', color: 'var(--splunk-muted)' }}>Edit</button>
+            </div>
+          ))}
+        </div>
+      </SettingsSection>
+
+      {/* Data Retention */}
+      <SettingsSection title="Data Retention" icon={Database} subheader="Storage">
+        <SettingsRow label="Log Retention Period" desc="How long raw logs are kept before archival">
+          <span className="text-xs px-3 py-1 rounded-lg" style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--splunk-orange)' }}>90 days</span>
+        </SettingsRow>
+        <SettingsRow label="Incident Archive Period" desc="How long resolved incidents are visible before archival">
+          <span className="text-xs px-3 py-1 rounded-lg" style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--splunk-orange)' }}>365 days</span>
+        </SettingsRow>
+        <SettingsRow label="IOC Feed Refresh Interval" desc="How often threat intelligence feeds are refreshed">
+          <span className="text-xs px-3 py-1 rounded-lg" style={{ background: 'rgba(255,107,53,0.1)', color: 'var(--splunk-orange)' }}>15 min</span>
+        </SettingsRow>
+      </SettingsSection>
+
       {/* System Info */}
       <div className="rounded-2xl p-5 border" style={{ background: 'rgba(255,107,53,0.02)', borderColor: 'rgba(255,107,53,0.08)' }}>
         <div className="flex items-center gap-2 mb-1">
