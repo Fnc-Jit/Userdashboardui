@@ -358,7 +358,7 @@ export function Layout() {
                   <Cpu size={16} style={{ color: '#FF6B35' }} className="mt-0.5" />
                   <div className="flex-1 min-w-0">
                     <div className="text-sm font-medium mb-0.5" style={{ color: '#FFFFFF' }}>Device Inventory</div>
-                    <div className="text-xs" style={{ color: '#8B8FA3' }}>View all IoT devices and trust scores</div>
+                    <div className="text-xs" style={{ color: '#8B8FA3' }}>View all enterprise devices and trust scores</div>
                   </div>
                 </button>
 
