@@ -61,7 +61,7 @@ export default function SettingsPage() {
   const [digestMode, setDigestMode] = useState(false);
   const [saved, setSaved] = useState(false);
   const [apiKeyVisible, setApiKeyVisible] = useState(false);
-  const [apiKey, setApiKey] = useState('sk-iot-sentinel-a8f2b91e4c6d0325');
+  const [apiKey, setApiKey] = useState('sk-sentinel-a8f2b91e4c6d0325');
   const [rotateConfirm, setRotateConfirm] = useState(false);
 
   const handleSave = () => {
@@ -76,7 +76,7 @@ export default function SettingsPage() {
       return;
     }
     const chars = 'abcdef0123456789';
-    const newKey = 'sk-iot-sentinel-' + Array.from({ length: 16 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    const newKey = 'sk-sentinel-' + Array.from({ length: 16 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
     setApiKey(newKey);
     setApiKeyVisible(true);
     setRotateConfirm(false);
@@ -139,7 +139,7 @@ export default function SettingsPage() {
 
       {/* Notifications */}
       <SettingsSection title="Notification Settings" icon={Bell} subheader="Alerts">
-        <SettingsRow label="Email Alerts" desc="Receive security alerts via email to analyst@iot-sentinel.io">
+        <SettingsRow label="Email Alerts" desc="Receive security alerts via email to analyst@sentinel.io">
           <Toggle checked={emailAlerts} onChange={setEmailAlerts} />
         </SettingsRow>
         <SettingsRow label="Push Notifications" desc="Browser and mobile push notifications for real-time alerts">

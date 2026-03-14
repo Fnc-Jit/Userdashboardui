@@ -237,7 +237,7 @@ export default function TopologyPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `iot-sentinel-topology-${activeLayer}.svg`;
+      a.download = `sentinel-topology-${activeLayer}.svg`;
       a.click();
       URL.revokeObjectURL(url);
     } else {
@@ -255,7 +255,7 @@ export default function TopologyPage() {
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = `iot-sentinel-topology-${activeLayer}.png`;
+          a.download = `sentinel-topology-${activeLayer}.png`;
           a.click();
           URL.revokeObjectURL(url);
         });

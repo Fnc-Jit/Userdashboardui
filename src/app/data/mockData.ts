@@ -294,7 +294,7 @@ export const initialAlerts: Alert[] = [
   { id: 'ALT-007', type: 'trust_update', deviceId: 'DEV-012', message: 'DEV-012 trust score dropped: 58 → 22 (Ransomware activity)', timestamp: '2026-03-09T02:15:00Z', severity: 'critical' },
   { id: 'ALT-008', type: 'status_change', deviceId: 'DEV-012', message: 'DEV-012 status changed: Active → Isolated', timestamp: '2026-03-09T03:30:00Z', severity: 'warning' },
   { id: 'ALT-009', type: 'trust_update', deviceId: 'DEV-002', message: 'DEV-002 trust score updated: 68 → 71 (Behavior normalized)', timestamp: '2026-03-09T09:30:00Z', severity: 'info' },
-  { id: 'ALT-010', type: 'status_change', deviceId: 'DEV-007', message: 'DEV-007 placed in maintenance mode by admin@iot-sentinel.io', timestamp: '2026-03-09T08:00:00Z', severity: 'info' },
+  { id: 'ALT-010', type: 'status_change', deviceId: 'DEV-007', message: 'DEV-007 placed in maintenance mode by admin@sentinel.io', timestamp: '2026-03-09T08:00:00Z', severity: 'info' },
   { id: 'ALT-011', type: 'policy_violation', deviceId: 'DEV-010', message: 'DEV-010 config modified from unregistered IP 10.0.9.1', timestamp: '2026-03-09T04:05:00Z', severity: 'warning' },
   { id: 'ALT-012', type: 'graph_anomaly', deviceId: 'DEV-004', message: 'Network anomaly: DEV-004 scanning subnet 192.168.3.0/24', timestamp: '2026-03-09T06:32:00Z', severity: 'critical' },
 ];

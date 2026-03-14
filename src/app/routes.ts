@@ -16,6 +16,7 @@ import KillChainPage from './pages/KillChainPage';
 import LogExplorerPage from './pages/LogExplorerPage';
 import CompliancePage from './pages/CompliancePage';
 import SOCWorkbenchPage from './pages/SOCWorkbenchPage';
+import CLIPage from './pages/CLIPage';
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ export const router = createBrowserRouter([
       { path: 'threat-intel', Component: ThreatIntelPage },
       { path: 'compliance', Component: CompliancePage },
       { path: 'soc', Component: SOCWorkbenchPage },
+      { path: 'cli', Component: CLIPage },
       { path: 'settings', Component: SettingsPage },
     ],
   },

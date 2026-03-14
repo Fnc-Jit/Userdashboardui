@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Cpu, AlertTriangle, Bell, Network, Settings,
   Shield, LogOut, Menu, X, ChevronDown, Activity, Search, Mail, Github,
   User, Clock, Building2, Key, Fingerprint,
-  FileText, Brain, Link2, Globe, ClipboardCheck, Wrench
+  FileText, Brain, Link2, Globe, ClipboardCheck, Wrench, Terminal
 } from 'lucide-react';
 
 type NavItemType = { to: string; label: string; icon: typeof LayoutDashboard; end?: boolean } | { divider: string };
@@ -23,6 +23,7 @@ const navItems: NavItemType[] = [
   { to: '/dashboard/compliance', label: 'Compliance', icon: ClipboardCheck },
   { to: '/dashboard/soc', label: 'SOC Workbench', icon: Wrench },
   { divider: 'ADMIN' },
+  { to: '/dashboard/cli', label: 'CLI Terminal', icon: Terminal },
   { to: '/dashboard/settings', label: 'Configure', icon: Settings },
 ];
 
@@ -51,8 +52,7 @@ export function Layout() {
             <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)' }}>
               <Shield size={13} className="text-white" />
             </div>
-            <span className="text-sm font-bold" style={{ color: '#4BDE80' }}>iot</span>
-            <span className="text-sm" style={{ color: '#8B8FA3' }}>sentinel</span>
+            <span className="text-sm font-bold" style={{ color: '#4BDE80' }}>Sentinel</span>
           </button>
           <div className="hidden md:flex items-center gap-1 text-xs cursor-pointer hover:text-white transition-colors" style={{ color: '#8B8FA3' }}>
             Apps <ChevronDown size={12} />
@@ -146,7 +146,7 @@ export function Layout() {
                       </div>
                       <div>
                         <div className="text-sm font-semibold" style={{ color: '#FFFFFF' }}>SOC Administrator</div>
-                        <div className="text-xs" style={{ color: '#8B8FA3' }}>admin@iot-sentinel.io</div>
+                        <div className="text-xs" style={{ color: '#8B8FA3' }}>admin@sentinel.io</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5 mt-3 px-2 py-1 rounded-lg w-fit text-[10px] uppercase tracking-wider font-medium" style={{ background: 'rgba(255,76,76,0.12)', color: '#FF4C4C' }}>
@@ -251,7 +251,7 @@ export function Layout() {
           <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ border: '1.5px solid #4BDE80' }}>
             <Shield size={12} style={{ color: '#4BDE80' }} />
           </div>
-          <span className="text-xs whitespace-nowrap">Enterprise Security</span>
+          <span className="text-xs whitespace-nowrap">Sentinel Enterprise</span>
         </div>
       </nav>
 

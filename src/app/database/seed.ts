@@ -16,11 +16,11 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
   try {
     // Create default user first (needed for foreign key references)
     console.log('Creating default user...');
-    await db.adapter.execute(`
+    await db.getAdapter().execute(`
       INSERT INTO users (id, email, full_name, role) 
       VALUES (
         'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
-        'analyst@iot-sentinel.io',
+        'analyst@sentinel.io',
         'Security Analyst',
         'admin'
       )
@@ -30,7 +30,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
     // Seed devices
     console.log(`Seeding ${devices.length} devices...`);
     for (const device of devices) {
-      await db.adapter.execute(
+      await db.getAdapter().execute(
         `
         INSERT INTO devices (
           id, name, class, vendor, trust_score, risk_level, status,
@@ -74,7 +74,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
       if (device.history && device.history.length > 0) {
         console.log(`  → Seeding ${device.history.length} history entries for ${device.id}...`);
         for (const historyEntry of device.history) {
-          await db.adapter.execute(
+          await db.getAdapter().execute(
             `
             INSERT INTO device_trust_history (
               device_id, trust_score, risk_level, recorded_at
@@ -89,7 +89,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
       if (device.evidence && device.evidence.length > 0) {
         console.log(`  → Seeding ${device.evidence.length} evidence entries for ${device.id}...`);
         for (const evidence of device.evidence) {
-          await db.adapter.execute(
+          await db.getAdapter().execute(
             `
             INSERT INTO evidence (
               id, device_id, type, severity, timestamp, details
@@ -109,7 +109,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
     // Seed incidents
     console.log(`Seeding ${incidents.length} incidents...`);
     for (const incident of incidents) {
-      await db.adapter.execute(
+      await db.getAdapter().execute(
         `
         INSERT INTO incidents (
           id, device_id, risk_level, severity, status, recommended_action,
@@ -147,7 +147,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
       if (incident.evidence && incident.evidence.length > 0) {
         console.log(`  → Seeding ${incident.evidence.length} evidence entries for ${incident.id}...`);
         for (let i = 0; i < incident.evidence.length; i++) {
-          await db.adapter.execute(
+          await db.getAdapter().execute(
             `
             INSERT INTO incident_evidence (
               incident_id, evidence_description, sequence_order
@@ -165,7 +165,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
         console.log(`  → Seeding ${incident.timeline.length} timeline entries for ${incident.id}...`);
         for (let i = 0; i < incident.timeline.length; i++) {
           const timelineEntry = incident.timeline[i];
-          await db.adapter.execute(
+          await db.getAdapter().execute(
             `
             INSERT INTO incident_timeline (
               incident_id, time_offset, event_description, sequence_order
@@ -180,7 +180,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
       if (incident.adjacentDevices && incident.adjacentDevices.length > 0) {
         console.log(`  → Seeding ${incident.adjacentDevices.length} adjacent devices for ${incident.id}...`);
         for (const adjacentDeviceId of incident.adjacentDevices) {
-          await db.adapter.execute(
+          await db.getAdapter().execute(
             `
             INSERT INTO incident_adjacent_devices (
               incident_id, device_id
@@ -196,7 +196,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
     // Seed alerts
     console.log(`Seeding ${initialAlerts.length} alerts...`);
     for (const alert of initialAlerts) {
-      await db.adapter.execute(
+      await db.getAdapter().execute(
         `
         INSERT INTO alerts (
           id, type, device_id, message, timestamp, severity, is_read
@@ -216,7 +216,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
     console.log('Seeding network topology...');
     
     // Gateway node
-    await db.adapter.execute(
+    await db.getAdapter().execute(
       `
       INSERT INTO network_nodes (
         id, node_type, position_x, position_y, trust_score, risk_level
@@ -249,7 +249,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
     for (const pos of nodePositions) {
       const device = devices.find(d => d.id === pos.id);
       if (device) {
-        await db.adapter.execute(
+        await db.getAdapter().execute(
           `
           INSERT INTO network_nodes (
             id, node_type, position_x, position_y, trust_score, risk_level
@@ -275,7 +275,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
     ];
 
     for (const edge of edges) {
-      await db.adapter.execute(
+      await db.getAdapter().execute(
         `
         INSERT INTO network_edges (
           source_id, target_id, edge_type, is_suspicious, suspicious_label
@@ -291,7 +291,7 @@ export async function seedDatabase(db: DatabaseService): Promise<void> {
 
     // Seed system settings
     console.log('Seeding system settings...');
-    await db.adapter.execute(`
+    await db.getAdapter().execute(`
       INSERT INTO system_settings (setting_key, setting_value, setting_type, description)
       VALUES 
         ('maintenance_mode', 'false', 'boolean', 'Enable system-wide maintenance mode'),
@@ -315,20 +315,20 @@ export async function clearDatabase(db: DatabaseService): Promise<void> {
   console.log('🧹 Clearing database...');
 
   try {
-    await db.adapter.execute('TRUNCATE TABLE analyst_notes CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE incident_adjacent_devices CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE incident_timeline CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE incident_evidence CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE incidents CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE evidence CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE device_trust_history CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE alerts CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE network_edges CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE network_nodes CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE devices CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE system_settings CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE user_notification_settings CASCADE');
-    await db.adapter.execute('TRUNCATE TABLE audit_log CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE analyst_notes CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE incident_adjacent_devices CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE incident_timeline CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE incident_evidence CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE incidents CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE evidence CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE device_trust_history CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE alerts CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE network_edges CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE network_nodes CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE devices CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE system_settings CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE user_notification_settings CASCADE');
+    await db.getAdapter().execute('TRUNCATE TABLE audit_log CASCADE');
 
     console.log('✅ Database cleared successfully!');
   } catch (error) {

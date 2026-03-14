@@ -5,7 +5,7 @@ import { Shield, Eye, EyeOff, Lock, Mail, ArrowLeft, AlertCircle } from 'lucide-
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('analyst@iot-sentinel.io');
+  const [email, setEmail] = useState('analyst@sentinel.io');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -63,7 +63,7 @@ export default function LoginPage() {
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)', boxShadow: '0 0 30px rgba(255,107,53,0.3)' }}>
               <Shield size={30} className="text-white" />
             </div>
-            <h1 className="text-2xl font-bold mb-1" style={{ color: '#FFFFFF' }}>IoT Sentinel</h1>
+            <h1 className="text-2xl font-bold mb-1" style={{ color: '#FFFFFF' }}>Sentinel</h1>
             <p className="text-sm" style={{ color: '#8B8FA3' }}>
               {forgotMode ? 'Reset your password' : 'Sign in to your SOC dashboard'}
             </p>
@@ -200,7 +200,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-xs mt-6" style={{ color: '#8B8FA3' }}>
-          Protected by IoT Sentinel · End-to-end encrypted
+          Protected by Sentinel · End-to-end encrypted
         </p>
       </motion.div>
     </div>

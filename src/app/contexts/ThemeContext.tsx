@@ -15,12 +15,12 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const stored = localStorage.getItem('iot-sentinel-theme');
+    const stored = localStorage.getItem('sentinel-theme');
     return (stored as Theme) || 'dark';
   });
 
   const [density, setDensityState] = useState<Density>(() => {
-    const stored = localStorage.getItem('iot-sentinel-density');
+    const stored = localStorage.getItem('sentinel-density');
     return (stored as Density) || 'comfortable';
   });
 
@@ -66,12 +66,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('iot-sentinel-theme', newTheme);
+    localStorage.setItem('sentinel-theme', newTheme);
   };
 
   const setDensity = (newDensity: Density) => {
     setDensityState(newDensity);
-    localStorage.setItem('iot-sentinel-density', newDensity);
+    localStorage.setItem('sentinel-density', newDensity);
   };
 
   return (

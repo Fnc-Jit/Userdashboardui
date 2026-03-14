@@ -17,7 +17,7 @@ const features = [
   {
     icon: Activity,
     title: 'Real-Time Device Monitoring',
-    desc: 'Continuously monitor IoT device trust scores, behavioral anomalies, and risk classifications across your entire network.',
+    desc: 'Continuously monitor device trust scores, behavioral anomalies, and risk classifications across your entire network — endpoints, servers, IoT, OT, and cloud.',
     color: '#FF6B35',
   },
   {
@@ -35,7 +35,7 @@ const features = [
   {
     icon: Network,
     title: 'Network Topology',
-    desc: 'Visualize your full IoT network topology with risk-colored nodes, suspicious connection edges, and lateral movement detection.',
+    desc: 'Visualize your full network topology with risk-colored nodes, suspicious connection edges, and lateral movement detection.',
     color: '#3B82F6',
   },
   {
@@ -62,8 +62,8 @@ const stats = [
 const resources = [
   {
     tag: 'WHITEPAPER',
-    title: 'The State of IoT Security 2026',
-    desc: 'Discover why organizations with AI-driven IoT monitoring detect threats 4× faster than peers relying on traditional tools.',
+    title: 'The State of Cybersecurity 2026',
+    desc: 'Discover why organizations with AI-driven monitoring detect threats 4× faster than peers relying on traditional tools.',
     img: 'https://images.unsplash.com/photo-1758520144667-3041caeff3c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5JTIwU09DJTIwYW5hbHlzdCUyMGRhcmslMjBvZmZpY2V8ZW58MXx8fHwxNzczMDgyMjIyfDA&ixlib=rb-4.1.0&q=80&w=1080',
     cta: 'Get the report',
     href: 'https://www.splunk.com/en_us/campaigns/state-of-observability.html',
@@ -72,14 +72,14 @@ const resources = [
   {
     tag: 'GUIDE',
     title: 'CISO Report 2026',
-    desc: 'How security leaders are modernizing IoT defense postures.',
+    desc: 'How security leaders are modernizing defense postures.',
     img: 'https://images.unsplash.com/photo-1648415383716-f9828037d2a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0aHJlYXQlMjBpbnRlbGxpZ2VuY2UlMjBzZWN1cml0eSUyMHJlc2VhcmNoZXIlMjBsYXB0b3B8ZW58MXx8fHwxNzczMDgyMjI1fDA&ixlib=rb-4.1.0&q=80&w=1080',
     cta: 'Read guide',
     href: 'https://www.ibm.com/reports/threat-intelligence',
   },
   {
     tag: 'RESEARCH',
-    title: 'IoT Network Threat Vectors',
+    title: 'Network Threat Vectors',
     desc: 'The new rules of lateral movement detection in OT/IT environments.',
     img: 'https://images.unsplash.com/photo-1761497039673-83fea602ae8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxJb1QlMjBuZXR3b3JrJTIwc2VjdXJpdHklMjB0ZWNobm9sb2d5fGVufDF8fHx8MTc3MzA4MjIyMnww&ixlib=rb-4.1.0&q=80&w=1080',
     cta: 'Explore research',
@@ -88,7 +88,7 @@ const resources = [
   {
     tag: 'REPORT',
     title: 'Data & Risk Management',
-    desc: 'Governing IoT device data pipelines in regulated industries.',
+    desc: 'Governing device data pipelines in regulated industries.',
     img: 'https://images.unsplash.com/photo-1718630732291-3bc8de36b030?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXRhJTIwbWFuYWdlbWVudCUyMGNsb3VkJTIwaW5mcmFzdHJ1Y3R1cmV8ZW58MXx8fHwxNzczMDgyMjIzfDA&ixlib=rb-4.1.0&q=80&w=1080',
     cta: 'Download report',
     href: 'https://en.wikipedia.org/wiki/IT_risk_management',
@@ -99,7 +99,7 @@ const footerLinks = {
   company: {
     label: 'COMPANY',
     links: [
-      { name: 'About IoT Sentinel', href: '#' },
+      { name: 'About Sentinel', href: '#' },
       { name: 'Careers', href: '#' },
       { name: 'Newsroom', href: '#' },
       { name: 'Partners', href: '#' },
@@ -218,7 +218,7 @@ export default function LandingPage() {
           ]
         },
       ],
-      promo: { title: 'Cost of a Data Breach Report', desc: 'How much are IoT breaches actually costing enterprises today?', cta: 'Read the IBM report', href: 'https://www.ibm.com/reports/data-breach' },
+      promo: { title: 'Cost of a Data Breach Report', desc: 'How much are breaches actually costing enterprises today?', cta: 'Read the IBM report', href: 'https://www.ibm.com/reports/data-breach' },
     },
     Observability: {
       cols: [
@@ -302,7 +302,7 @@ export default function LandingPage() {
       <nav className="relative z-50 flex items-center justify-between px-6 lg:px-8 py-0 h-16 w-full" style={{ background: '#000000', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="flex items-center h-full">
           <div className="flex items-center mr-10 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="text-xl font-bold tracking-tight" style={{ color: '#FFFFFF' }}>iot<span className="font-normal" style={{ color: '#FFFFFF' }}>sentinel</span></div>
+            <div className="text-xl font-bold tracking-tight" style={{ color: '#FFFFFF' }}>Sentinel</div>
           </div>
 
           <div className="hidden lg:flex items-center h-full gap-2">
@@ -367,7 +367,7 @@ export default function LandingPage() {
                   {/* Right promo card */}
                   <div className="w-[400px] shrink-0">
                     <div className="rounded-2xl p-8 h-full" style={{ background: 'linear-gradient(180deg, #FFF5F7 0%, #FFF 100%)', border: '1px solid #FFE4E6' }}>
-                      <h3 className="text-xl font-bold text-slate-900 mb-2">See IoT Sentinel in action</h3>
+                      <h3 className="text-xl font-bold text-slate-900 mb-2">See Sentinel in action</h3>
                       <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-sm font-semibold flex items-center gap-1 mb-6 hover:underline" style={{ color: '#E8478C' }}>
                         Explore the product tour <ArrowRight size={14} />
                       </button>
@@ -524,7 +524,7 @@ export default function LandingPage() {
                     {/* Details */}
                     <div className="px-5 py-3 space-y-2">
                       {[
-                        { icon: Building2, label: 'Organization', value: 'IoT Sentinel Corp' },
+                        { icon: Building2, label: 'Organization', value: 'Sentinel Corp' },
                         { icon: Key, label: 'Role', value: 'Super Administrator' },
                         { icon: Clock, label: 'Member Since', value: 'Jan 2026' },
                       ].map(item => (
@@ -562,7 +562,7 @@ export default function LandingPage() {
                   <div className="absolute top-full right-0 mt-3 w-72 rounded-2xl border p-5 z-[100] animate-fade-in-up" style={{ background: '#1A1A2E', borderColor: '#2A2A3A', boxShadow: '0 16px 48px rgba(0,0,0,0.5)' }}>
                     <div className="text-xs font-semibold mb-3" style={{ color: '#FF6B35' }}>Upcoming Events</div>
                     {[
-                      { date: 'Mar 12', title: 'IoT Security Summit 2026', tag: 'Conference' },
+                      { date: 'Mar 12', title: 'Cybersecurity Summit 2026', tag: 'Conference' },
                       { date: 'Mar 18', title: 'Zero Trust Webinar', tag: 'Webinar' },
                       { date: 'Mar 25', title: 'Sentinel Platform v3.0 Launch', tag: 'Product' },
                       { date: 'Apr 2', title: 'CISO Roundtable: OT Security', tag: 'Event' },
@@ -606,7 +606,7 @@ export default function LandingPage() {
               <Search size={20} style={{ color: '#8B8FA3' }} />
               <input
                 autoFocus
-                placeholder="Search IoT Sentinel..."
+                placeholder="Search Sentinel..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 className="flex-1 bg-transparent outline-none text-base"
@@ -618,10 +618,10 @@ export default function LandingPage() {
               <div className="p-4 space-y-2 max-h-80 overflow-y-auto">
                 <div className="text-[10px] uppercase tracking-wider mb-2" style={{ color: '#8B8FA3' }}>Results for "{searchQuery}"</div>
                 {[
-                  { icon: Shield, title: 'IoT Device Security', sub: 'Security → Solutions', color: '#4BDE80' },
+                  { icon: Shield, title: 'Device Security', sub: 'Security → Solutions', color: '#4BDE80' },
                   { icon: Activity, title: 'Real-Time Monitoring', sub: 'Platform → Products', color: '#FF6B35' },
                   { icon: Network, title: 'Network Topology', sub: 'Platform → Use Cases', color: '#3B82F6' },
-                  { icon: FileText, title: 'IoT Security Report 2026', sub: 'Resources → Whitepapers', color: '#E8478C' },
+                  { icon: FileText, title: 'Security Report 2026', sub: 'Resources → Whitepapers', color: '#E8478C' },
                   { icon: Factory, title: 'Manufacturing Security', sub: 'Industries → Sectors', color: '#FFB347' },
                 ].filter(r => r.title.toLowerCase().includes(searchQuery.toLowerCase()) || r.sub.toLowerCase().includes(searchQuery.toLowerCase())).map(r => (
                   <div key={r.title} className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors text-left cursor-pointer" onClick={() => setSearchOpen(false)}>
@@ -632,7 +632,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                 ))}
-                {['Device Monitoring', 'Alert Stream', 'Threat Intelligence', 'SIEM Integration', 'Zero Trust', 'Healthcare IoT', 'Smart Buildings'].filter(t => t.toLowerCase().includes(searchQuery.toLowerCase())).map(t => (
+                {['Device Monitoring', 'Alert Stream', 'Threat Intelligence', 'SIEM Integration', 'Zero Trust', 'Healthcare Security', 'Smart Buildings'].filter(t => t.toLowerCase().includes(searchQuery.toLowerCase())).map(t => (
                   <div key={t} className="w-full flex items-center gap-3 p-2.5 rounded-lg hover:bg-white/5 transition-colors text-left cursor-pointer" onClick={() => setSearchOpen(false)}>
                     <Search size={12} style={{ color: '#8B8FA3' }} />
                     <span className="text-sm" style={{ color: '#FFFFFF' }}>{t}</span>
@@ -690,7 +690,7 @@ export default function LandingPage() {
         >
           <img
             src={exampleImage}
-            alt="IoT Sentinel Dashboard"
+            alt="Sentinel Dashboard"
             className="w-full h-auto rounded-2xl shadow-2xl"
             style={{ filter: 'drop-shadow(0 0 40px rgba(232, 71, 140, 0.15))' }}
           />
@@ -733,7 +733,7 @@ export default function LandingPage() {
           <span className="splunk-subheader block mb-3" style={{ color: '#E8478C' }}>Use Cases & Solutions</span>
           <h2 className="text-3xl font-bold mb-4 splunk-gradient-text inline-block" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.5rem)' }}>Everything SOC Teams Need</h2>
           <p className="text-base max-w-xl mx-auto" style={{ color: '#8B8FA3' }}>
-            From real-time monitoring to automated incident response, IoT Sentinel covers the full security lifecycle.
+            From real-time monitoring to automated incident response, Sentinel covers the full security lifecycle.
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -912,10 +912,10 @@ export default function LandingPage() {
             <span className="splunk-subheader block mb-5" style={{ color: '#FF6B35' }}>Get Connected</span>
             <h2 className="mb-5" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, lineHeight: 1.1, color: '#FFFFFF' }}>
               <span style={{ color: '#FF6B35' }}>Start</span> your journey
-              <br />with IoT Sentinel
+              <br />with Sentinel
             </h2>
             <p className="text-base leading-relaxed mb-8" style={{ color: '#8B8FA3' }}>
-              From defending against cyber threats to scaling your security operations, IoT Sentinel is with you every step of the way. Have questions? Reach out to our team.
+              From defending against cyber threats to scaling your security operations, Sentinel is with you every step of the way. Have questions? Reach out to our team.
             </p>
             <div className="flex flex-wrap gap-3">
               <button
@@ -998,12 +998,12 @@ export default function LandingPage() {
                   <Shield size={18} className="text-white" />
                 </div>
                 <div>
-                  <div className="text-sm font-bold" style={{ color: '#000000' }}>IoT Sentinel</div>
+                  <div className="text-sm font-bold" style={{ color: '#000000' }}>Sentinel</div>
                   <div className="text-[10px]" style={{ color: '#475569' }}>a Cisco-inspired platform</div>
                 </div>
               </div>
               <p className="text-xs leading-relaxed mb-5" style={{ color: '#475569' }}>
-                Enterprise-grade IoT security monitoring, threat detection, and automated incident response for modern SOC teams.
+                Enterprise-grade security monitoring, threat detection, and automated incident response for modern SOC teams.
               </p>
               {/* Mini social icons */}
               <div className="flex items-center gap-3">
@@ -1075,7 +1075,7 @@ export default function LandingPage() {
                 LinkedIn
               </a>
               <a
-                href="mailto:team@iotsentinel.io"
+                href="mailto:team@sentinel.io"
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border transition-all hover:bg-black/5"
                 style={{ borderColor: 'rgba(255,107,53,0.3)', color: '#FF6B35' }}
               >
@@ -1089,7 +1089,7 @@ export default function LandingPage() {
         {/* Bottom bar */}
         <div className="max-w-7xl mx-auto px-6 lg:px-16 py-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs" style={{ color: '#64748B' }}>
-            &copy; 2026 IoT Sentinel Security Platform. All rights reserved.
+            &copy; 2026 Sentinel Security Platform. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
             {['Legal', 'Privacy', 'Sitemap', 'Security Policy'].map(item => (

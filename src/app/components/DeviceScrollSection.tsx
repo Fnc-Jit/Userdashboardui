@@ -205,7 +205,7 @@ export function DeviceScrollSection() {
               className="text-[10px] uppercase tracking-[0.3em] font-semibold px-4 py-1.5 rounded-full border"
               style={{ color: '#FF6B35', borderColor: 'rgba(255,107,53,0.3)', background: 'rgba(255,107,53,0.07)' }}
             >
-              IoT Sentinel · Device Coverage
+              Sentinel · Device Coverage
             </span>
           </motion.div>
 
@@ -238,7 +238,7 @@ export function DeviceScrollSection() {
             style={{ opacity: subOpacity, color: '#8B8FA3' }}
             className="mt-5 max-w-lg text-base leading-relaxed"
           >
-            From live CCTV streams to industrial PLCs — IoT Sentinel monitors, scores,
+            From live CCTV streams to industrial PLCs — Sentinel monitors, scores,
             and protects every endpoint on your network in real time.
           </motion.p>
 
@@ -316,7 +316,7 @@ export function DeviceScrollSection() {
             </h3>
 
             <p className="mt-6 text-base leading-relaxed max-w-2xl mx-auto" style={{ color: '#8B8FA3' }}>
-              IoT Sentinel automatically discovers, classifies, and assigns trust scores to every
+              Sentinel automatically discovers, classifies, and assigns trust scores to every
               device on your network — cameras, locks, PLCs, medical equipment, and more.
               No agents. No manual setup. Just instant, continuous protection.
             </p>

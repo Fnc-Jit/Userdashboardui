@@ -1,5 +1,5 @@
 /**
- * Database Type Definitions for IoT Sentinel
+ * Database Type Definitions for Sentinel
  * These types map to the PostgreSQL schema and can be used with any database client
  */
 

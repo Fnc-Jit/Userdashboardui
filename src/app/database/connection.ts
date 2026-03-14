@@ -88,6 +88,11 @@ export class DatabaseService {
     this.adapter = adapter;
   }
 
+  /** Expose the adapter for advanced operations (e.g., seeding, raw SQL) */
+  getAdapter(): DatabaseAdapter {
+    return this.adapter;
+  }
+
   async connect(): Promise<void> {
     await this.adapter.connect();
   }

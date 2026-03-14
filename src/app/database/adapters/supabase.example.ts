@@ -1,7 +1,7 @@
 /**
  * Supabase Database Adapter Example
  * 
- * This is a complete reference implementation for connecting IoT Sentinel
+ * This is a complete reference implementation for connecting Sentinel
  * to Supabase (PostgreSQL with real-time capabilities).
  * 
  * SETUP:
@@ -13,6 +13,7 @@
  * 6. Initialize in your app with initializeDatabaseService()
  */
 
+// @ts-ignore — Install @supabase/supabase-js to use this adapter (see SETUP instructions above)
 import { createClient, SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
 import type { DatabaseAdapter } from '../connection';
 
