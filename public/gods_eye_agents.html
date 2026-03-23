@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>God's Eye — Agent Architecture</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050810;
+      --surface: #0a0f1e;
+      --border: rgba(0, 200, 255, 0.15);
+      --cyan: #00c8ff;
+      --green: #00ff9d;
+      --orange: #ff7e2f;
+      --red: #ff3e5e;
+      --purple: #a855f7;
+      --text: #c8deff;
+      --dim: rgba(200, 222, 255, 0.4);
+      --glow-cyan: 0 0 20px rgba(0, 200, 255, 0.4);
+      --glow-green: 0 0 20px rgba(0, 255, 157, 0.4);
+      --glow-orange: 0 0 20px rgba(255, 126, 47, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ─────────────────────────────────── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      height: 52px;
+      background: rgba(5, 8, 16, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0, 200, 255, 0.12);
+      padding: 0 24px;
+      gap: 12px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .nav-eye-sm {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid var(--cyan);
+      border-radius: 50%;
+      position: relative;
+      box-shadow: 0 0 8px rgba(0, 200, 255, 0.5);
+      flex-shrink: 0;
+    }
+
+    .nav-eye-sm::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 7px;
+      height: 7px;
+      background: var(--cyan);
+      border-radius: 50%;
+    }
+
+    .nav-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: #fff;
+    }
+
+    .nav-title span {
+      color: var(--cyan);
+    }
+
+    .nav-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+    }
+
+    .nav-sep {
+      width: 1px;
+      height: 20px;
+      background: rgba(0, 200, 255, 0.15);
+      flex-shrink: 0;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-clock {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--dim);
+      letter-spacing: 0.08em;
+      margin-right: 4px;
+    }
+
+    .nav-icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--dim);
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .nav-icon-btn:hover {
+      background: rgba(0, 200, 255, 0.08);
+      border-color: rgba(0, 200, 255, 0.2);
+      color: var(--text);
+    }
+
+    .nav-icon-btn.open {
+      background: rgba(0, 200, 255, 0.1);
+      border-color: rgba(0, 200, 255, 0.35);
+      color: var(--cyan);
+    }
+
+    .nav-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0d2240, #1a3a5c);
+      border: 1.5px solid rgba(0, 200, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--cyan);
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+      position: relative;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-avatar:hover,
+    .nav-avatar.open {
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+    }
+
+    .avatar-dot {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      border: 1.5px solid var(--bg);
+      box-shadow: 0 0 5px var(--green);
+    }
+
+    /* ── DROPDOWNS ──────────────────────────────── */
+    .dropdown {
+      position: fixed;
+      top: 58px;
+      background: rgba(8, 12, 22, 0.98);
+      border: 1px solid rgba(0, 200, 255, 0.15);
+      border-radius: 6px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(0, 200, 255, 0.05);
+      z-index: 1000;
+      display: none;
+      overflow: hidden;
+    }
+
+    .dropdown.open {
+      display: block;
+      animation: dropIn 0.18s ease;
+    }
+
+    @keyframes dropIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.97);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .settings-dd {
+      right: 60px;
+      width: 296px;
+    }
+
+    .profile-dd {
+      right: 16px;
+      width: 252px;
+    }
+
+    .dd-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+    }
+
+    .dd-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
+      color: var(--dim);
+      text-transform: uppercase;
+    }
+
+    .dd-close {
+      background: none;
+      border: none;
+      color: var(--dim);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      transition: all 0.1s;
+    }
+
+    .dd-close:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+
+    .dd-section {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.07);
+    }
+
+    .dd-section:last-child {
+      border-bottom: none;
+    }
+
+    .dd-section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.18em;
+      color: var(--dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .dd-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .dd-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .dd-label {
+      font-size: 0.78rem;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .dd-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--dim);
+      display: block;
+      margin-top: 1px;
+    }
+
+    .tog {
+      width: 34px;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9px;
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .tog.on {
+      background: rgba(0, 200, 255, 0.2);
+      border-color: rgba(0, 200, 255, 0.45);
+    }
+
+    .tog::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(180, 210, 255, 0.5);
+      transition: transform 0.18s, background 0.18s;
+    }
+
+    .tog.on::after {
+      transform: translateX(16px);
+      background: var(--cyan);
+      box-shadow: 0 0 5px var(--cyan);
+    }
+
+    .dd-select {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(0, 200, 255, 0.15);
+      border-radius: 3px;
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      padding: 4px 8px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .dd-select option {
+      background: #0a0f1e;
+    }
+
+    .profile-hdr {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+      background: rgba(0, 200, 255, 0.02);
+    }
+
+    .profile-av-lg {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0d2240, #1a3a5c);
+      border: 2px solid rgba(0, 200, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--cyan);
+      flex-shrink: 0;
+      position: relative;
+      box-shadow: 0 0 12px rgba(0, 200, 255, 0.15);
+    }
+
+    .profile-online {
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      border: 2px solid #0a0f1e;
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .p-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .p-role {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--cyan);
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
+    .p-org {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.56rem;
+      color: var(--dim);
+      margin-top: 2px;
+    }
+
+    .pm-list {
+      padding: 4px 0;
+    }
+
+    .pm-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      font-size: 0.78rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+
+    .pm-item:hover {
+      background: rgba(0, 200, 255, 0.05);
+    }
+
+    .pm-item.danger {
+      color: var(--red);
+    }
+
+    .pm-item.danger:hover {
+      background: rgba(255, 62, 94, 0.06);
+    }
+
+    .pm-ico {
+      font-size: 0.75rem;
+      color: var(--dim);
+      width: 16px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .pm-item.danger .pm-ico {
+      color: var(--red);
+      opacity: 0.7;
+    }
+
+    .pm-div {
+      height: 1px;
+      background: rgba(0, 200, 255, 0.08);
+      margin: 4px 0;
+    }
+
+    .profile-session {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      border-top: 1px solid rgba(0, 200, 255, 0.08);
+    }
+
+    .ps-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.56rem;
+      color: var(--dim);
+    }
+
+    .ps-val {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--green);
+    }
+
+    .dd-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: none;
+    }
+
+    .dd-backdrop.open {
+      display: block;
+    }
+
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 200, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 200, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: fadeDown 0.6s ease both;
+    }
+
+    .logo-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .eye-icon {
+      width: 36px;
+      height: 36px;
+      border: 2px solid var(--cyan);
+      border-radius: 50%;
+      position: relative;
+      box-shadow: var(--glow-cyan);
+      animation: pulse 2s infinite;
+    }
+
+    .eye-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: var(--glow-cyan);
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    h1 span {
+      color: var(--cyan);
+    }
+
+    .subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--dim);
+      letter-spacing: 0.2em;
+      margin-top: 8px;
+    }
+
+    /* Status bar */
+    .status-bar {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      animation: fadeDown 0.6s 0.1s ease both;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 200, 255, 0.05);
+      border: 1px solid rgba(0, 200, 255, 0.2);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--dim);
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      animation: blink 1.5s infinite;
+    }
+
+    .dot.green {
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .dot.cyan {
+      background: var(--cyan);
+      box-shadow: 0 0 6px var(--cyan);
+    }
+
+    .dot.orange {
+      background: var(--orange);
+      box-shadow: 0 0 6px var(--orange);
+    }
+
+    /* Agent cards grid */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 860px) {
+      .agents-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .agent-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .agent-card:nth-child(1) {
+      animation-delay: 0.15s;
+    }
+
+    .agent-card:nth-child(2) {
+      animation-delay: 0.25s;
+    }
+
+    .agent-card:nth-child(3) {
+      animation-delay: 0.35s;
+    }
+
+    .agent-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .agent-card.sensor:hover {
+      box-shadow: var(--glow-cyan);
+      border-color: rgba(0, 200, 255, 0.5);
+    }
+
+    .agent-card.agent:hover {
+      box-shadow: var(--glow-green);
+      border-color: rgba(0, 255, 157, 0.5);
+    }
+
+    .agent-card.desktop:hover {
+      box-shadow: var(--glow-orange);
+      border-color: rgba(255, 126, 47, 0.5);
+    }
+
+    /* Corner accent */
+    .agent-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      border-top: 2px solid;
+      border-left: 2px solid;
+    }
+
+    .sensor::before {
+      border-color: var(--cyan);
+    }
+
+    .agent::before {
+      border-color: var(--green);
+    }
+
+    .desktop::before {
+      border-color: var(--orange);
+    }
+
+    .agent-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      border-bottom: 2px solid;
+      border-right: 2px solid;
+      opacity: 0.4;
+    }
+
+    .sensor::after {
+      border-color: var(--cyan);
+    }
+
+    .agent::after {
+      border-color: var(--green);
+    }
+
+    .desktop::after {
+      border-color: var(--orange);
+    }
+
+    .card-header {
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-lang {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+      opacity: 0.6;
+    }
+
+    .sensor .card-lang {
+      color: var(--cyan);
+    }
+
+    .agent .card-lang {
+      color: var(--green);
+    }
+
+    .desktop .card-lang {
+      color: var(--orange);
+    }
+
+    .card-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .sensor .card-name span {
+      color: var(--cyan);
+    }
+
+    .agent .card-name span {
+      color: var(--green);
+    }
+
+    .desktop .card-name span {
+      color: var(--orange);
+    }
+
+    .card-role {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--dim);
+      letter-spacing: 0.05em;
+    }
+
+    .card-body {
+      padding: 16px 20px;
+    }
+
+    .deploy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+    }
+
+    .sensor .deploy-badge {
+      background: rgba(0, 200, 255, 0.08);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 200, 255, 0.2);
+    }
+
+    .agent .deploy-badge {
+      background: rgba(0, 255, 157, 0.08);
+      color: var(--green);
+      border: 1px solid rgba(0, 255, 157, 0.2);
+    }
+
+    .desktop .deploy-badge {
+      background: rgba(255, 126, 47, 0.08);
+      color: var(--orange);
+      border: 1px solid rgba(255, 126, 47, 0.2);
+    }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .feat-icon {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      padding-top: 2px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .sensor .feat-icon {
+      color: var(--cyan);
+    }
+
+    .agent .feat-icon {
+      color: var(--green);
+    }
+
+    .desktop .feat-icon {
+      color: var(--orange);
+    }
+
+    .card-footer {
+      padding: 12px 20px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .output-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--dim);
+      letter-spacing: 0.08em;
+    }
+
+    .output-value {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+    }
+
+    .sensor .output-value {
+      color: var(--cyan);
+    }
+
+    .agent .output-value {
+      color: var(--green);
+    }
+
+    .desktop .output-value {
+      color: var(--orange);
+    }
+
+    /* Data flow section */
+    .flow-section {
+      animation: fadeUp 0.6s 0.5s ease both;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .flow-section::before {
+      content: 'EVENT FLOW';
+      position: absolute;
+      top: 16px;
+      left: 32px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--dim);
+    }
+
+    .flow-steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-top: 28px;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+    }
+
+    .flow-steps::-webkit-scrollbar {
+      display: none;
+    }
+
+    .flow-step {
+      flex-shrink: 0;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .flow-box {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid;
+      border-radius: 2px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .flow-box.cyan {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 200, 255, 0.06);
+    }
+
+    .flow-box.green {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 255, 157, 0.06);
+    }
+
+    .flow-box.purple {
+      border-color: var(--purple);
+      color: var(--purple);
+      background: rgba(168, 85, 247, 0.06);
+    }
+
+    .flow-box.white {
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .flow-box.red {
+      border-color: var(--red);
+      color: var(--red);
+      background: rgba(255, 62, 94, 0.06);
+    }
+
+    .flow-box.orange {
+      border-color: var(--orange);
+      color: var(--orange);
+      background: rgba(255, 126, 47, 0.06);
+    }
+
+    .flow-arrow {
+      flex-shrink: 0;
+      width: 32px;
+      text-align: center;
+      color: var(--dim);
+      font-size: 0.8rem;
+      position: relative;
+    }
+
+    .flow-arrow::before {
+      content: '';
+      display: block;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin-bottom: 4px;
+    }
+
+    .flow-sublabel {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--dim);
+      margin-top: 5px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Comparison note */
+    .note-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      animation: fadeUp 0.6s 0.65s ease both;
+    }
+
+    @media (max-width: 700px) {
+      .note-box {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .note-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 16px;
+      font-size: 0.8rem;
+      color: var(--dim);
+      line-height: 1.6;
+    }
+
+    .note-item strong {
+      display: block;
+      font-size: 0.7rem;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .note-item:nth-child(1) strong {
+      color: var(--cyan);
+    }
+
+    .note-item:nth-child(2) strong {
+      color: var(--green);
+    }
+
+    .note-item:nth-child(3) strong {
+      color: var(--orange);
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 10px rgba(0, 200, 255, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 24px rgba(0, 200, 255, 0.8);
+      }
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══ NAVBAR ══════════════════════════════════════════════════════ -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <div class="nav-eye-sm"></div>
+      <div>
+        <div class="nav-title">GOD'S <span>EYE</span></div>
+        <div class="nav-subtitle">AGENT ARCHITECTURE · MARCH 2026</div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="nav-clock" id="nav-clock">--:--:-- UTC</span>
+      <div class="nav-sep"></div>
+      <button class="nav-icon-btn" id="settings-btn" onclick="toggleDD('settings')" title="Settings">⚙</button>
+      <div class="nav-avatar" id="profile-btn" onclick="toggleDD('profile')" title="Profile">
+        JR<span class="avatar-dot"></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Settings Dropdown -->
+  <div class="dropdown settings-dd" id="settings-dd">
+    <div class="dd-head">
+      <span class="dd-title">// Settings</span>
+      <button class="dd-close" onclick="closeDD('settings')">✕</button>
+    </div>
+    <div class="dd-section">
+      <div class="dd-section-label">Display</div>
+      <div class="dd-row">
+        <div class="dd-label">Grid overlay<span class="dd-sub">Background dot grid</span></div>
+        <div class="tog on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="dd-row">
+        <div class="dd-label">Card animations<span class="dd-sub">Fade-in on load</span></div>
+        <div class="tog on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="dd-row">
+        <div class="dd-label">Theme<span class="dd-sub">Color scheme</span></div>
+        <select class="dd-select">
+          <option selected>Dark · Cyber</option>
+          <option>Dark · Midnight</option>
+          <option>Dark · Ember</option>
+        </select>
+      </div>
+    </div>
+    <div class="dd-section">
+      <div class="dd-section-label">Data</div>
+      <div class="dd-row">
+        <div class="dd-label">Live status feed<span class="dd-sub">WebSocket updates</span></div>
+        <div class="tog on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="dd-row">
+        <div class="dd-label">Refresh interval<span class="dd-sub">Stats polling rate</span></div>
+        <select class="dd-select">
+          <option>5s</option>
+          <option selected>15s</option>
+          <option>30s</option>
+          <option>60s</option>
+        </select>
+      </div>
+    </div>
+    <div class="dd-section">
+      <div class="dd-section-label">Alerts</div>
+      <div class="dd-row">
+        <div class="dd-label">Desktop notifications<span class="dd-sub">Push on CRITICAL alerts</span></div>
+        <div class="tog on" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="dd-row">
+        <div class="dd-label">Alert sound<span class="dd-sub">Audio on new alert</span></div>
+        <div class="tog" onclick="this.classList.toggle('on')"></div>
+      </div>
+      <div class="dd-row">
+        <div class="dd-label">Min severity<span class="dd-sub">Notification threshold</span></div>
+        <select class="dd-select">
+          <option>ALL</option>
+          <option>LOW+</option>
+          <option selected>MEDIUM+</option>
+          <option>HIGH+</option>
+          <option>CRITICAL</option>
+        </select>
+      </div>
+    </div>
+    <div class="dd-section">
+      <div class="dd-section-label">Connection</div>
+      <div class="dd-row">
+        <div class="dd-label">API Host<span class="dd-sub">Backend gateway</span></div>
+        <span style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--cyan)">localhost:8000</span>
+      </div>
+      <div class="dd-row">
+        <div class="dd-label">Active Tenant<span class="dd-sub">Organization</span></div>
+        <select class="dd-select">
+          <option selected>Acme Corp</option>
+          <option>Beta Org</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Dropdown -->
+  <div class="dropdown profile-dd" id="profile-dd">
+    <div class="profile-hdr">
+      <div class="profile-av-lg">JR<span class="profile-online"></span></div>
+      <div>
+        <div class="p-name">Jitraj</div>
+        <div class="p-role">SOC ANALYST · SENIOR</div>
+        <div class="p-org">Acme Corp · gods-eye.io</div>
+      </div>
+    </div>
+    <div class="pm-list">
+      <div class="pm-item"><span class="pm-ico">◈</span>My Profile</div>
+      <div class="pm-item"><span class="pm-ico">⬡</span>API Keys &amp; Access</div>
+      <div class="pm-item"><span class="pm-ico">⟳</span>Switch Tenant</div>
+      <div class="pm-item"><span class="pm-ico">☾</span>Notification Preferences</div>
+      <div class="pm-div"></div>
+      <div class="pm-item"><span class="pm-ico">?</span>Documentation</div>
+      <div class="pm-item"><span class="pm-ico">⊡</span>Keyboard Shortcuts</div>
+      <div class="pm-div"></div>
+      <div class="pm-item danger"><span class="pm-ico">⏻</span>Sign Out</div>
+    </div>
+    <div class="profile-session">
+      <span class="ps-label">SESSION</span>
+      <span class="ps-val">● ACTIVE · 4h 22m</span>
+    </div>
+  </div>
+
+  <!-- Backdrop -->
+  <div class="dd-backdrop" id="dd-backdrop" onclick="closeAllDD()"></div>
+
+  <script>
+    function toggleDD(name) {
+      const isOpen = document.getElementById(name + '-dd').classList.contains('open');
+      closeAllDD();
+      if (!isOpen) {
+        document.getElementById(name + '-dd').classList.add('open');
+        document.getElementById('dd-backdrop').classList.add('open');
+        document.getElementById(name === 'settings' ? 'settings-btn' : 'profile-btn').classList.add('open');
+      }
+    }
+    function closeDD(name) {
+      document.getElementById(name + '-dd').classList.remove('open');
+      document.getElementById('dd-backdrop').classList.remove('open');
+      document.getElementById(name === 'settings' ? 'settings-btn' : 'profile-btn').classList.remove('open');
+    }
+    function closeAllDD() {
+      ['settings', 'profile'].forEach(n => document.getElementById(n + '-dd').classList.remove('open'));
+      document.getElementById('dd-backdrop').classList.remove('open');
+      document.getElementById('settings-btn').classList.remove('open');
+      document.getElementById('profile-btn').classList.remove('open');
+    }
+    // Clock
+    (function tick() {
+      const d = new Date();
+      document.getElementById('nav-clock').textContent = d.toISOString().substring(11, 19) + ' UTC';
+      setTimeout(tick, 1000);
+    })();
+  </script>
+
+  <div class="container">
+
+    <header>
+      <div class="logo-line">
+        <div class="eye-icon"></div>
+        <h1>GOD'S <span>EYE</span></h1>
+      </div>
+      <p class="subtitle">AGENT ARCHITECTURE · THREE-COMPONENT COLLECTION LAYER · MARCH 2026</p>
+    </header>
+
+    <div class="status-bar">
+      <div class="status-pill"><span class="dot green"></span> ge-sensor · 3 INSTANCES CAPTURING</div>
+      <div class="status-pill"><span class="dot cyan"></span> ge-agent · 12 HOSTS REPORTING</div>
+      <div class="status-pill"><span class="dot orange"></span> ge-desktop · SOC WORKSTATION ACTIVE</div>
+    </div>
+
+    <div class="agents-grid">
+
+      <!-- ge-sensor -->
+      <div class="agent-card sensor">
+        <div class="card-header">
+          <div class="card-lang">// RUST · LIBPCAP / AF_PACKET / AF_XDP</div>
+          <div class="card-name"><span>ge-</span>sensor</div>
+          <div class="card-role">Network Packet Capture &amp; IDS/IPS</div>
+        </div>
+        <div class="card-body">
+          <div class="deploy-badge">⬡ NETWORK TAPs / SPAN PORTS / INLINE</div>
+          <ul class="feature-list">
+            <li><span class="feat-icon">[01]</span>Raw packet capture · &lt;20MB RAM footprint</li>
+            <li><span class="feat-icon">[02]</span>Protocol dissection: TCP/UDP/DNS/HTTP/TLS</li>
+            <li><span class="feat-icon">[03]</span>OT protocols: Modbus, DNP3, BACnet, EtherNet/IP</li>
+            <li><span class="feat-icon">[04]</span>14-feature flow extraction for ML pipeline</li>
+            <li><span class="feat-icon">[05]</span>Alert-triggered selective PCAP capture</li>
+            <li><span class="feat-icon">[06]</span>IPS inline drop via AF_PACKET inline mode</li>
+            <li><span class="feat-icon">[07]</span>Syslog · SNMP trap · NetFlow/IPFIX/sFlow</li>
+            <li><span class="feat-icon">[08]</span>RocksDB DLQ — 7-day local spool on Kafka loss</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="output-label">OUTPUT →</span>
+          <span class="output-value">Kafka ge.raw.logs (mTLS)</span>
+        </div>
+      </div>
+
+      <!-- ge-agent -->
+      <div class="agent-card agent">
+        <div class="card-header">
+          <div class="card-lang">// GO · GOROUTINE CONCURRENCY</div>
+          <div class="card-name"><span>ge-</span>agent</div>
+          <div class="card-role">Host Telemetry &amp; Log Collection</div>
+        </div>
+        <div class="card-body">
+          <div class="deploy-badge">⬡ SERVERS / ENDPOINTS / CLOUD VMs</div>
+          <ul class="feature-list">
+            <li><span class="feat-icon">[01]</span>Windows Event Log · WEF · WMI · Sysmon</li>
+            <li><span class="feat-icon">[02]</span>File log monitoring (tail -f equivalent)</li>
+            <li><span class="feat-icon">[03]</span>Cloud API: AWS CloudTrail · Azure AD · GCP</li>
+            <li><span class="feat-icon">[04]</span>SaaS logs: Okta · GitHub · Slack · O365</li>
+            <li><span class="feat-icon">[05]</span>Container &amp; Kubernetes log collection</li>
+            <li><span class="feat-icon">[06]</span>Database audit log tailing (PG, MySQL)</li>
+            <li><span class="feat-icon">[07]</span>HTTP webhook receiver (JSON/CEF)</li>
+            <li><span class="feat-icon">[08]</span>Disk DLQ — 7-day local spool on Kafka loss</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="output-label">OUTPUT →</span>
+          <span class="output-value">Kafka ge.raw.logs (mTLS)</span>
+        </div>
+      </div>
+
+      <!-- ge-desktop -->
+      <div class="agent-card desktop">
+        <div class="card-header">
+          <div class="card-lang">// TAURI (RUST) + REACT · ANALYST UI</div>
+          <div class="card-name"><span>ge-</span>desktop</div>
+          <div class="card-role">SOC Analyst Workstation App</div>
+        </div>
+        <div class="card-body">
+          <div class="deploy-badge">⬡ SOC ANALYST DESKTOPS ONLY</div>
+          <ul class="feature-list">
+            <li><span class="feat-icon">[01]</span>Pipeline health visualization &amp; overview</li>
+            <li><span class="feat-icon">[02]</span>Local ge-sensor / ge-agent start/stop/restart</li>
+            <li><span class="feat-icon">[03]</span>GEQL quick search interface</li>
+            <li><span class="feat-icon">[04]</span>Config editor &amp; validation</li>
+            <li><span class="feat-icon">[05]</span>Recent events &amp; error log viewer</li>
+            <li><span class="feat-icon">[06]</span>System tray / menu bar integration</li>
+            <li><span class="feat-icon">[07]</span>Local diagnostics export</li>
+            <li><span class="feat-icon">⚠</span>NOT a data collector — management UI only</li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <span class="output-label">CONNECTS →</span>
+          <span class="output-value">REST API + WebSocket :8000</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Event flow bar -->
+    <div class="flow-section">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <span class="flow-box cyan">ge-sensor</span>
+          <div class="flow-sublabel">Network</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="flow-box green">ge-agent</span>
+          <div class="flow-sublabel">Host</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="flow-box purple">Kafka</span>
+          <div class="flow-sublabel">ge.raw.logs</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="flow-box white">Parser + GES</span>
+          <div class="flow-sublabel">Normalize</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="flow-box white">Enrichment</span>
+          <div class="flow-sublabel">GeoIP · IOC · MITRE</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="flow-box purple">Detection</span>
+          <div class="flow-sublabel">XGBoost·AE·LSTM·Sigma</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="flow-box red">Alert / SOAR</span>
+          <div class="flow-sublabel">Response</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <span class="flow-box orange">ge-desktop</span>
+          <div class="flow-sublabel">Analyst View</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom notes -->
+    <div class="note-box">
+      <div class="note-item">
+        <strong>// WHERE ge-sensor RUNS</strong>
+        Network TAPs, span ports, and inline segments at chokepoints. One instance per network segment. No GUI, headless
+        daemon. Linux primary (AF_XDP/AF_PACKET), cross-platform via libpcap fallback.
+      </div>
+      <div class="note-item">
+        <strong>// WHERE ge-agent RUNS</strong>
+        Every monitored host — servers, endpoints, cloud VMs. Could be dozens or hundreds of instances. Runs as a system
+        service / daemon. Broad OS support: Linux, Windows, macOS.
+      </div>
+      <div class="note-item">
+        <strong>// WHERE ge-desktop RUNS</strong>
+        Only on SOC analyst workstations. A small number of installs. Produces zero telemetry data itself — purely a
+        management and investigation interface talking to the API gateway.
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

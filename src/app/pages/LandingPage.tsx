@@ -678,6 +678,14 @@ export default function LandingPage() {
             >
               Request a demo
             </button>
+            <a
+              href="/gods_eye_agents.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center px-8 py-3.5 rounded-full font-bold transition-all border-2 border-white text-white hover:bg-white hover:text-black"
+            >
+              Agent Architecture
+            </a>
           </div>
         </motion.div>
 
