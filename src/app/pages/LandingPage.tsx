@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import {
@@ -68,6 +68,18 @@ export default function LandingPage() {
     setModalTitle(title);
     setAccessModalOpen(true);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(!searchOpen);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [searchOpen]);
 
   return (
     <div className="min-h-screen" style={{ background: '#FFFFFF' }}>
@@ -188,6 +200,82 @@ export default function LandingPage() {
             className="w-full rounded-xl shadow-lg"
             style={{ maxHeight: '500px', objectFit: 'cover' }}
           />
+
+          {/* Glassmorphic Search Tile - God's Eye */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-20 relative"
+          >
+            <div
+              className="relative rounded-3xl border overflow-hidden p-12 cursor-pointer group transition-all hover:shadow-2xl"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 100%)',
+                backdropFilter: 'blur(20px)',
+                borderColor: 'rgba(255,255,255,0.5)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+              }}
+              onClick={() => setSearchOpen(true)}
+            >
+              {/* Animated background orb */}
+              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full opacity-30 group-hover:opacity-50 transition-opacity" style={{ background: 'radial-gradient(circle, #FF6B35, transparent 70%)' }} />
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full opacity-20 group-hover:opacity-40 transition-opacity" style={{ background: 'radial-gradient(circle, #E8478C, transparent 70%)' }} />
+
+              {/* Content */}
+              <div className="relative z-10">
+                {/* Header with God's Eye */}
+                <div className="mb-8 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)' }}>
+                    <Search size={18} className="text-white" />
+                  </div>
+                  <span className="text-2xl font-bold tracking-tight" style={{ color: '#000000' }}>God's Eye</span>
+                </div>
+
+                {/* Search input */}
+                <div className="mb-6">
+                  <input
+                    type="text"
+                    placeholder="Explore threats, analyze events, monitor infrastructure..."
+                    className="w-full bg-transparent outline-none text-lg py-4 px-0"
+                    style={{ color: '#000000' }}
+                    onFocus={() => setSearchOpen(true)}
+                  />
+                  <div className="h-px mt-4 w-full" style={{ background: 'rgba(0,0,0,0.1)' }} />
+                </div>
+
+                {/* Quick suggestions */}
+                <div className="flex flex-wrap gap-3">
+                  {['Threat Intelligence', 'Device Inventory', 'Incidents', 'Network Topology'].map(suggestion => (
+                    <button
+                      key={suggestion}
+                      className="px-4 py-2 rounded-full text-sm font-medium transition-all border"
+                      style={{
+                        background: 'rgba(255, 107, 53, 0.1)',
+                        borderColor: 'rgba(255, 107, 53, 0.3)',
+                        color: '#000000',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 107, 53, 0.2)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 107, 53, 0.5)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 107, 53, 0.1)';
+                        e.currentTarget.style.borderColor = 'rgba(255, 107, 53, 0.3)';
+                      }}
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Footer text */}
+                <p className="text-sm mt-6" style={{ color: '#666666' }}>
+                  Press <code className="px-2 py-1 rounded" style={{ background: 'rgba(0,0,0,0.05)' }}>⌘K</code> or click to search
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
