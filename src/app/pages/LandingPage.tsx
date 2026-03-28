@@ -12,7 +12,6 @@ export default function LandingPage() {
   const [modalTitle, setModalTitle] = useState('Request Access');
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeAgent, setActiveAgent] = useState(0);
 
   const agents = [
     {
@@ -121,16 +120,24 @@ export default function LandingPage() {
 
           {/* Right: Search & CTA */}
           <div className="flex items-center gap-4">
-            {/* Glassmorphic Search */}
-            <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg border" style={{ background: 'rgba(255,255,255,0.5)', borderColor: 'rgba(0,0,0,0.1)', backdropFilter: 'blur(8px)' }}>
-              <Search size={16} style={{ color: '#999999' }} />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="bg-transparent outline-none text-sm w-32"
-                style={{ color: '#000000' }}
-              />
-            </div>
+            {/* Glassmorphic Search - Palantir Style Small Rectangle */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="hidden lg:flex items-center gap-3 px-4 py-2.5 rounded-xl border transition-all hover:shadow-lg hover:border-black/20 group"
+              style={{
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%)',
+                borderColor: 'rgba(0,0,0,0.1)',
+                backdropFilter: 'blur(12px)',
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)' }}>
+                  <Search size={14} className="text-white" />
+                </div>
+                <span className="text-sm font-semibold" style={{ color: '#000000' }}>God's Eye</span>
+              </div>
+              <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(0,0,0,0.05)', color: '#666666' }}>⌘K</span>
+            </button>
 
             {/* CTA Button */}
             <button
@@ -200,82 +207,6 @@ export default function LandingPage() {
             className="w-full rounded-xl shadow-lg"
             style={{ maxHeight: '500px', objectFit: 'cover' }}
           />
-
-          {/* Glassmorphic Search Tile - God's Eye */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-20 relative"
-          >
-            <div
-              className="relative rounded-3xl border overflow-hidden p-12 cursor-pointer group transition-all hover:shadow-2xl"
-              style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 100%)',
-                backdropFilter: 'blur(20px)',
-                borderColor: 'rgba(255,255,255,0.5)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-              }}
-              onClick={() => setSearchOpen(true)}
-            >
-              {/* Animated background orb */}
-              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full opacity-30 group-hover:opacity-50 transition-opacity" style={{ background: 'radial-gradient(circle, #FF6B35, transparent 70%)' }} />
-              <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full opacity-20 group-hover:opacity-40 transition-opacity" style={{ background: 'radial-gradient(circle, #E8478C, transparent 70%)' }} />
-
-              {/* Content */}
-              <div className="relative z-10">
-                {/* Header with God's Eye */}
-                <div className="mb-8 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)' }}>
-                    <Search size={18} className="text-white" />
-                  </div>
-                  <span className="text-2xl font-bold tracking-tight" style={{ color: '#000000' }}>God's Eye</span>
-                </div>
-
-                {/* Search input */}
-                <div className="mb-6">
-                  <input
-                    type="text"
-                    placeholder="Explore threats, analyze events, monitor infrastructure..."
-                    className="w-full bg-transparent outline-none text-lg py-4 px-0"
-                    style={{ color: '#000000' }}
-                    onFocus={() => setSearchOpen(true)}
-                  />
-                  <div className="h-px mt-4 w-full" style={{ background: 'rgba(0,0,0,0.1)' }} />
-                </div>
-
-                {/* Quick suggestions */}
-                <div className="flex flex-wrap gap-3">
-                  {['Threat Intelligence', 'Device Inventory', 'Incidents', 'Network Topology'].map(suggestion => (
-                    <button
-                      key={suggestion}
-                      className="px-4 py-2 rounded-full text-sm font-medium transition-all border"
-                      style={{
-                        background: 'rgba(255, 107, 53, 0.1)',
-                        borderColor: 'rgba(255, 107, 53, 0.3)',
-                        color: '#000000',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 107, 53, 0.2)';
-                        e.currentTarget.style.borderColor = 'rgba(255, 107, 53, 0.5)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 107, 53, 0.1)';
-                        e.currentTarget.style.borderColor = 'rgba(255, 107, 53, 0.3)';
-                      }}
-                    >
-                      {suggestion}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Footer text */}
-                <p className="text-sm mt-6" style={{ color: '#666666' }}>
-                  Press <code className="px-2 py-1 rounded" style={{ background: 'rgba(0,0,0,0.05)' }}>⌘K</code> or click to search
-                </p>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
@@ -494,6 +425,115 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* ═══════════ GOD'S EYE SEARCH MODAL ═══════════ */}
+      {searchOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-start justify-center pt-32 px-4"
+          style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
+          onClick={() => setSearchOpen(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="w-full max-w-2xl rounded-2xl border overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%)',
+              borderColor: 'rgba(0,0,0,0.1)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center gap-3 px-6 py-5 border-b" style={{ borderColor: 'rgba(0,0,0,0.08)' }}>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)' }}>
+                <Search size={16} className="text-white" />
+              </div>
+              <input
+                autoFocus
+                type="text"
+                placeholder="Search God's Eye intelligence..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 bg-transparent outline-none text-base"
+                style={{ color: '#000000' }}
+              />
+              <button
+                onClick={() => setSearchOpen(false)}
+                className="p-1 hover:bg-black/5 rounded transition-colors"
+                style={{ color: '#999999' }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Content */}
+            {searchQuery ? (
+              <div className="p-6 space-y-2 max-h-96 overflow-y-auto">
+                <div className="text-xs font-semibold mb-4 uppercase tracking-widest" style={{ color: '#999999' }}>
+                  Results for "{searchQuery}"
+                </div>
+                {[
+                  { title: 'Threat Intelligence Database', desc: 'Real-time threat feeds and indicators' },
+                  { title: 'Device Inventory', desc: 'Monitor all endpoints across infrastructure' },
+                  { title: 'Incident Investigations', desc: 'Deep-dive into security events' },
+                  { title: 'Network Topology', desc: 'Visualize device connections and risks' },
+                ].filter(item =>
+                  item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  item.desc.toLowerCase().includes(searchQuery.toLowerCase())
+                ).map(item => (
+                  <button
+                    key={item.title}
+                    className="w-full text-left p-3 rounded-lg transition-colors hover:bg-black/5"
+                    onClick={() => setSearchOpen(false)}
+                  >
+                    <div className="text-sm font-medium" style={{ color: '#000000' }}>
+                      {item.title}
+                    </div>
+                    <div className="text-xs mt-1" style={{ color: '#666666' }}>
+                      {item.desc}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="p-8">
+                <div className="text-xs font-semibold mb-4 uppercase tracking-widest" style={{ color: '#999999' }}>
+                  Quick Actions
+                </div>
+                <div className="space-y-3">
+                  {[
+                    { icon: '🔍', title: 'Threat Intelligence', desc: 'Explore global threat data' },
+                    { icon: '💻', title: 'Device Monitoring', desc: 'Real-time endpoint status' },
+                    { icon: '⚠️', title: 'Incidents', desc: 'Active security investigations' },
+                    { icon: '🌐', title: 'Network Analysis', desc: 'Topology and risk assessment' },
+                  ].map(action => (
+                    <button
+                      key={action.title}
+                      className="w-full text-left p-3 rounded-lg transition-colors hover:bg-black/5"
+                      onClick={() => setSearchOpen(false)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-lg">{action.icon}</span>
+                        <div>
+                          <div className="text-sm font-medium" style={{ color: '#000000' }}>
+                            {action.title}
+                          </div>
+                          <div className="text-xs" style={{ color: '#666666' }}>
+                            {action.desc}
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      )}
 
       {/* ═══════════ FOOTER ═══════════ */}
       <footer className="border-t px-6 lg:px-8 py-16" style={{ background: '#FFFFFF', borderColor: '#E5E7EB' }}>
