@@ -322,143 +322,149 @@ export default function LandingPage() {
         ))}
       </section>
 
-      {/* ═══════════ SIEM SECTION - PALANTIR "OUR SOFTWARE" STYLE ═══════════ */}
+      {/* ═══════════ SIEM SECTION - PALANTIR APOLLO STYLE ═══════════ */}
       <section id="reports" className="py-0 px-0" style={{ background: '#FFFFFF', fontFamily: "'DM Sans', sans-serif" }}>
-        {['Unified Event Collection', 'Real-time Analysis', 'Threat Detection', 'Incident Investigation', 'Automated Response'].map((title, idx) => {
-          const descriptions = [
-            'Collect and normalize log data from all sources across your infrastructure.',
-            'Process millions of events per second with advanced machine learning algorithms.',
-            'Identify suspicious patterns and known threats in real-time.',
-            'Deep-dive into incidents with comprehensive forensic evidence.',
-            'Automate response actions to contain threats faster.',
-          ];
-          const labels = ['/0.1', '/0.2', '/0.3', '/0.4', '/0.5'];
-          const symbols = ['📊', '⚡', '🎯', '🔍', '🚀'];
-
-          return (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="group relative overflow-hidden transition-all duration-600 border-b"
+        {[
+          { counter: '/0.1', title: 'SOC', desc: 'Unified security operations center — triage, investigate, and respond from a single pane of glass.' },
+          { counter: '/0.2', title: 'Kill Chain', desc: 'Visualize multi-stage attacks mapped to MITRE ATT&CK in real time.' },
+          { counter: '/0.3', title: 'Topology', desc: 'Live network graph showing every device, connection, and anomaly across your infrastructure.' },
+          { counter: '/0.4', title: 'Compliance', desc: 'Continuous NIST CSF / ISO 27443 compliance scoring with auto-generated audit reports.' },
+          { counter: '/0.5', title: 'Threat Intel', desc: 'Fuse global threat feeds with internal telemetry to surface contextual IOCs instantly.' },
+          { counter: '/0.6', title: 'Devices', desc: 'Full device inventory with behavioral baselines, risk scores, and real-time drift detection.' },
+          { counter: '/0.7', title: 'Overview', desc: 'Command-level situational awareness — every alert, asset, and action in one operational view.' },
+        ].map((item, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="group relative overflow-hidden border-b"
+            style={{
+              background: '#FFFFFF',
+              height: '320px',
+              display: 'flex',
+              borderColor: 'rgba(0,0,0,0.08)',
+              cursor: 'pointer',
+            }}
+          >
+            {/* Left Column - 35% */}
+            <div
+              className="flex flex-col justify-center relative z-10"
               style={{
-                background: '#FFFFFF',
-                height: '280px',
-                display: 'flex',
-                borderColor: 'rgba(0,0,0,0.08)',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={(e) => {
-                const container = e.currentTarget as HTMLElement;
-                container.style.height = '620px';
-              }}
-              onMouseLeave={(e) => {
-                const container = e.currentTarget as HTMLElement;
-                container.style.height = '280px';
+                width: '35%',
+                paddingLeft: '60px',
+                paddingRight: '48px',
+                paddingTop: '40px',
+                paddingBottom: '40px',
               }}
             >
-              {/* Left Column - 35% */}
+              {/* Counter Label */}
               <div
-                className="flex flex-col justify-center relative z-10 transition-all duration-500"
+                className="font-mono tracking-wider mb-6"
                 style={{
-                  width: '35%',
-                  paddingLeft: '60px',
-                  paddingRight: '48px',
-                  paddingTop: '80px',
-                  paddingBottom: '80px',
+                  fontSize: '13px',
+                  color: 'rgba(0,0,0,0.35)',
                 }}
               >
-                {/* Counter Label */}
-                <div
-                  className="font-mono text-sm tracking-wider mb-8 transition-all duration-500"
-                  style={{
-                    fontSize: '13px',
-                    color: 'rgba(0,0,0,0.35)',
-                    opacity: 1,
-                    transform: 'translateY(0)',
-                  }}
-                >
-                  {labels[idx]}
-                </div>
-
-                {/* Description (visible in collapsed state) */}
-                <p
-                  className="transition-all duration-500 leading-relaxed"
-                  style={{
-                    fontSize: '15px',
-                    fontWeight: 400,
-                    color: 'rgba(0,0,0,0.55)',
-                    marginBottom: '32px',
-                    opacity: 1,
-                    maxHeight: '100px',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {descriptions[idx]}
-                </p>
-
-                {/* Title (hidden in collapsed, appears on expand) */}
-                <motion.h3
-                  initial={{ opacity: 0, y: 10 }}
-                  className="group-hover:opacity-100 opacity-0 transition-all duration-500"
-                  style={{
-                    fontSize: 'clamp(2.5rem, 5vw, 5rem)',
-                    fontWeight: 800,
-                    color: '#0d0d14',
-                    lineHeight: 1.1,
-                    marginBottom: '24px',
-                  }}
-                >
-                  {title}
-                </motion.h3>
-
-                {/* Learn More Link (hidden in collapsed, appears on expand) */}
-                <button
-                  onClick={() => openModal(title)}
-                  className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:gap-3"
-                  style={{ color: '#d4500a' }}
-                >
-                  Learn more
-                  <ChevronRight size={16} className="transition-transform duration-200" />
-                </button>
+                {item.counter}
               </div>
 
-              {/* Right Column - 65% */}
-              <div className="flex-1 relative overflow-hidden flex items-center justify-center">
-                {/* Ghost Symbol (visible in collapsed, fades on hover) */}
-                <div
-                  className="absolute inset-0 flex items-center justify-center transition-all duration-500 group-hover:opacity-0"
-                  style={{
-                    opacity: 0.08,
-                    fontSize: '200px',
-                    filter: 'grayscale(100%)',
-                  }}
-                >
-                  {symbols[idx]}
-                </div>
+              {/* Description */}
+              <p
+                className="leading-relaxed mb-6"
+                style={{
+                  fontSize: '15px',
+                  fontWeight: 400,
+                  color: 'rgba(0,0,0,0.55)',
+                  lineHeight: '1.6',
+                }}
+              >
+                {item.desc}
+              </p>
 
-                {/* Video Panel (hidden in collapsed, appears on expand) */}
-                <div
-                  className="absolute inset-0 transition-all duration-500 opacity-0 group-hover:opacity-100 flex items-center justify-center"
-                  style={{
-                    borderRadius: '4px',
-                  }}
-                >
-                  <img
-                    src={siemImages[idx]}
-                    alt={title}
-                    className="w-full h-full object-cover"
-                    style={{
-                      boxShadow: '0 4px 40px rgba(0,0,0,0.12)',
-                    }}
-                  />
+              {/* Expandable Title */}
+              <h3
+                className="transition-all duration-500"
+                style={{
+                  fontSize: '1.1rem',
+                  fontWeight: 800,
+                  color: '#0d0d14',
+                  lineHeight: 1.1,
+                  transform: 'translateY(8px)',
+                  opacity: 0,
+                  transition: 'all 0.45s cubic-bezier(0.4,0,0.2,1)',
+                }}
+                onMouseEnter={(e) => {
+                  const elem = e.currentTarget as HTMLElement;
+                  elem.style.fontSize = 'clamp(2.8rem, 4vw, 4.5rem)';
+                  elem.style.transform = 'translateY(0)';
+                  elem.style.opacity = '1';
+                }}
+                onMouseLeave={(e) => {
+                  const elem = e.currentTarget as HTMLElement;
+                  elem.style.fontSize = '1.1rem';
+                  elem.style.transform = 'translateY(8px)';
+                  elem.style.opacity = '0';
+                }}
+              >
+                {item.title}
+              </h3>
+
+              {/* Learn More Link */}
+              <button
+                onClick={() => openModal(item.title)}
+                className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:gap-3 mt-4"
+                style={{ color: '#d4500a' }}
+              >
+                Learn more
+                <ChevronRight size={16} className="transition-transform duration-200" />
+              </button>
+            </div>
+
+            {/* Right Column - 65% */}
+            <div className="flex-1 relative overflow-hidden flex items-center justify-center bg-gray-50">
+              {/* Ghost Title Word (default state) */}
+              <div
+                className="absolute inset-0 flex items-center justify-end transition-all duration-500 group-hover:opacity-0 pr-8"
+                style={{
+                  opacity: 0.04,
+                  fontSize: 'clamp(5rem, 12vw, 10rem)',
+                  fontWeight: 900,
+                  color: '#000000',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {item.title}
+              </div>
+
+              {/* Static Screenshot (always visible, behind video) */}
+              <img
+                src={siemImages[idx % siemImages.length]}
+                alt={item.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
+              {/* Video Overlay (fades in on hover) */}
+              <div
+                className="absolute inset-0 transition-all duration-500 opacity-0 group-hover:opacity-100 flex items-center justify-center"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(15,15,20,0.8) 0%, rgba(15,15,20,0.5) 100%)',
+                }}
+              >
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 backdrop-blur">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                    </svg>
+                  </div>
+                  <p className="text-white text-sm font-medium">Feature Video</p>
                 </div>
               </div>
-            </motion.div>
-          );
-        })}
+            </div>
+          </motion.div>
+        ))}
 
         {/* Section intro text */}
         <div
