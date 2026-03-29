@@ -287,6 +287,7 @@ export default function LandingPage() {
             textAlign: 'center',
             zIndex: 10,
             width: '100%',
+            boxSizing: 'border-box',
             padding: '0 20px',
           }}
         >
@@ -298,6 +299,7 @@ export default function LandingPage() {
               letterSpacing: '-0.02em',
               fontFamily: "'DM Sans', sans-serif",
               margin: 0,
+              whiteSpace: 'nowrap',
             }}
           >
             God's Eye
