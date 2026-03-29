@@ -46,20 +46,32 @@ export default function LandingPage() {
     {
       title: 'Advanced SIEM Architecture',
       category: 'RESEARCH',
-      excerpt: 'Understanding modern security information and event management systems.',
-      image: siemImages[0],
+      excerpt: 'Understanding modern log correlation and event normalization at scale',
     },
     {
       title: 'Threat Detection Strategies',
       category: 'GUIDE',
-      excerpt: 'Implementing effective detection rules and threat hunting methodologies.',
-      image: siemImages[1],
+      excerpt: 'Implementing detection rules and threat hunting playbooks',
     },
     {
       title: 'Incident Response Best Practices',
       category: 'WHITEPAPER',
-      excerpt: 'How leading SOC teams orchestrate rapid response to security incidents.',
-      image: siemImages[2],
+      excerpt: 'How SOC teams orchestrate rapid containment and forensic triage',
+    },
+    {
+      title: 'MITRE ATT&CK Mapping',
+      category: 'RESEARCH',
+      excerpt: 'Correlating adversary TTPs with real-time kill chain telemetry',
+    },
+    {
+      title: 'Zero Trust Segmentation',
+      category: 'GUIDE',
+      excerpt: 'Enforcing least-privilege access across hybrid infrastructure',
+    },
+    {
+      title: 'UEBA Behavioral Baselines',
+      category: 'WHITEPAPER',
+      excerpt: 'Detecting insider threats using per-device ML drift models',
     },
   ];
 
@@ -555,53 +567,149 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══════════ ARTICLES SECTION ═══════════ */}
-      <section className="py-20 px-6 lg:px-8" style={{ background: '#F9F9F9' }}>
-        <div className="max-w-6xl mx-auto">
+      {/* ═══════════ FEATURED INSIGHTS SECTION - MARQUEE LAYOUT ═══════════ */}
+      <section className="insights-section py-20 px-6 lg:px-8" style={{ background: '#F9F9F9' }}>
+        <style>{`
+          @keyframes scroll {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+
+          .insights-marquee-container {
+            overflow: hidden;
+            width: 100%;
+          }
+
+          .insights-marquee-track {
+            display: flex;
+            gap: 0;
+            animation: scroll 40s linear infinite;
+          }
+
+          .insights-marquee-container:hover .insights-marquee-track {
+            animation-play-state: paused;
+          }
+
+          .insight-card {
+            flex-shrink: 0;
+            width: 320px;
+            padding: 40px 32px;
+            background: #f0f0f0;
+            border-radius: 0;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .insight-card:hover {
+            background: #e6e6e6;
+          }
+
+          .insight-card-tag {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: rgba(0, 0, 0, 0.4);
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 16px;
+          }
+
+          .insight-card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            flex-grow: 1;
+          }
+
+          .insight-card-description {
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 1.6;
+            margin-bottom: 16px;
+          }
+
+          .insight-card-link {
+            font-size: 12px;
+            font-weight: 600;
+            color: #c94a1a;
+            text-decoration: none;
+            transition: all 0.2s ease;
+          }
+
+          .insight-card-link:hover {
+            transform: translateX(4px);
+          }
+        `}</style>
+
+        <div className="max-w-7xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4" style={{ color: '#000000' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 400, color: '#0d0d14', marginBottom: '12px' }}>
               Featured Insights
             </h2>
-            <p className="text-lg" style={{ color: '#666666' }}>
-              Latest research, guides, and best practices from our team.
+            <p style={{ fontSize: '16px', color: 'rgba(0, 0, 0, 0.45)' }}>
+              Latest research, guides, and best practices from the Sentinel team.
             </p>
           </motion.div>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+        <div className="insights-marquee-container">
+          <div className="insights-marquee-track">
+            {/* First set of articles */}
             {articles.map((article, idx) => (
-              <motion.button
-                key={idx}
+              <button
+                key={`article-${idx}`}
                 onClick={() => openModal(article.title)}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="rounded-xl overflow-hidden border transition-all text-left hover:shadow-xl hover:-translate-y-2"
-                style={{ background: '#FFFFFF', borderColor: '#E5E7EB' }}
+                className="insight-card"
               >
-                <img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
-                />
-                <div className="p-6">
-                  <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#FF6B35' }}>
-                    {article.category}
-                  </span>
-                  <h3 className="text-lg font-bold my-3" style={{ color: '#000000' }}>
-                    {article.title}
-                  </h3>
-                  <p className="text-sm" style={{ color: '#666666' }}>
-                    {article.excerpt}
-                  </p>
+                <div className="insight-card-tag">
+                  {article.category}
                 </div>
-              </motion.button>
+                <h3 className="insight-card-title">
+                  {article.title}
+                </h3>
+                <p className="insight-card-description">
+                  {article.excerpt}
+                </p>
+                <div className="insight-card-link">
+                  Read more →
+                </div>
+              </button>
+            ))}
+
+            {/* Duplicate set for seamless loop */}
+            {articles.map((article, idx) => (
+              <button
+                key={`article-dup-${idx}`}
+                onClick={() => openModal(article.title)}
+                className="insight-card"
+              >
+                <div className="insight-card-tag">
+                  {article.category}
+                </div>
+                <h3 className="insight-card-title">
+                  {article.title}
+                </h3>
+                <p className="insight-card-description">
+                  {article.excerpt}
+                </p>
+                <div className="insight-card-link">
+                  Read more →
+                </div>
+              </button>
             ))}
           </div>
         </div>
