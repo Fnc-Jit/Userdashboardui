@@ -597,18 +597,28 @@ export default function LandingPage() {
           .insight-card {
             flex-shrink: 0;
             width: 320px;
+            min-height: 380px;
             padding: 40px 32px;
             background: #f0f0f0;
-            border-radius: 0;
+            border-radius: 16px 16px 0 0;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            position: relative;
           }
 
           .insight-card:hover {
-            background: #e6e6e6;
+            background: #f0f0f0;
+            transform: translateY(-12px);
+          }
+
+          .insight-card:hover .insight-card-tag,
+          .insight-card:hover .insight-card-title,
+          .insight-card:hover .insight-card-description {
+            transform: translateY(-8px);
           }
 
           .insight-card-tag {
@@ -618,7 +628,8 @@ export default function LandingPage() {
             font-family: 'Courier New', monospace;
             text-transform: uppercase;
             font-weight: 600;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
 
           .insight-card-title {
@@ -626,15 +637,17 @@ export default function LandingPage() {
             font-weight: 700;
             color: #1a1a1a;
             line-height: 1.5;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             flex-grow: 1;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
 
           .insight-card-description {
             font-size: 13px;
             color: rgba(0, 0, 0, 0.5);
             line-height: 1.6;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
 
           .insight-card-link {
@@ -643,6 +656,7 @@ export default function LandingPage() {
             color: #c94a1a;
             text-decoration: none;
             transition: all 0.2s ease;
+            align-self: flex-start;
           }
 
           .insight-card-link:hover {
