@@ -88,64 +88,115 @@ export default function LandingPage() {
         title={modalTitle}
       />
 
-      {/* ═══════════ NAVIGATION BAR ═══════════ */}
-      <nav className="fixed top-0 w-full z-50 border-b" style={{ background: 'rgba(255,255,255,0.95)', borderColor: '#E5E7EB' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo */}
+      {/* ═══════════ NAVIGATION BAR - PALANTIR FLOATING HUD ═══════════ */}
+      <nav
+        className="fixed z-[999] h-16 flex items-center justify-center"
+        style={{
+          top: '16px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 'calc(100% - 48px)',
+          maxWidth: '1200px',
+          borderRadius: '12px',
+          background: 'rgba(15, 15, 20, 0.45)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          border: '1px solid rgba(255,255,255,0.10)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+        }}
+      >
+        <div className="w-full px-6 lg:px-8 h-full flex items-center justify-between">
+          {/* Logo - Monochrome */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2 transition-all duration-200 group"
+            style={{ color: 'rgba(255,255,255,0.70)' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#FFFFFF';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'rgba(255,255,255,0.70)';
+            }}
           >
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)' }}>
-              <Shield size={16} className="text-white" />
+            <div className="w-6 h-6 flex items-center justify-center border rounded-md" style={{ borderColor: 'rgba(255,255,255,0.70)', color: 'rgba(255,255,255,0.70)' }}>
+              <Shield size={14} strokeWidth={1.5} />
             </div>
-            <span className="text-sm font-bold" style={{ color: '#000000' }}>Sentinel</span>
+            <span className="text-sm font-semibold hidden sm:inline">Sentinel</span>
           </button>
 
           {/* Center Navigation Links */}
-          <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => document.getElementById('reports')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm font-medium transition-colors hover:text-black" style={{ color: '#666666' }}>
-              Reports
-            </button>
-            <button onClick={() => openModal('Request a Demo')} className="text-sm font-medium transition-colors hover:text-black" style={{ color: '#666666' }}>
-              Demo
-            </button>
-            <button onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })} className="text-sm font-medium transition-colors hover:text-black" style={{ color: '#666666' }}>
-              Agent Architecture
-            </button>
-            <button onClick={() => navigate('/login')} className="text-sm font-medium transition-colors hover:text-black" style={{ color: '#666666' }}>
-              Access Dashboard
-            </button>
+          <div className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
+            {[
+              { label: 'Reports', id: 'reports' },
+              { label: 'Demo', action: () => openModal('Request a Demo') },
+              { label: 'Agent Architecture', id: 'architecture' },
+              { label: 'Access Dashboard', nav: '/login' },
+            ].map((item, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  if ('id' in item) {
+                    document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+                  } else if ('action' in item) {
+                    item.action();
+                  } else if ('nav' in item) {
+                    navigate(item.nav);
+                  }
+                }}
+                className="text-sm font-medium transition-all duration-200"
+                style={{ color: 'rgba(255,255,255,0.70)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#FFFFFF';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(255,255,255,0.70)';
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
 
-          {/* Right: Search & CTA */}
-          <div className="flex items-center gap-4">
-            {/* Glassmorphic Search - Palantir Style Small Rectangle */}
+          {/* Right: Search Icon & CTA */}
+          <div className="flex items-center gap-4 ml-auto">
+            {/* God's Eye - Icon Only, Minimal */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="hidden lg:flex items-center gap-3 px-4 py-2.5 rounded-xl border transition-all hover:shadow-lg hover:border-black/20 group"
+              className="hidden lg:flex items-center justify-center w-10 h-10 border rounded transition-all duration-200 group"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%)',
-                borderColor: 'rgba(0,0,0,0.1)',
-                backdropFilter: 'blur(12px)',
+                borderColor: 'rgba(255,255,255,0.3)',
+                color: 'rgba(255,255,255,0.70)',
               }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                e.currentTarget.style.color = 'rgba(255,255,255,0.70)';
+              }}
+              title="God's Eye Search (⌘K)"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform" style={{ background: 'linear-gradient(135deg, #FF6B35, #E8478C)' }}>
-                  <Search size={14} className="text-white" />
-                </div>
-                <span className="text-sm font-semibold" style={{ color: '#000000' }}>God's Eye</span>
-              </div>
-              <span className="text-xs px-1.5 py-0.5 rounded" style={{ background: 'rgba(0,0,0,0.05)', color: '#666666' }}>⌘K</span>
+              <Search size={16} strokeWidth={1.5} />
             </button>
 
-            {/* CTA Button */}
+            {/* Request Demo CTA - Sharp Rectangle */}
             <button
               onClick={() => openModal('Request a Demo')}
-              className="hidden sm:flex items-center gap-2 px-5 py-2 rounded-lg font-medium text-sm transition-all"
-              style={{ background: '#000000', color: '#FFFFFF' }}
-              onMouseEnter={(e) => e.currentTarget.style.background = '#1A1A1A'}
-              onMouseLeave={(e) => e.currentTarget.style.background = '#000000'}
+              className="hidden sm:flex items-center px-6 py-2.5 font-medium text-sm transition-all duration-200"
+              style={{
+                background: '#FFFFFF',
+                color: '#0F0F14',
+                border: '1px solid rgba(255,255,255,0.9)',
+                borderRadius: '0px',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(255,255,255,0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#FFFFFF';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
               Request Demo
             </button>
@@ -154,7 +205,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ═══════════ HERO SECTION ═══════════ */}
-      <section className="pt-32 pb-16 px-6 lg:px-8">
+      <section className="pt-40 pb-16 px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
