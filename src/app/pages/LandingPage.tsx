@@ -794,43 +794,105 @@ export default function LandingPage() {
       </section>
 
       {/* ═══════════ CTA SECTION ═══════════ */}
-      <section className="py-20 px-6 lg:px-8" style={{ background: '#000000' }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#FFFFFF' }}>
-              Ready to transform your security?
-            </h2>
-            <p className="text-lg mb-8" style={{ color: '#CCCCCC' }}>
-              Join leading enterprises using Sentinel for comprehensive threat detection and incident response.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={() => openModal('Request a Demo')}
-                className="px-8 py-3 rounded-lg font-medium transition-all"
-                style={{ background: '#FFFFFF', color: '#000000' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#F0F0F0'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#FFFFFF'}
-              >
-                Request a Demo
-              </button>
-              <button
-                onClick={() => navigate('/login')}
-                className="px-8 py-3 rounded-lg font-medium border transition-all"
-                style={{ borderColor: '#FFFFFF', color: '#FFFFFF' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                Access Dashboard
-              </button>
-            </div>
-          </motion.div>
+      <section className="px-0 py-0" style={{ background: '#000000' }}>
+        {/* Heading Section */}
+        <div className="py-20 px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#FFFFFF' }}>
+                Ready to transform your security?
+              </h2>
+              <p className="text-lg" style={{ color: '#CCCCCC' }}>
+                Join leading enterprises using Sentinel for comprehensive threat detection and incident response.
+              </p>
+            </motion.div>
+          </div>
         </div>
+
+        {/* Split Button Section */}
+        <div className="flex w-full" style={{ height: '120px' }}>
+          {/* Left Button - Request a Demo */}
+          <button
+            onClick={() => openModal('Request a Demo')}
+            className="w-1/2 transition-all"
+            style={{
+              background: '#e8e8e8',
+              color: '#0d0d14',
+              borderRadius: '0',
+              border: 'none',
+              padding: '0 48px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              cursor: 'pointer',
+              fontSize: '1.4rem',
+              fontWeight: '400',
+              transition: 'background 0.25s ease',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = '#d4d4d4'}
+            onMouseLeave={(e) => e.currentTarget.style.background = '#e8e8e8'}
+          >
+            <span>Request a Demo</span>
+            <span
+              style={{
+                fontSize: '1.2rem',
+                transition: 'transform 0.25s ease',
+              }}
+              className="cta-arrow-left"
+            >
+              →
+            </span>
+          </button>
+
+          {/* Right Button - Access Dashboard */}
+          <button
+            onClick={() => navigate('/login')}
+            className="w-1/2 transition-all"
+            style={{
+              background: '#0d0d14',
+              color: '#ffffff',
+              borderRadius: '0',
+              border: 'none',
+              padding: '0 48px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              cursor: 'pointer',
+              fontSize: '1.4rem',
+              fontWeight: '400',
+              transition: 'background 0.25s ease',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = '#1f1f1f'}
+            onMouseLeave={(e) => e.currentTarget.style.background = '#0d0d14'}
+          >
+            <span>Access Dashboard</span>
+            <span
+              style={{
+                fontSize: '1.2rem',
+                transition: 'transform 0.25s ease',
+              }}
+              className="cta-arrow-right"
+            >
+              →
+            </span>
+          </button>
+        </div>
+
+        <style>{`
+          .cta-arrow-left:hover,
+          button:hover .cta-arrow-left {
+            transform: translateX(6px);
+          }
+
+          button:hover .cta-arrow-right {
+            transform: translateX(6px);
+          }
+        `}</style>
       </section>
 
       {/* ═══════════ GOD'S EYE SEARCH MODAL ═══════════ */}
