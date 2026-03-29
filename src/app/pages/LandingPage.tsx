@@ -814,76 +814,86 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Separator Line */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.12)', width: '100%' }} />
-
-        {/* Split Button Section */}
-        <div className="flex w-full" style={{ height: '100px' }}>
-          {/* Left Button - Request a Demo */}
-          <button
-            onClick={() => openModal('Request a Demo')}
-            className="w-1/2 transition-all"
-            style={{
-              background: '#e8e8e8',
-              color: '#0d0d14',
-              borderRadius: '0',
-              border: 'none',
-              padding: '0 48px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              cursor: 'pointer',
-              fontSize: '1.4rem',
-              fontWeight: '400',
-              transition: 'background 0.25s ease',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#d4d4d4'}
-            onMouseLeave={(e) => e.currentTarget.style.background = '#e8e8e8'}
-          >
-            <span>Request a Demo</span>
-            <span
+        {/* Button Row with Top and Bottom Borders */}
+        <div
+          style={{
+            borderTop: '1px solid rgba(255,255,255,0.15)',
+            borderBottom: '1px solid rgba(255,255,255,0.15)',
+            padding: '16px 0',
+            width: '100%',
+          }}
+        >
+          <div className="flex w-full gap-3" style={{ padding: '12px 0', justifyContent: 'center', paddingLeft: '60px', paddingRight: '60px' }}>
+            {/* Left Button - Request a Demo */}
+            <button
+              onClick={() => openModal('Request a Demo')}
+              className="transition-all"
               style={{
-                fontSize: '1.2rem',
-                transition: 'transform 0.25s ease',
+                width: 'calc(50% - 6px)',
+                height: '100px',
+                background: '#e2e2e2',
+                color: '#0d0d14',
+                borderRadius: '4px',
+                border: 'none',
+                padding: '0 40px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                cursor: 'pointer',
+                fontSize: '1.4rem',
+                fontWeight: '400',
+                transition: 'background 0.25s ease',
               }}
-              className="cta-arrow-left"
+              onMouseEnter={(e) => e.currentTarget.style.background = '#d4d4d4'}
+              onMouseLeave={(e) => e.currentTarget.style.background = '#e2e2e2'}
             >
-              →
-            </span>
-          </button>
+              <span>Request a Demo</span>
+              <span
+                style={{
+                  fontSize: '1.2rem',
+                  transition: 'transform 0.25s ease',
+                }}
+                className="cta-arrow-left"
+              >
+                →
+              </span>
+            </button>
 
-          {/* Right Button - Access Dashboard */}
-          <button
-            onClick={() => navigate('/login')}
-            className="w-1/2 transition-all"
-            style={{
-              background: '#0d0d14',
-              color: '#ffffff',
-              borderRadius: '0',
-              border: 'none',
-              padding: '0 48px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              cursor: 'pointer',
-              fontSize: '1.4rem',
-              fontWeight: '400',
-              transition: 'background 0.25s ease',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#1f1f1f'}
-            onMouseLeave={(e) => e.currentTarget.style.background = '#0d0d14'}
-          >
-            <span>Access Dashboard</span>
-            <span
+            {/* Right Button - Access Dashboard */}
+            <button
+              onClick={() => navigate('/login')}
+              className="transition-all"
               style={{
-                fontSize: '1.2rem',
-                transition: 'transform 0.25s ease',
+                width: 'calc(50% - 6px)',
+                height: '100px',
+                background: '#1a1a1a',
+                color: '#ffffff',
+                borderRadius: '4px',
+                border: 'none',
+                padding: '0 40px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                cursor: 'pointer',
+                fontSize: '1.4rem',
+                fontWeight: '400',
+                transition: 'background 0.25s ease',
               }}
-              className="cta-arrow-right"
+              onMouseEnter={(e) => e.currentTarget.style.background = '#1f1f1f'}
+              onMouseLeave={(e) => e.currentTarget.style.background = '#1a1a1a'}
             >
-              →
-            </span>
-          </button>
+              <span>Access Dashboard</span>
+              <span
+                style={{
+                  fontSize: '1.2rem',
+                  transition: 'transform 0.25s ease',
+                }}
+                className="cta-arrow-right"
+              >
+                →
+              </span>
+            </button>
+          </div>
         </div>
 
         <style>{`
