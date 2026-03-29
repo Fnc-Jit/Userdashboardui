@@ -604,18 +604,21 @@ export default function LandingPage() {
 
           .insights-marquee-track {
             display: flex;
-            gap: 0;
+            gap: 24px;
             animation: scroll 40s linear infinite;
           }
 
 
           .insight-card {
             flex-shrink: 0;
-            width: 320px;
-            min-height: 420px;
-            padding: 40px 32px;
-            background: #f0f0f0;
-            border-radius: 16px 16px 0 0;
+            width: 340px;
+            min-height: 380px;
+            padding: 44px 36px 36px 36px;
+            background: linear-gradient(135deg, #eeeeee calc(100% - 40px), transparent calc(100% - 40px)), linear-gradient(225deg, #d4d4d4 40px, #eeeeee 40px);
+            background-position: top right, top right;
+            background-size: 40px 40px, 100% 100%;
+            background-repeat: no-repeat;
+            border-radius: 0;
             border: none;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -626,7 +629,6 @@ export default function LandingPage() {
           }
 
           .insight-card:hover {
-            background: #f0f0f0;
             transform: translateY(-12px);
           }
 
@@ -658,7 +660,7 @@ export default function LandingPage() {
             font-weight: 700;
             color: #1a1a1a;
             line-height: 1.5;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
 
@@ -666,7 +668,7 @@ export default function LandingPage() {
             font-size: 13px;
             color: rgba(0, 0, 0, 0.5);
             line-height: 1.6;
-            margin-bottom: 16px;
+            margin-bottom: auto;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
 
