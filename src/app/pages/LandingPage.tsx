@@ -817,8 +817,9 @@ export default function LandingPage() {
         {/* Button Row with Top and Bottom Borders */}
         <div
           style={{
-            borderTop: '1px solid rgba(255,255,255,0.15)',
-            borderBottom: '1px solid rgba(255,255,255,0.15)',
+            background: '#FFFFFF',
+            borderTop: '1px solid rgba(0,0,0,0.12)',
+            borderBottom: '1px solid rgba(0,0,0,0.12)',
             padding: '16px 0',
             width: '100%',
           }}
