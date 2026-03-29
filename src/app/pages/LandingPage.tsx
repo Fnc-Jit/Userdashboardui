@@ -322,15 +322,158 @@ export default function LandingPage() {
         ))}
       </section>
 
-      {/* ═══════════ SIEM EXPLANATION SECTION - PALANTIR BENTO ═══════════ */}
-      <section id="reports" className="py-24 px-6 lg:px-8" style={{ background: '#FAFAFA' }}>
-        <div className="max-w-6xl mx-auto">
+      {/* ═══════════ SIEM SECTION - PALANTIR "OUR SOFTWARE" STYLE ═══════════ */}
+      <section id="reports" className="py-0 px-0" style={{ background: '#FFFFFF', fontFamily: "'DM Sans', sans-serif" }}>
+        {['Unified Event Collection', 'Real-time Analysis', 'Threat Detection', 'Incident Investigation', 'Automated Response'].map((title, idx) => {
+          const descriptions = [
+            'Collect and normalize log data from all sources across your infrastructure.',
+            'Process millions of events per second with advanced machine learning algorithms.',
+            'Identify suspicious patterns and known threats in real-time.',
+            'Deep-dive into incidents with comprehensive forensic evidence.',
+            'Automate response actions to contain threats faster.',
+          ];
+          const labels = ['/0.1', '/0.2', '/0.3', '/0.4', '/0.5'];
+          const symbols = ['📊', '⚡', '🎯', '🔍', '🚀'];
+
+          return (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="group relative overflow-hidden transition-all duration-600 border-b"
+              style={{
+                background: '#FFFFFF',
+                height: '280px',
+                display: 'flex',
+                borderColor: 'rgba(0,0,0,0.08)',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                const container = e.currentTarget as HTMLElement;
+                container.style.height = '620px';
+              }}
+              onMouseLeave={(e) => {
+                const container = e.currentTarget as HTMLElement;
+                container.style.height = '280px';
+              }}
+            >
+              {/* Left Column - 35% */}
+              <div
+                className="flex flex-col justify-center relative z-10 transition-all duration-500"
+                style={{
+                  width: '35%',
+                  paddingLeft: '60px',
+                  paddingRight: '48px',
+                  paddingTop: '80px',
+                  paddingBottom: '80px',
+                }}
+              >
+                {/* Counter Label */}
+                <div
+                  className="font-mono text-sm tracking-wider mb-8 transition-all duration-500"
+                  style={{
+                    fontSize: '13px',
+                    color: 'rgba(0,0,0,0.35)',
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                  }}
+                >
+                  {labels[idx]}
+                </div>
+
+                {/* Description (visible in collapsed state) */}
+                <p
+                  className="transition-all duration-500 leading-relaxed"
+                  style={{
+                    fontSize: '15px',
+                    fontWeight: 400,
+                    color: 'rgba(0,0,0,0.55)',
+                    marginBottom: '32px',
+                    opacity: 1,
+                    maxHeight: '100px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {descriptions[idx]}
+                </p>
+
+                {/* Title (hidden in collapsed, appears on expand) */}
+                <motion.h3
+                  initial={{ opacity: 0, y: 10 }}
+                  className="group-hover:opacity-100 opacity-0 transition-all duration-500"
+                  style={{
+                    fontSize: 'clamp(2.5rem, 5vw, 5rem)',
+                    fontWeight: 800,
+                    color: '#0d0d14',
+                    lineHeight: 1.1,
+                    marginBottom: '24px',
+                  }}
+                >
+                  {title}
+                </motion.h3>
+
+                {/* Learn More Link (hidden in collapsed, appears on expand) */}
+                <button
+                  onClick={() => openModal(title)}
+                  className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:gap-3"
+                  style={{ color: '#d4500a' }}
+                >
+                  Learn more
+                  <ChevronRight size={16} className="transition-transform duration-200" />
+                </button>
+              </div>
+
+              {/* Right Column - 65% */}
+              <div className="flex-1 relative overflow-hidden flex items-center justify-center">
+                {/* Ghost Symbol (visible in collapsed, fades on hover) */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center transition-all duration-500 group-hover:opacity-0"
+                  style={{
+                    opacity: 0.08,
+                    fontSize: '200px',
+                    filter: 'grayscale(100%)',
+                  }}
+                >
+                  {symbols[idx]}
+                </div>
+
+                {/* Video Panel (hidden in collapsed, appears on expand) */}
+                <div
+                  className="absolute inset-0 transition-all duration-500 opacity-0 group-hover:opacity-100 flex items-center justify-center"
+                  style={{
+                    borderRadius: '4px',
+                  }}
+                >
+                  <img
+                    src={siemImages[idx]}
+                    alt={title}
+                    className="w-full h-full object-cover"
+                    style={{
+                      boxShadow: '0 4px 40px rgba(0,0,0,0.12)',
+                    }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+
+        {/* Section intro text */}
+        <div
+          style={{
+            padding: '80px 60px',
+            background: '#FFFFFF',
+            borderTop: '1px solid rgba(0,0,0,0.08)',
+            marginTop: '-1px',
+          }}
+        >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-20"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#000000' }}>
               Security Information & Event Management
@@ -339,101 +482,6 @@ export default function LandingPage() {
               Sentinel provides comprehensive SIEM capabilities designed for modern security operations centers. Monitor, detect, investigate, and respond to threats across your entire infrastructure.
             </p>
           </motion.div>
-
-          {/* Feature Cards Grid - Palantir Style */}
-          <div className="space-y-px" style={{ background: '#E5E7EB' }}>
-            {['Unified Event Collection', 'Real-time Analysis', 'Threat Detection', 'Incident Investigation', 'Automated Response'].map((title, idx) => {
-              const descriptions = [
-                'Collect and normalize log data from all sources across your infrastructure.',
-                'Process millions of events per second with advanced machine learning algorithms.',
-                'Identify suspicious patterns and known threats in real-time.',
-                'Deep-dive into incidents with comprehensive forensic evidence.',
-                'Automate response actions to contain threats faster.',
-              ];
-              const labels = ['/0.1', '/0.2', '/0.3', '/0.4', '/0.5'];
-
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="group relative overflow-hidden transition-all duration-500"
-                  style={{
-                    background: '#FFFFFF',
-                    maxHeight: '420px',
-                    display: 'flex',
-                    flexDirection: idx % 2 === 0 ? 'row' : 'row-reverse',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={(e) => {
-                    const container = e.currentTarget as HTMLElement;
-                    container.style.maxHeight = '680px';
-                    container.style.boxShadow = '0 0 0 1.5px rgba(0,0,0,0.15)';
-                  }}
-                  onMouseLeave={(e) => {
-                    const container = e.currentTarget as HTMLElement;
-                    container.style.maxHeight = '420px';
-                    container.style.boxShadow = 'none';
-                  }}
-                >
-                  {/* Left: Text Content */}
-                  <div className="flex-1 p-10 lg:p-12 flex flex-col justify-center">
-                    <div className="text-xs font-mono tracking-widest mb-3" style={{ color: '#999999' }}>
-                      {labels[idx]}
-                    </div>
-                    <h3 className="text-2xl lg:text-3xl font-black mb-4" style={{ color: '#000000', fontWeight: 800 }}>
-                      {title}
-                    </h3>
-                    <p className="text-sm lg:text-base leading-relaxed mb-6" style={{ color: '#666666' }}>
-                      {descriptions[idx]}
-                    </p>
-                    <button
-                      className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-200 group/link"
-                      style={{ color: '#FF6B35' }}
-                      onClick={() => openModal(title)}
-                    >
-                      Learn more{' '}
-                      <ChevronRight
-                        size={16}
-                        className="transition-transform duration-200 group-hover/link:translate-x-1"
-                      />
-                    </button>
-                  </div>
-
-                  {/* Right: Media Panel */}
-                  <div className="flex-1 relative overflow-hidden bg-gray-100">
-                    {/* Static Image - Fades on Hover */}
-                    <img
-                      src={siemImages[idx]}
-                      alt={title}
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-                      style={{
-                        filter: 'grayscale(40%)',
-                      }}
-                    />
-
-                    {/* Video - Fades In On Hover (Placeholder) */}
-                    <div className="absolute inset-0 w-full h-full bg-black/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 backdrop-blur">
-                          <svg
-                            className="w-6 h-6 text-white"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                          </svg>
-                        </div>
-                        <p className="text-white text-sm font-medium">Feature Video</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
         </div>
       </section>
 
