@@ -47,31 +47,49 @@ export default function LandingPage() {
       title: 'Advanced SIEM Architecture',
       category: 'RESEARCH',
       excerpt: 'Understanding modern log correlation and event normalization at scale',
+      body: 'Effective SIEM design starts with clean data ingestion. This paper covers normalization pipelines, custom parsers, and log source onboarding strategies that scale from 100 to 100,000 EPS without degrading query performance.',
+      readTime: '5 min read',
+      published: 'Published Mar 2025',
     },
     {
       title: 'Threat Detection Strategies',
       category: 'GUIDE',
       excerpt: 'Implementing detection rules and threat hunting playbooks',
+      body: 'Modern SOCs face thousands of alerts daily. Sentinel\'s detection engine applies layered correlation rules across log sources — reducing false positives by up to 80% while surfacing only high-confidence threats. Built on MITRE ATT&CK, every rule maps directly to adversary behavior.',
+      readTime: '5 min read',
+      published: 'Published Mar 2025',
     },
     {
       title: 'Incident Response Best Practices',
       category: 'WHITEPAPER',
       excerpt: 'How SOC teams orchestrate rapid containment and forensic triage',
+      body: 'Speed is everything in incident response. This guide covers how leading SOC teams use Sentinel\'s automated playbooks to contain threats in minutes — not hours. Covers isolation, forensic capture, and stakeholder notification workflows end-to-end.',
+      readTime: '8 min read',
+      published: 'Published Mar 2025',
     },
     {
       title: 'MITRE ATT&CK Mapping',
       category: 'RESEARCH',
       excerpt: 'Correlating adversary TTPs with real-time kill chain telemetry',
+      body: 'Sentinel maps every detected event to the ATT&CK framework in real time. Analysts get immediate TTP context — no manual lookup required. This research paper covers how kill chain correlation improves analyst confidence and reduces investigation time by 60%.',
+      readTime: '6 min read',
+      published: 'Published Mar 2025',
     },
     {
       title: 'Zero Trust Segmentation',
       category: 'GUIDE',
       excerpt: 'Enforcing least-privilege access across hybrid infrastructure',
+      body: 'Zero trust isn\'t a product — it\'s an architecture decision. This guide walks through network micro-segmentation strategies, device trust scoring, and how Sentinel\'s topology module enforces policy boundaries across hybrid cloud environments.',
+      readTime: '7 min read',
+      published: 'Published Mar 2025',
     },
     {
       title: 'UEBA Behavioral Baselines',
       category: 'WHITEPAPER',
       excerpt: 'Detecting insider threats using per-device ML drift models',
+      body: 'Machine learning drift detection catches what signature rules miss. This whitepaper explains how Sentinel builds per-device behavioral baselines and flags anomalies before they become breaches — with real case studies from OT and enterprise environments.',
+      readTime: '9 min read',
+      published: 'Published Mar 2025',
     },
   ];
 
@@ -597,7 +615,7 @@ export default function LandingPage() {
           .insight-card {
             flex-shrink: 0;
             width: 320px;
-            min-height: 380px;
+            min-height: 420px;
             padding: 40px 32px;
             background: #f0f0f0;
             border-radius: 16px 16px 0 0;
@@ -617,7 +635,8 @@ export default function LandingPage() {
 
           .insight-card:hover .insight-card-tag,
           .insight-card:hover .insight-card-title,
-          .insight-card:hover .insight-card-description {
+          .insight-card:hover .insight-card-description,
+          .insight-card:hover .insight-card-body {
             transform: translateY(-8px);
           }
 
@@ -628,7 +647,7 @@ export default function LandingPage() {
             font-family: 'Courier New', monospace;
             text-transform: uppercase;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
 
@@ -637,8 +656,7 @@ export default function LandingPage() {
             font-weight: 700;
             color: #1a1a1a;
             line-height: 1.5;
-            margin-bottom: 16px;
-            flex-grow: 1;
+            margin-bottom: 12px;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
           }
 
@@ -646,8 +664,26 @@ export default function LandingPage() {
             font-size: 13px;
             color: rgba(0, 0, 0, 0.5);
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+
+          .insight-card-body {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.55);
+            line-height: 1.75;
+            margin-bottom: 24px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            flex-grow: 1;
+          }
+
+          .insight-card-metadata {
+            font-size: 11px;
+            color: rgba(0, 0, 0, 0.3);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            margin-top: auto;
           }
 
           .insight-card-link {
@@ -689,17 +725,27 @@ export default function LandingPage() {
                 onClick={() => openModal(article.title)}
                 className="insight-card"
               >
-                <div className="insight-card-tag">
-                  {article.category}
+                <div>
+                  <div className="insight-card-tag">
+                    {article.category}
+                  </div>
+                  <h3 className="insight-card-title">
+                    {article.title}
+                  </h3>
+                  <p className="insight-card-description">
+                    {article.excerpt}
+                  </p>
+                  <p className="insight-card-body">
+                    {article.body}
+                  </p>
                 </div>
-                <h3 className="insight-card-title">
-                  {article.title}
-                </h3>
-                <p className="insight-card-description">
-                  {article.excerpt}
-                </p>
-                <div className="insight-card-link">
-                  Read more →
+                <div>
+                  <div className="insight-card-metadata">
+                    {article.readTime}  ·  {article.published}
+                  </div>
+                  <div className="insight-card-link">
+                    Read more →
+                  </div>
                 </div>
               </button>
             ))}
@@ -711,17 +757,27 @@ export default function LandingPage() {
                 onClick={() => openModal(article.title)}
                 className="insight-card"
               >
-                <div className="insight-card-tag">
-                  {article.category}
+                <div>
+                  <div className="insight-card-tag">
+                    {article.category}
+                  </div>
+                  <h3 className="insight-card-title">
+                    {article.title}
+                  </h3>
+                  <p className="insight-card-description">
+                    {article.excerpt}
+                  </p>
+                  <p className="insight-card-body">
+                    {article.body}
+                  </p>
                 </div>
-                <h3 className="insight-card-title">
-                  {article.title}
-                </h3>
-                <p className="insight-card-description">
-                  {article.excerpt}
-                </p>
-                <div className="insight-card-link">
-                  Read more →
+                <div>
+                  <div className="insight-card-metadata">
+                    {article.readTime}  ·  {article.published}
+                  </div>
+                  <div className="insight-card-link">
+                    Read more →
+                  </div>
                 </div>
               </button>
             ))}
