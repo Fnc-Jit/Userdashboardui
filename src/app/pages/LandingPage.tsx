@@ -339,29 +339,53 @@ export default function LandingPage() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="group relative overflow-hidden border-b"
+            className="group relative overflow-hidden border-b flex items-center"
             style={{
               background: '#FFFFFF',
-              height: '320px',
+              height: '260px',
+              borderColor: 'rgba(0,0,0,0.07)',
+              cursor: 'default',
+              padding: '0 60px',
               display: 'flex',
-              borderColor: 'rgba(0,0,0,0.08)',
-              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              const row = e.currentTarget as HTMLElement;
+              // Update symbol opacity
+              const symbol = row.querySelector('[data-symbol-icon]') as HTMLElement;
+              if (symbol) symbol.style.opacity = '0.3';
+              // Update title opacity
+              const title = row.querySelector('[data-title-word]') as HTMLElement;
+              if (title) title.style.opacity = '1';
+              // Update video overlay
+              const videoOverlay = row.querySelector('[data-video-overlay]') as HTMLElement;
+              if (videoOverlay) videoOverlay.style.opacity = '1';
+            }}
+            onMouseLeave={(e) => {
+              const row = e.currentTarget as HTMLElement;
+              // Reset symbol opacity
+              const symbol = row.querySelector('[data-symbol-icon]') as HTMLElement;
+              if (symbol) symbol.style.opacity = '0.12';
+              // Reset title opacity
+              const title = row.querySelector('[data-title-word]') as HTMLElement;
+              if (title) title.style.opacity = '0.08';
+              // Reset video overlay
+              const videoOverlay = row.querySelector('[data-video-overlay]') as HTMLElement;
+              if (videoOverlay) videoOverlay.style.opacity = '0';
             }}
           >
-            {/* Left Column - 35% */}
+            {/* Column 1 - 20% */}
             <div
-              className="flex flex-col justify-center relative z-10"
               style={{
-                width: '35%',
-                paddingLeft: '60px',
-                paddingRight: '48px',
-                paddingTop: '40px',
-                paddingBottom: '40px',
+                width: '20%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                paddingRight: '40px',
               }}
             >
               {/* Counter Label */}
               <div
-                className="font-mono tracking-wider mb-6"
+                className="font-mono tracking-wider mb-4"
                 style={{
                   fontSize: '13px',
                   color: 'rgba(0,0,0,0.35)',
@@ -374,93 +398,133 @@ export default function LandingPage() {
               <p
                 className="leading-relaxed mb-6"
                 style={{
-                  fontSize: '15px',
+                  fontSize: '14px',
                   fontWeight: 400,
                   color: 'rgba(0,0,0,0.55)',
-                  lineHeight: '1.6',
+                  lineHeight: '1.5',
                 }}
               >
                 {item.desc}
               </p>
 
-              {/* Expandable Title */}
-              <h3
-                className="transition-all duration-500"
-                style={{
-                  fontSize: '1.1rem',
-                  fontWeight: 800,
-                  color: '#0d0d14',
-                  lineHeight: 1.1,
-                  transform: 'translateY(8px)',
-                  opacity: 0,
-                  transition: 'all 0.45s cubic-bezier(0.4,0,0.2,1)',
-                }}
-                onMouseEnter={(e) => {
-                  const elem = e.currentTarget as HTMLElement;
-                  elem.style.fontSize = 'clamp(2.8rem, 4vw, 4.5rem)';
-                  elem.style.transform = 'translateY(0)';
-                  elem.style.opacity = '1';
-                }}
-                onMouseLeave={(e) => {
-                  const elem = e.currentTarget as HTMLElement;
-                  elem.style.fontSize = '1.1rem';
-                  elem.style.transform = 'translateY(8px)';
-                  elem.style.opacity = '0';
-                }}
-              >
-                {item.title}
-              </h3>
-
               {/* Learn More Link */}
               <button
                 onClick={() => openModal(item.title)}
-                className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:gap-3 mt-4"
+                className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-300"
                 style={{ color: '#d4500a' }}
               >
                 Learn more
-                <ChevronRight size={16} className="transition-transform duration-200" />
+                <ChevronRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
               </button>
             </div>
 
-            {/* Right Column - 65% */}
-            <div className="flex-1 relative overflow-hidden flex items-center justify-center bg-gray-50">
-              {/* Ghost Title Word (default state) */}
+            {/* Column 2 - 15% Symbol */}
+            <div
+              style={{
+                width: '15%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingRight: '40px',
+              }}
+            >
               <div
-                className="absolute inset-0 flex items-center justify-end transition-all duration-500 group-hover:opacity-0 pr-8"
+                data-symbol-icon="true"
+                className="transition-all duration-400"
                 style={{
-                  opacity: 0.04,
-                  fontSize: 'clamp(5rem, 12vw, 10rem)',
-                  fontWeight: 900,
-                  color: '#000000',
+                  width: '80px',
+                  height: '80px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  opacity: 0.12,
+                }}
+              >
+                {/* Sentinel Shield Icon - White Stroke */}
+                <svg
+                  className="transition-all duration-400"
+                  width="64"
+                  height="64"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 22s-8-4-8-10V6l8-3 8 3v6c0 6-8 10-8 10z" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Column 3 - 65% Title + Video */}
+            <div
+              style={{
+                width: '65%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                position: 'relative',
+              }}
+            >
+              {/* Video Box - Fixed 380x220px */}
+              <div
+                style={{
+                  width: '380px',
+                  height: '220px',
+                  borderRadius: '6px',
                   overflow: 'hidden',
+                  boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+                  position: 'relative',
+                  marginRight: '40px',
+                }}
+              >
+                {/* Static Thumbnail */}
+                <img
+                  src={siemImages[idx % siemImages.length]}
+                  alt={item.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    filter: 'grayscale(20%)',
+                  }}
+                />
+
+                {/* Video Overlay - Fades In On Hover */}
+                <div
+                  data-video-overlay="true"
+                  className="absolute inset-0 transition-all duration-350 opacity-0 flex items-center justify-center"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(15,15,20,0.8) 0%, rgba(15,15,20,0.5) 100%)',
+                  }}
+                >
+                  <div className="text-center">
+                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3 backdrop-blur">
+                      <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                      </svg>
+                    </div>
+                    <p className="text-white text-xs font-medium">Feature Video</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Title Word - Always Visible */}
+              <div
+                data-title-word="true"
+                style={{
+                  fontSize: 'clamp(4rem, 9vw, 8rem)',
+                  fontWeight: 700,
+                  color: '#0d0d14',
+                  opacity: 0.08,
+                  transition: 'opacity 0.4s ease-out',
+                  textAlign: 'right',
+                  lineHeight: 1,
                   whiteSpace: 'nowrap',
                 }}
               >
                 {item.title}
-              </div>
-
-              {/* Static Screenshot (always visible, behind video) */}
-              <img
-                src={siemImages[idx % siemImages.length]}
-                alt={item.title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-
-              {/* Video Overlay (fades in on hover) */}
-              <div
-                className="absolute inset-0 transition-all duration-500 opacity-0 group-hover:opacity-100 flex items-center justify-center"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(15,15,20,0.8) 0%, rgba(15,15,20,0.5) 100%)',
-                }}
-              >
-                <div className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 backdrop-blur">
-                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                    </svg>
-                  </div>
-                  <p className="text-white text-sm font-medium">Feature Video</p>
-                </div>
               </div>
             </div>
           </motion.div>
