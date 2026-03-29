@@ -608,9 +608,6 @@ export default function LandingPage() {
             animation: scroll 40s linear infinite;
           }
 
-          .insights-marquee-container:hover .insights-marquee-track {
-            animation-play-state: paused;
-          }
 
           .insight-card {
             flex-shrink: 0;
@@ -635,9 +632,14 @@ export default function LandingPage() {
 
           .insight-card:hover .insight-card-tag,
           .insight-card:hover .insight-card-title,
-          .insight-card:hover .insight-card-description,
-          .insight-card:hover .insight-card-body {
+          .insight-card:hover .insight-card-description {
             transform: translateY(-8px);
+          }
+
+          .insight-card:hover .insight-card-body {
+            opacity: 1;
+            max-height: 120px;
+            margin-top: 16px;
           }
 
           .insight-card-tag {
@@ -673,7 +675,11 @@ export default function LandingPage() {
             color: rgba(0, 0, 0, 0.55);
             line-height: 1.75;
             margin-bottom: 24px;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            margin: 0;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             flex-grow: 1;
           }
 
