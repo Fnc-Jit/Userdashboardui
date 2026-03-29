@@ -740,6 +740,15 @@ export default function LandingPage() {
 
       {/* ═══════════ AGENT ARCHITECTURE SECTION (PALANTIR STYLE) ═══════════ */}
       <section id="architecture" className="py-20">
+        {/* Our Software Heading */}
+        <div className="px-6 lg:px-8 mb-16">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl lg:text-5xl font-bold" style={{ color: '#000000' }}>
+              Our Software
+            </h2>
+          </div>
+        </div>
+
         {agents.map((agent, idx) => (
           <motion.div
             key={agent.id}
