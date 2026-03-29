@@ -46,20 +46,50 @@ export default function LandingPage() {
     {
       title: 'Advanced SIEM Architecture',
       category: 'RESEARCH',
-      excerpt: 'Understanding modern security information and event management systems.',
-      image: siemImages[0],
+      excerpt: 'Understanding modern log correlation and event normalization at scale',
+      body: 'Effective SIEM design starts with clean data ingestion. This paper covers normalization pipelines, custom parsers, and log source onboarding strategies that scale from 100 to 100,000 EPS without degrading query performance.',
+      readTime: '5 min read',
+      published: 'Published Mar 2025',
     },
     {
       title: 'Threat Detection Strategies',
       category: 'GUIDE',
-      excerpt: 'Implementing effective detection rules and threat hunting methodologies.',
-      image: siemImages[1],
+      excerpt: 'Implementing detection rules and threat hunting playbooks',
+      body: 'Modern SOCs face thousands of alerts daily. Sentinel\'s detection engine applies layered correlation rules across log sources — reducing false positives by up to 80% while surfacing only high-confidence threats. Built on MITRE ATT&CK, every rule maps directly to adversary behavior.',
+      readTime: '5 min read',
+      published: 'Published Mar 2025',
     },
     {
       title: 'Incident Response Best Practices',
       category: 'WHITEPAPER',
-      excerpt: 'How leading SOC teams orchestrate rapid response to security incidents.',
-      image: siemImages[2],
+      excerpt: 'How SOC teams orchestrate rapid containment and forensic triage',
+      body: 'Speed is everything in incident response. This guide covers how leading SOC teams use Sentinel\'s automated playbooks to contain threats in minutes — not hours. Covers isolation, forensic capture, and stakeholder notification workflows end-to-end.',
+      readTime: '8 min read',
+      published: 'Published Mar 2025',
+    },
+    {
+      title: 'MITRE ATT&CK Mapping',
+      category: 'RESEARCH',
+      excerpt: 'Correlating adversary TTPs with real-time kill chain telemetry',
+      body: 'Sentinel maps every detected event to the ATT&CK framework in real time. Analysts get immediate TTP context — no manual lookup required. This research paper covers how kill chain correlation improves analyst confidence and reduces investigation time by 60%.',
+      readTime: '6 min read',
+      published: 'Published Mar 2025',
+    },
+    {
+      title: 'Zero Trust Segmentation',
+      category: 'GUIDE',
+      excerpt: 'Enforcing least-privilege access across hybrid infrastructure',
+      body: 'Zero trust isn\'t a product — it\'s an architecture decision. This guide walks through network micro-segmentation strategies, device trust scoring, and how Sentinel\'s topology module enforces policy boundaries across hybrid cloud environments.',
+      readTime: '7 min read',
+      published: 'Published Mar 2025',
+    },
+    {
+      title: 'UEBA Behavioral Baselines',
+      category: 'WHITEPAPER',
+      excerpt: 'Detecting insider threats using per-device ML drift models',
+      body: 'Machine learning drift detection catches what signature rules miss. This whitepaper explains how Sentinel builds per-device behavioral baselines and flags anomalies before they become breaches — with real case studies from OT and enterprise environments.',
+      readTime: '9 min read',
+      published: 'Published Mar 2025',
     },
   ];
 
@@ -555,96 +585,328 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══════════ ARTICLES SECTION ═══════════ */}
-      <section className="py-20 px-6 lg:px-8" style={{ background: '#F9F9F9' }}>
-        <div className="max-w-6xl mx-auto">
+      {/* ═══════════ FEATURED INSIGHTS SECTION - MARQUEE LAYOUT ═══════════ */}
+      <section className="insights-section py-20 px-6 lg:px-8" style={{ background: '#F9F9F9' }}>
+        <style>{`
+          @keyframes scroll {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+
+          .insights-marquee-container {
+            overflow: hidden;
+            width: 100%;
+          }
+
+          .insights-marquee-track {
+            display: flex;
+            gap: 24px;
+            animation: scroll 40s linear infinite;
+          }
+
+
+          .insight-card {
+            flex-shrink: 0;
+            width: 340px;
+            min-height: 380px;
+            padding: 44px 36px 36px 36px;
+            background: linear-gradient(135deg, #eeeeee calc(100% - 40px), transparent calc(100% - 40px)), linear-gradient(225deg, #d4d4d4 40px, #eeeeee 40px);
+            background-position: top right, top right;
+            background-size: 40px 40px, 100% 100%;
+            background-repeat: no-repeat;
+            border-radius: 0;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+          }
+
+          .insight-card:hover {
+            transform: translateY(-12px);
+          }
+
+          .insight-card:hover .insight-card-tag,
+          .insight-card:hover .insight-card-title,
+          .insight-card:hover .insight-card-description {
+            transform: translateY(-8px);
+          }
+
+          .insight-card:hover .insight-card-body {
+            opacity: 1;
+            max-height: 120px;
+            margin-top: 16px;
+          }
+
+          .insight-card-tag {
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: rgba(0, 0, 0, 0.4);
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 12px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+
+          .insight-card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+
+          .insight-card-description {
+            font-size: 13px;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 1.6;
+            margin-bottom: auto;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+          }
+
+          .insight-card-body {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.55);
+            line-height: 1.75;
+            margin-bottom: 24px;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            margin: 0;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-grow: 1;
+          }
+
+          .insight-card-metadata {
+            font-size: 11px;
+            color: rgba(0, 0, 0, 0.3);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            margin-top: auto;
+          }
+
+          .insight-card-link {
+            font-size: 12px;
+            font-weight: 600;
+            color: #c94a1a;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            align-self: flex-start;
+          }
+
+          .insight-card-link:hover {
+            transform: translateX(4px);
+          }
+        `}</style>
+
+        <div className="max-w-7xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-16"
           >
-            <h2 className="text-4xl font-bold mb-4" style={{ color: '#000000' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 400, color: '#0d0d14', marginBottom: '12px' }}>
               Featured Insights
             </h2>
-            <p className="text-lg" style={{ color: '#666666' }}>
-              Latest research, guides, and best practices from our team.
+            <p style={{ fontSize: '16px', color: 'rgba(0, 0, 0, 0.45)' }}>
+              Latest research, guides, and best practices from the Sentinel team.
             </p>
           </motion.div>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+        <div className="insights-marquee-container">
+          <div className="insights-marquee-track">
+            {/* First set of articles */}
             {articles.map((article, idx) => (
-              <motion.button
-                key={idx}
+              <button
+                key={`article-${idx}`}
                 onClick={() => openModal(article.title)}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                className="rounded-xl overflow-hidden border transition-all text-left hover:shadow-xl hover:-translate-y-2"
-                style={{ background: '#FFFFFF', borderColor: '#E5E7EB' }}
+                className="insight-card"
               >
-                <img
-                  src={article.image}
-                  alt={article.title}
-                  className="w-full h-48 object-cover transition-transform duration-300 hover:scale-105"
-                />
-                <div className="p-6">
-                  <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#FF6B35' }}>
+                <div>
+                  <div className="insight-card-tag">
                     {article.category}
-                  </span>
-                  <h3 className="text-lg font-bold my-3" style={{ color: '#000000' }}>
+                  </div>
+                  <h3 className="insight-card-title">
                     {article.title}
                   </h3>
-                  <p className="text-sm" style={{ color: '#666666' }}>
+                  <p className="insight-card-description">
                     {article.excerpt}
                   </p>
+                  <p className="insight-card-body">
+                    {article.body}
+                  </p>
                 </div>
-              </motion.button>
+                <div>
+                  <div className="insight-card-metadata">
+                    {article.readTime}  ·  {article.published}
+                  </div>
+                  <div className="insight-card-link">
+                    Read more →
+                  </div>
+                </div>
+              </button>
+            ))}
+
+            {/* Duplicate set for seamless loop */}
+            {articles.map((article, idx) => (
+              <button
+                key={`article-dup-${idx}`}
+                onClick={() => openModal(article.title)}
+                className="insight-card"
+              >
+                <div>
+                  <div className="insight-card-tag">
+                    {article.category}
+                  </div>
+                  <h3 className="insight-card-title">
+                    {article.title}
+                  </h3>
+                  <p className="insight-card-description">
+                    {article.excerpt}
+                  </p>
+                  <p className="insight-card-body">
+                    {article.body}
+                  </p>
+                </div>
+                <div>
+                  <div className="insight-card-metadata">
+                    {article.readTime}  ·  {article.published}
+                  </div>
+                  <div className="insight-card-link">
+                    Read more →
+                  </div>
+                </div>
+              </button>
             ))}
           </div>
         </div>
       </section>
 
       {/* ═══════════ CTA SECTION ═══════════ */}
-      <section className="py-20 px-6 lg:px-8" style={{ background: '#000000' }}>
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#FFFFFF' }}>
-              Ready to transform your security?
-            </h2>
-            <p className="text-lg mb-8" style={{ color: '#CCCCCC' }}>
-              Join leading enterprises using Sentinel for comprehensive threat detection and incident response.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={() => openModal('Request a Demo')}
-                className="px-8 py-3 rounded-lg font-medium transition-all"
-                style={{ background: '#FFFFFF', color: '#000000' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#F0F0F0'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#FFFFFF'}
-              >
-                Request a Demo
-              </button>
-              <button
-                onClick={() => navigate('/login')}
-                className="px-8 py-3 rounded-lg font-medium border transition-all"
-                style={{ borderColor: '#FFFFFF', color: '#FFFFFF' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                Access Dashboard
-              </button>
-            </div>
-          </motion.div>
+      <section className="px-0 py-0" style={{ background: '#000000', padding: '80px 0 0 0' }}>
+        {/* Heading Section */}
+        <div style={{ padding: '0 60px 64px 60px' }}>
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#FFFFFF' }}>
+                Ready to transform your security?
+              </h2>
+              <p className="text-lg" style={{ color: '#CCCCCC' }}>
+                Join leading enterprises using Sentinel for comprehensive threat detection and incident response.
+              </p>
+            </motion.div>
+          </div>
         </div>
+
+        {/* Button Row with Top and Bottom Borders */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            borderTop: '1px solid rgba(0,0,0,0.12)',
+            borderBottom: '1px solid rgba(0,0,0,0.12)',
+            padding: '16px 0',
+            width: '100%',
+          }}
+        >
+          <div className="flex w-full gap-3" style={{ padding: '12px 0', justifyContent: 'center', paddingLeft: '60px', paddingRight: '60px' }}>
+            {/* Left Button - Request a Demo */}
+            <button
+              onClick={() => openModal('Request a Demo')}
+              className="transition-all"
+              style={{
+                width: 'calc(50% - 6px)',
+                height: '100px',
+                background: '#e2e2e2',
+                color: '#0d0d14',
+                borderRadius: '4px',
+                border: 'none',
+                padding: '0 40px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                cursor: 'pointer',
+                fontSize: '1.4rem',
+                fontWeight: '400',
+                transition: 'background 0.25s ease',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = '#d4d4d4'}
+              onMouseLeave={(e) => e.currentTarget.style.background = '#e2e2e2'}
+            >
+              <span>Request a Demo</span>
+              <span
+                style={{
+                  fontSize: '1.2rem',
+                  transition: 'transform 0.25s ease',
+                }}
+                className="cta-arrow-left"
+              >
+                →
+              </span>
+            </button>
+
+            {/* Right Button - Access Dashboard */}
+            <button
+              onClick={() => navigate('/login')}
+              className="transition-all"
+              style={{
+                width: 'calc(50% - 6px)',
+                height: '100px',
+                background: '#1a1a1a',
+                color: '#ffffff',
+                borderRadius: '4px',
+                border: 'none',
+                padding: '0 40px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                cursor: 'pointer',
+                fontSize: '1.4rem',
+                fontWeight: '400',
+                transition: 'background 0.25s ease',
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.background = '#1f1f1f'}
+              onMouseLeave={(e) => e.currentTarget.style.background = '#1a1a1a'}
+            >
+              <span>Access Dashboard</span>
+              <span
+                style={{
+                  fontSize: '1.2rem',
+                  transition: 'transform 0.25s ease',
+                }}
+                className="cta-arrow-right"
+              >
+                →
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <style>{`
+          .cta-arrow-left:hover,
+          button:hover .cta-arrow-left {
+            transform: translateX(6px);
+          }
+
+          button:hover .cta-arrow-right {
+            transform: translateX(6px);
+          }
+        `}</style>
       </section>
 
       {/* ═══════════ GOD'S EYE SEARCH MODAL ═══════════ */}
