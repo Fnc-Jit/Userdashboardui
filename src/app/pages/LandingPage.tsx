@@ -794,9 +794,9 @@ export default function LandingPage() {
       </section>
 
       {/* ═══════════ CTA SECTION ═══════════ */}
-      <section className="px-0 py-0" style={{ background: '#000000' }}>
+      <section className="px-0 py-0" style={{ background: '#000000', padding: '80px 0 0 0' }}>
         {/* Heading Section */}
-        <div className="py-20 px-6 lg:px-8">
+        <div style={{ padding: '0 60px 64px 60px' }}>
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -814,8 +814,11 @@ export default function LandingPage() {
           </div>
         </div>
 
+        {/* Separator Line */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.12)', width: '100%' }} />
+
         {/* Split Button Section */}
-        <div className="flex w-full" style={{ height: '120px' }}>
+        <div className="flex w-full" style={{ height: '100px' }}>
           {/* Left Button - Request a Demo */}
           <button
             onClick={() => openModal('Request a Demo')}
