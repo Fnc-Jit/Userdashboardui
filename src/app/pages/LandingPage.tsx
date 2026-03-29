@@ -13,6 +13,8 @@ export default function LandingPage() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [scrollPassed, setScrollPassed] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [timerKey, setTimerKey] = useState(0);
 
   const agents = [
     {
@@ -41,6 +43,93 @@ export default function LandingPage() {
     'https://cdn.builder.io/api/v1/image/assets%2F5cfdc268ef594ccaa100a8e91f270b69%2F3c3529c030814bf1a59780fa2ea48440?format=webp&width=800&height=1200',
     'https://cdn.builder.io/api/v1/image/assets%2F5cfdc268ef594ccaa100a8e91f270b69%2Fee39d45836d542dcbc2ada02e85e95ea?format=webp&width=800&height=1200',
     'https://cdn.builder.io/api/v1/image/assets%2F5cfdc268ef594ccaa100a8e91f270b69%2Fa89b940bdf0d4821a0c3b868430f52e7?format=webp&width=800&height=1200',
+  ];
+
+  const showcaseSlides = [
+    {
+      id: 'soc',
+      label: 'SOC',
+      title: 'The Unified Command Center for Security Operations',
+      tag: 'SENTINEL / SOC',
+      metadata: [
+        { label: 'MODULES', value: '14' },
+        { label: 'ALERTS/DAY', value: '50K+' },
+        { label: 'RESPONSE TIME', value: '<2min' },
+      ],
+      image: siemImages[0],
+    },
+    {
+      id: 'killchain',
+      label: 'Kill Chain',
+      title: 'Multi-Stage Attack Visualization on MITRE ATT&CK',
+      tag: 'SENTINEL / KILL CHAIN',
+      metadata: [
+        { label: 'STAGES', value: '7' },
+        { label: 'CHAINS ACTIVE', value: '3' },
+        { label: 'LAST DETECTED', value: '4min ago' },
+      ],
+      image: siemImages[1],
+    },
+    {
+      id: 'topology',
+      label: 'Topology',
+      title: 'Live Network Graph Across Your Entire Infrastructure',
+      tag: 'SENTINEL / TOPOLOGY',
+      metadata: [
+        { label: 'DEVICES', value: '2,400' },
+        { label: 'CONNECTIONS', value: '18K' },
+        { label: 'ANOMALIES', value: '12' },
+      ],
+      image: siemImages[2],
+    },
+    {
+      id: 'compliance',
+      label: 'Compliance',
+      title: 'Continuous NIST CSF Scoring with Auto Audit Reports',
+      tag: 'SENTINEL / COMPLIANCE',
+      metadata: [
+        { label: 'FRAMEWORKS', value: '4' },
+        { label: 'SCORE', value: '87%' },
+        { label: 'LAST REPORT', value: 'Today' },
+      ],
+      image: siemImages[3],
+    },
+    {
+      id: 'threatintel',
+      label: 'Threat Intel',
+      title: 'Global Threat Feeds Fused with Internal Telemetry',
+      tag: 'SENTINEL / THREAT INTEL',
+      metadata: [
+        { label: 'IOCs TRACKED', value: '1.2M' },
+        { label: 'FEEDS', value: '24' },
+        { label: 'HIGH PRIORITY', value: '7' },
+      ],
+      image: siemImages[4],
+    },
+    {
+      id: 'devices',
+      label: 'Devices',
+      title: 'Full Inventory with Behavioral Baselines and Drift Detection',
+      tag: 'SENTINEL / DEVICES',
+      metadata: [
+        { label: 'DEVICES', value: '2,400' },
+        { label: 'AT RISK', value: '18' },
+        { label: 'DRIFT ALERTS', value: '5' },
+      ],
+      image: siemImages[0],
+    },
+    {
+      id: 'overview',
+      label: 'Overview',
+      title: 'Command-Level Situational Awareness Across All Operations',
+      tag: 'SENTINEL / OVERVIEW',
+      metadata: [
+        { label: 'ACTIVE INCIDENTS', value: '3' },
+        { label: 'ANALYSTS ONLINE', value: '12' },
+        { label: 'UPTIME', value: '99.98%' },
+      ],
+      image: siemImages[1],
+    },
   ];
 
   const articles = [
@@ -342,6 +431,293 @@ export default function LandingPage() {
             ↓
           </motion.div>
         </motion.div>
+      </section>
+
+      {/* ═══════════ FEATURED SHOWCASE - WARP SPEED STYLE ═══════════ */}
+      <section style={{ background: '#FFFFFF' }}>
+        {/* Tab Strip */}
+        <div
+          style={{
+            padding: '20px 40px',
+            borderBottom: '1px solid rgba(0,0,0,0.08)',
+            display: 'flex',
+            gap: '12px',
+            overflowX: 'auto',
+            alignItems: 'center',
+          }}
+        >
+          {showcaseSlides.map((slide, idx) => (
+            <button
+              key={slide.id}
+              onClick={() => {
+                setActiveSlide(idx);
+                setTimerKey(prev => prev + 1);
+              }}
+              style={{
+                fontSize: '13px',
+                padding: '8px 16px',
+                border: `1px solid ${activeSlide === idx ? '#1a1a1a' : 'rgba(0,0,0,0.15)'}`,
+                borderRadius: '2px',
+                background: activeSlide === idx ? '#1a1a1a' : 'transparent',
+                color: activeSlide === idx ? '#ffffff' : 'rgba(0,0,0,0.5)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={(e) => {
+                if (activeSlide !== idx) {
+                  e.currentTarget.style.background = 'rgba(0,0,0,0.05)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeSlide !== idx) {
+                  e.currentTarget.style.background = 'transparent';
+                }
+              }}
+            >
+              {slide.label}
+            </button>
+          ))}
+
+          {/* SEE ALL Button */}
+          <button
+            onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })}
+            style={{
+              fontSize: '13px',
+              padding: '8px 16px',
+              border: '1px solid rgba(0,0,0,0.15)',
+              borderRadius: '2px',
+              background: 'transparent',
+              color: 'rgba(0,0,0,0.5)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              whiteSpace: 'nowrap',
+              marginLeft: 'auto',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(0,0,0,0.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
+          >
+            SEE ALL
+          </button>
+        </div>
+
+        {/* Slide Panel */}
+        <div
+          style={{
+            background: '#1e1e1e',
+            minHeight: '520px',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {showcaseSlides.map((slide, idx) => (
+            <motion.div
+              key={slide.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: activeSlide === idx ? 1 : 0 }}
+              transition={{ duration: 0.4 }}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: activeSlide === idx ? 'flex' : 'none',
+                pointerEvents: activeSlide === idx ? 'auto' : 'none',
+              }}
+            >
+              {/* Left Content (40%) */}
+              <div
+                style={{
+                  flex: '0 0 40%',
+                  padding: '60px 48px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  color: '#ffffff',
+                }}
+              >
+                {/* Tag */}
+                <div
+                  style={{
+                    fontSize: '11px',
+                    color: 'rgba(255,255,255,0.4)',
+                    fontFamily: 'monospace',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    marginBottom: '24px',
+                  }}
+                >
+                  {slide.tag}
+                </div>
+
+                {/* Title with Arrow */}
+                <h2
+                  style={{
+                    fontSize: 'clamp(1.8rem, 3vw, 2.6rem)',
+                    fontWeight: 400,
+                    lineHeight: 1.3,
+                    marginBottom: '40px',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '12px',
+                  }}
+                >
+                  {slide.title}
+                  <span style={{ fontSize: '1.4em', flexShrink: 0 }}>↗</span>
+                </h2>
+
+                {/* Metadata Footer (3 columns) */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: '48px',
+                  }}
+                >
+                  {slide.metadata.map((meta, metaIdx) => (
+                    <div key={metaIdx}>
+                      <div
+                        style={{
+                          fontSize: '9px',
+                          color: 'rgba(255,255,255,0.4)',
+                          fontFamily: 'monospace',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.12em',
+                          marginBottom: '8px',
+                        }}
+                      >
+                        {meta.label}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '16px',
+                          fontWeight: 500,
+                          color: '#ffffff',
+                        }}
+                      >
+                        {meta.value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Content (60%) - Image */}
+              <div
+                style={{
+                  flex: '0 0 60%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    filter: 'brightness(0.8)',
+                  }}
+                />
+              </div>
+            </motion.div>
+          ))}
+
+          {/* Timer Bar */}
+          <motion.div
+            key={timerKey}
+            initial={{ width: '0%' }}
+            animate={{ width: '100%' }}
+            transition={{ duration: 6, ease: 'linear' }}
+            onAnimationComplete={() => {
+              setActiveSlide((prev) => (prev + 1) % showcaseSlides.length);
+              setTimerKey(prevKey => prevKey + 1);
+            }}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              height: '3px',
+              background: '#ffffff',
+              zIndex: 20,
+            }}
+          />
+
+          {/* Navigation Arrows */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '32px',
+              right: '48px',
+              display: 'flex',
+              gap: '12px',
+              zIndex: 20,
+            }}
+          >
+            {/* Left Arrow */}
+            <button
+              onClick={() => {
+                setActiveSlide((prev) => (prev - 1 + showcaseSlides.length) % showcaseSlides.length);
+                setTimerKey(prev => prev + 1);
+              }}
+              style={{
+                width: '40px',
+                height: '40px',
+                border: '1px solid rgba(255,255,255,0.3)',
+                background: 'transparent',
+                color: '#ffffff',
+                fontSize: '18px',
+                borderRadius: '2px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              ←
+            </button>
+
+            {/* Right Arrow */}
+            <button
+              onClick={() => {
+                setActiveSlide((prev) => (prev + 1) % showcaseSlides.length);
+                setTimerKey(prev => prev + 1);
+              }}
+              style={{
+                width: '40px',
+                height: '40px',
+                border: '1px solid rgba(255,255,255,0.3)',
+                background: 'transparent',
+                color: '#ffffff',
+                fontSize: '18px',
+                borderRadius: '2px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              →
+            </button>
+          </div>
+        </div>
       </section>
 
       {/* ═══════════ AGENT ARCHITECTURE SECTION (PALANTIR STYLE) ═══════════ */}
