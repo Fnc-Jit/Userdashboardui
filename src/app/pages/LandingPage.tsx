@@ -12,6 +12,9 @@ export default function LandingPage() {
   const [modalTitle, setModalTitle] = useState('Request Access');
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [scrollPassed, setScrollPassed] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [timerKey, setTimerKey] = useState(0);
 
   const agents = [
     {
@@ -40,6 +43,93 @@ export default function LandingPage() {
     'https://cdn.builder.io/api/v1/image/assets%2F5cfdc268ef594ccaa100a8e91f270b69%2F3c3529c030814bf1a59780fa2ea48440?format=webp&width=800&height=1200',
     'https://cdn.builder.io/api/v1/image/assets%2F5cfdc268ef594ccaa100a8e91f270b69%2Fee39d45836d542dcbc2ada02e85e95ea?format=webp&width=800&height=1200',
     'https://cdn.builder.io/api/v1/image/assets%2F5cfdc268ef594ccaa100a8e91f270b69%2Fa89b940bdf0d4821a0c3b868430f52e7?format=webp&width=800&height=1200',
+  ];
+
+  const showcaseSlides = [
+    {
+      id: 'soc',
+      label: 'SOC',
+      title: 'The Unified Command Center for Security Operations',
+      tag: 'SENTINEL / SOC',
+      metadata: [
+        { label: 'MODULES', value: '14' },
+        { label: 'ALERTS/DAY', value: '50K+' },
+        { label: 'RESPONSE TIME', value: '<2min' },
+      ],
+      image: siemImages[0],
+    },
+    {
+      id: 'killchain',
+      label: 'Kill Chain',
+      title: 'Multi-Stage Attack Visualization on MITRE ATT&CK',
+      tag: 'SENTINEL / KILL CHAIN',
+      metadata: [
+        { label: 'STAGES', value: '7' },
+        { label: 'CHAINS ACTIVE', value: '3' },
+        { label: 'LAST DETECTED', value: '4min ago' },
+      ],
+      image: siemImages[1],
+    },
+    {
+      id: 'topology',
+      label: 'Topology',
+      title: 'Live Network Graph Across Your Entire Infrastructure',
+      tag: 'SENTINEL / TOPOLOGY',
+      metadata: [
+        { label: 'DEVICES', value: '2,400' },
+        { label: 'CONNECTIONS', value: '18K' },
+        { label: 'ANOMALIES', value: '12' },
+      ],
+      image: siemImages[2],
+    },
+    {
+      id: 'compliance',
+      label: 'Compliance',
+      title: 'Continuous NIST CSF Scoring with Auto Audit Reports',
+      tag: 'SENTINEL / COMPLIANCE',
+      metadata: [
+        { label: 'FRAMEWORKS', value: '4' },
+        { label: 'SCORE', value: '87%' },
+        { label: 'LAST REPORT', value: 'Today' },
+      ],
+      image: siemImages[3],
+    },
+    {
+      id: 'threatintel',
+      label: 'Threat Intel',
+      title: 'Global Threat Feeds Fused with Internal Telemetry',
+      tag: 'SENTINEL / THREAT INTEL',
+      metadata: [
+        { label: 'IOCs TRACKED', value: '1.2M' },
+        { label: 'FEEDS', value: '24' },
+        { label: 'HIGH PRIORITY', value: '7' },
+      ],
+      image: siemImages[4],
+    },
+    {
+      id: 'devices',
+      label: 'Devices',
+      title: 'Full Inventory with Behavioral Baselines and Drift Detection',
+      tag: 'SENTINEL / DEVICES',
+      metadata: [
+        { label: 'DEVICES', value: '2,400' },
+        { label: 'AT RISK', value: '18' },
+        { label: 'DRIFT ALERTS', value: '5' },
+      ],
+      image: siemImages[0],
+    },
+    {
+      id: 'overview',
+      label: 'Overview',
+      title: 'Command-Level Situational Awareness Across All Operations',
+      tag: 'SENTINEL / OVERVIEW',
+      metadata: [
+        { label: 'ACTIVE INCIDENTS', value: '3' },
+        { label: 'ANALYSTS ONLINE', value: '12' },
+        { label: 'UPTIME', value: '99.98%' },
+      ],
+      image: siemImages[1],
+    },
   ];
 
   const articles = [
@@ -109,6 +199,15 @@ export default function LandingPage() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [searchOpen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPassed(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen" style={{ background: '#FFFFFF' }}>
@@ -234,65 +333,422 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* ═══════════ HERO SECTION ═══════════ */}
-      <section className="pt-40 pb-16 px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
+      {/* ═══════════ HERO SECTION - PALANTIR VIDEO HERO ═══════════ */}
+      <section className="hero-section" style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', left: 'calc(-50vw + 50%)', background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}>
+        {/* Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        >
+          <source src="https://videos.pexels.com/video-files/3573352/3573352-sd_640_360_25fps.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Dark Overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0,0,0,0.45)',
+          }}
+        />
+
+        {/* Centered Hero Text */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            textAlign: 'center',
+            zIndex: 10,
+            width: '100%',
+            boxSizing: 'border-box',
+            padding: '0 20px',
+          }}
+        >
+          <h1
+            style={{
+              fontSize: 'clamp(3.5rem, 8vw, 7rem)',
+              fontWeight: 300,
+              color: '#ffffff',
+              letterSpacing: '-0.02em',
+              fontFamily: "'DM Sans', sans-serif",
+              margin: 0,
+              whiteSpace: 'nowrap',
+            }}
           >
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6" style={{ color: '#000000' }}>
-              Intelligent Threat Detection
-              <br />
-              for Modern Infrastructure
-            </h1>
-            <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: '#666666' }}>
-              Sentinel delivers comprehensive security monitoring and incident response for enterprises at any scale.
-            </p>
+            God's Eye
+          </h1>
+        </motion.div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={() => openModal('Request a Demo')}
-                className="px-8 py-3 rounded-lg font-medium transition-all"
-                style={{ background: '#000000', color: '#FFFFFF' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#1A1A1A'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#000000'}
-              >
-                Request a Demo
-              </button>
-              <button
-                onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-3 rounded-lg font-medium border transition-all"
-                style={{ borderColor: '#000000', color: '#000000' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#F5F5F5';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                }}
-              >
-                Agent Architecture
-              </button>
-            </div>
+        {/* Scroll Indicator */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            textAlign: 'center',
+            zIndex: 10,
+            opacity: scrollPassed ? 0 : 1,
+            transition: 'opacity 0.3s ease-out',
+          }}
+        >
+          <div
+            style={{
+              fontSize: '12px',
+              letterSpacing: '0.12em',
+              color: 'rgba(255,255,255,0.6)',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase',
+              marginBottom: '12px',
+            }}
+          >
+            Scroll to Explore
+          </div>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              fontSize: '18px',
+              color: 'rgba(255,255,255,0.6)',
+            }}
+          >
+            ↓
           </motion.div>
+        </motion.div>
+      </section>
 
-          {/* Hero Image */}
-          <motion.img
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            src={agents[0].image}
-            alt="Sentinel Platform"
-            className="w-full rounded-xl shadow-lg"
-            style={{ maxHeight: '500px', objectFit: 'cover' }}
+      {/* ═══════════ STATEMENT PARAGRAPH SECTION ═══════════ */}
+      <section style={{ background: '#FFFFFF', padding: '100px 15%' }}>
+        <p
+          style={{
+            fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
+            fontWeight: 400,
+            color: '#1a1a1a',
+            textAlign: 'center',
+            lineHeight: 1.55,
+            margin: 0,
+          }}
+        >
+          Sentinel detects, correlates, and responds to threats in real-time — purpose-built for{' '}
+          <span style={{ color: 'rgba(0,0,0,0.28)' }}>SOC teams</span> defending critical infrastructure,
+          enterprises, and national networks.
+        </p>
+      </section>
+
+      {/* ═══════════ FEATURED SHOWCASE - WARP SPEED STYLE ═══════════ */}
+      <section style={{ background: '#F5F5F5', paddingBottom: '100px' }}>
+        {/* Tab Strip */}
+        <div
+          style={{
+            padding: '20px 40px',
+            borderBottom: '1px solid rgba(0,0,0,0.08)',
+            display: 'flex',
+            gap: '12px',
+            overflowX: 'auto',
+            alignItems: 'center',
+          }}
+        >
+          {showcaseSlides.map((slide, idx) => (
+            <button
+              key={slide.id}
+              onClick={() => {
+                setActiveSlide(idx);
+                setTimerKey(prev => prev + 1);
+              }}
+              style={{
+                fontSize: '13px',
+                padding: '8px 16px',
+                border: `1px solid ${activeSlide === idx ? '#1a1a1a' : 'rgba(0,0,0,0.15)'}`,
+                borderRadius: '2px',
+                background: activeSlide === idx ? '#1a1a1a' : 'transparent',
+                color: activeSlide === idx ? '#ffffff' : 'rgba(0,0,0,0.5)',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={(e) => {
+                if (activeSlide !== idx) {
+                  e.currentTarget.style.background = 'rgba(0,0,0,0.05)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeSlide !== idx) {
+                  e.currentTarget.style.background = 'transparent';
+                }
+              }}
+            >
+              {slide.label}
+            </button>
+          ))}
+
+          {/* SEE ALL Button */}
+          <button
+            onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })}
+            style={{
+              fontSize: '13px',
+              padding: '8px 16px',
+              border: '1px solid rgba(0,0,0,0.15)',
+              borderRadius: '2px',
+              background: 'transparent',
+              color: 'rgba(0,0,0,0.5)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              whiteSpace: 'nowrap',
+              marginLeft: 'auto',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(0,0,0,0.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+            }}
+          >
+            SEE ALL
+          </button>
+        </div>
+
+        {/* Slide Panel */}
+        <div
+          style={{
+            background: '#1e1e1e',
+            minHeight: '520px',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
+          {showcaseSlides.map((slide, idx) => (
+            <motion.div
+              key={slide.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: activeSlide === idx ? 1 : 0 }}
+              transition={{ duration: 0.4 }}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: activeSlide === idx ? 'flex' : 'none',
+                pointerEvents: activeSlide === idx ? 'auto' : 'none',
+              }}
+            >
+              {/* Left Content (40%) */}
+              <div
+                style={{
+                  flex: '0 0 40%',
+                  padding: '60px 48px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  color: '#ffffff',
+                }}
+              >
+                {/* Tag */}
+                <div
+                  style={{
+                    fontSize: '11px',
+                    color: 'rgba(255,255,255,0.4)',
+                    fontFamily: 'monospace',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    marginBottom: '24px',
+                  }}
+                >
+                  {slide.tag}
+                </div>
+
+                {/* Title with Arrow */}
+                <h2
+                  style={{
+                    fontSize: 'clamp(1.8rem, 3vw, 2.6rem)',
+                    fontWeight: 400,
+                    lineHeight: 1.3,
+                    marginBottom: '40px',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '12px',
+                  }}
+                >
+                  {slide.title}
+                  <span style={{ fontSize: '1.4em', flexShrink: 0 }}>↗</span>
+                </h2>
+
+                {/* Metadata Footer (3 columns) */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: '48px',
+                  }}
+                >
+                  {slide.metadata.map((meta, metaIdx) => (
+                    <div key={metaIdx}>
+                      <div
+                        style={{
+                          fontSize: '9px',
+                          color: 'rgba(255,255,255,0.4)',
+                          fontFamily: 'monospace',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.12em',
+                          marginBottom: '8px',
+                        }}
+                      >
+                        {meta.label}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: '16px',
+                          fontWeight: 500,
+                          color: '#ffffff',
+                        }}
+                      >
+                        {meta.value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Content (60%) - Image */}
+              <div
+                style={{
+                  flex: '0 0 60%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    filter: 'brightness(0.8)',
+                  }}
+                />
+              </div>
+            </motion.div>
+          ))}
+
+          {/* Timer Bar */}
+          <motion.div
+            key={timerKey}
+            initial={{ width: '0%' }}
+            animate={{ width: '100%' }}
+            transition={{ duration: 6, ease: 'linear' }}
+            onAnimationComplete={() => {
+              setActiveSlide((prev) => (prev + 1) % showcaseSlides.length);
+              setTimerKey(prevKey => prevKey + 1);
+            }}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              height: '3px',
+              background: '#ffffff',
+              zIndex: 20,
+            }}
           />
+
+          {/* Navigation Arrows */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '32px',
+              right: '48px',
+              display: 'flex',
+              gap: '12px',
+              zIndex: 20,
+            }}
+          >
+            {/* Left Arrow */}
+            <button
+              onClick={() => {
+                setActiveSlide((prev) => (prev - 1 + showcaseSlides.length) % showcaseSlides.length);
+                setTimerKey(prev => prev + 1);
+              }}
+              style={{
+                width: '40px',
+                height: '40px',
+                border: '1px solid rgba(255,255,255,0.3)',
+                background: 'transparent',
+                color: '#ffffff',
+                fontSize: '18px',
+                borderRadius: '2px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              ←
+            </button>
+
+            {/* Right Arrow */}
+            <button
+              onClick={() => {
+                setActiveSlide((prev) => (prev + 1) % showcaseSlides.length);
+                setTimerKey(prev => prev + 1);
+              }}
+              style={{
+                width: '40px',
+                height: '40px',
+                border: '1px solid rgba(255,255,255,0.3)',
+                background: 'transparent',
+                color: '#ffffff',
+                fontSize: '18px',
+                borderRadius: '2px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              →
+            </button>
+          </div>
         </div>
       </section>
 
       {/* ═══════════ AGENT ARCHITECTURE SECTION (PALANTIR STYLE) ═══════════ */}
       <section id="architecture" className="py-20">
+        {/* Our Software Heading */}
+        <div className="px-6 lg:px-8 mb-16">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl lg:text-5xl font-bold" style={{ color: '#000000' }}>
+              Our Software
+            </h2>
+          </div>
+        </div>
+
         {agents.map((agent, idx) => (
           <motion.div
             key={agent.id}
