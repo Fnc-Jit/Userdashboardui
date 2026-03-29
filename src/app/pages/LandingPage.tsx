@@ -245,7 +245,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ═══════════ HERO SECTION - PALANTIR VIDEO HERO ═══════════ */}
-      <section className="hero-section" style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', left: 'calc(-50vw + 50%)' }}>
+      <section className="hero-section" style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', left: 'calc(-50vw + 50%)', background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}>
         {/* Video Background */}
         <video
           autoPlay
@@ -261,7 +261,7 @@ export default function LandingPage() {
             objectFit: 'cover',
           }}
         >
-          <source src="https://videos.pexels.com/video-files/3130838/3130838-uhd_2560_1440_24fps.mp4" type="video/mp4" />
+          <source src="https://videos.pexels.com/video-files/3573352/3573352-sd_640_360_25fps.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
