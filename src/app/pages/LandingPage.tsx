@@ -322,15 +322,15 @@ export default function LandingPage() {
         ))}
       </section>
 
-      {/* ═══════════ SIEM EXPLANATION SECTION ═══════════ */}
-      <section id="reports" className="py-20 px-6 lg:px-8">
+      {/* ═══════════ SIEM EXPLANATION SECTION - PALANTIR BENTO ═══════════ */}
+      <section id="reports" className="py-24 px-6 lg:px-8" style={{ background: '#FAFAFA' }}>
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-16"
+            className="mb-20"
           >
             <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#000000' }}>
               Security Information & Event Management
@@ -340,47 +340,99 @@ export default function LandingPage() {
             </p>
           </motion.div>
 
-          {/* SIEM Content Grid */}
-          <div className="space-y-16">
-            {siemImages.map((image, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
-                className={`flex flex-col ${idx % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12`}
-              >
-                <div className="flex-1">
-                  <h3 className="text-3xl font-bold mb-4" style={{ color: '#000000' }}>
-                    {['Unified Event Collection', 'Real-time Analysis', 'Threat Detection', 'Incident Investigation', 'Automated Response'][idx]}
-                  </h3>
-                  <p className="text-base leading-relaxed mb-4" style={{ color: '#666666' }}>
-                    {[
-                      'Collect and normalize log data from all sources across your infrastructure.',
-                      'Process millions of events per second with advanced machine learning algorithms.',
-                      'Identify suspicious patterns and known threats in real-time.',
-                      'Deep-dive into incidents with comprehensive forensic evidence.',
-                      'Automate response actions to contain threats faster.',
-                    ][idx]}
-                  </p>
-                  <button
-                    className="inline-flex items-center gap-2 text-sm font-medium transition-all"
-                    style={{ color: '#FF6B35' }}
-                  >
-                    Learn more <ChevronRight size={16} />
-                  </button>
-                </div>
-                <motion.div className="flex-1 w-full" whileHover={{ scale: 1.05 }}>
-                  <img
-                    src={image}
-                    alt="SIEM Feature"
-                    className="w-full rounded-xl shadow-lg transition-transform duration-300"
-                    style={{ maxHeight: '350px', objectFit: 'cover' }}
-                  />
+          {/* Feature Cards Grid - Palantir Style */}
+          <div className="space-y-px" style={{ background: '#E5E7EB' }}>
+            {['Unified Event Collection', 'Real-time Analysis', 'Threat Detection', 'Incident Investigation', 'Automated Response'].map((title, idx) => {
+              const descriptions = [
+                'Collect and normalize log data from all sources across your infrastructure.',
+                'Process millions of events per second with advanced machine learning algorithms.',
+                'Identify suspicious patterns and known threats in real-time.',
+                'Deep-dive into incidents with comprehensive forensic evidence.',
+                'Automate response actions to contain threats faster.',
+              ];
+              const labels = ['/0.1', '/0.2', '/0.3', '/0.4', '/0.5'];
+
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group relative overflow-hidden transition-all duration-500"
+                  style={{
+                    background: '#FFFFFF',
+                    maxHeight: '420px',
+                    display: 'flex',
+                    flexDirection: idx % 2 === 0 ? 'row' : 'row-reverse',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => {
+                    const container = e.currentTarget as HTMLElement;
+                    container.style.maxHeight = '680px';
+                    container.style.boxShadow = '0 0 0 1.5px rgba(0,0,0,0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    const container = e.currentTarget as HTMLElement;
+                    container.style.maxHeight = '420px';
+                    container.style.boxShadow = 'none';
+                  }}
+                >
+                  {/* Left: Text Content */}
+                  <div className="flex-1 p-10 lg:p-12 flex flex-col justify-center">
+                    <div className="text-xs font-mono tracking-widest mb-3" style={{ color: '#999999' }}>
+                      {labels[idx]}
+                    </div>
+                    <h3 className="text-2xl lg:text-3xl font-black mb-4" style={{ color: '#000000', fontWeight: 800 }}>
+                      {title}
+                    </h3>
+                    <p className="text-sm lg:text-base leading-relaxed mb-6" style={{ color: '#666666' }}>
+                      {descriptions[idx]}
+                    </p>
+                    <button
+                      className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-200 group/link"
+                      style={{ color: '#FF6B35' }}
+                      onClick={() => openModal(title)}
+                    >
+                      Learn more{' '}
+                      <ChevronRight
+                        size={16}
+                        className="transition-transform duration-200 group-hover/link:translate-x-1"
+                      />
+                    </button>
+                  </div>
+
+                  {/* Right: Media Panel */}
+                  <div className="flex-1 relative overflow-hidden bg-gray-100">
+                    {/* Static Image - Fades on Hover */}
+                    <img
+                      src={siemImages[idx]}
+                      alt={title}
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+                      style={{
+                        filter: 'grayscale(40%)',
+                      }}
+                    />
+
+                    {/* Video - Fades In On Hover (Placeholder) */}
+                    <div className="absolute inset-0 w-full h-full bg-black/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 backdrop-blur">
+                          <svg
+                            className="w-6 h-6 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                          </svg>
+                        </div>
+                        <p className="text-white text-sm font-medium">Feature Video</p>
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
