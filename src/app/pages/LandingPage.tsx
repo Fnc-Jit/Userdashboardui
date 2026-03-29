@@ -434,7 +434,7 @@ export default function LandingPage() {
       </section>
 
       {/* ═══════════ FEATURED SHOWCASE - WARP SPEED STYLE ═══════════ */}
-      <section style={{ background: '#FFFFFF' }}>
+      <section style={{ background: '#FFFFFF', paddingTop: '80px' }}>
         {/* Tab Strip */}
         <div
           style={{
