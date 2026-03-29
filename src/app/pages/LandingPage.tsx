@@ -433,8 +433,26 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ═══════════ STATEMENT PARAGRAPH SECTION ═══════════ */}
+      <section style={{ background: '#FFFFFF', padding: '100px 15%' }}>
+        <p
+          style={{
+            fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
+            fontWeight: 400,
+            color: '#1a1a1a',
+            textAlign: 'center',
+            lineHeight: 1.55,
+            margin: 0,
+          }}
+        >
+          Sentinel detects, correlates, and responds to threats in real-time — purpose-built for{' '}
+          <span style={{ color: 'rgba(0,0,0,0.28)' }}>SOC teams</span> defending critical infrastructure,
+          enterprises, and national networks.
+        </p>
+      </section>
+
       {/* ═══════════ FEATURED SHOWCASE - WARP SPEED STYLE ═══════════ */}
-      <section style={{ background: '#F5F5F5', paddingTop: '80px', paddingBottom: '100px' }}>
+      <section style={{ background: '#F5F5F5', paddingBottom: '100px' }}>
         {/* Tab Strip */}
         <div
           style={{
