@@ -179,3 +179,20 @@
     line-height: 1.5;
   }
 }
+
+@layer utilities {
+  .hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(6px);
+    }
+  }
+}

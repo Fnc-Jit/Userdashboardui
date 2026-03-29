@@ -12,6 +12,7 @@ export default function LandingPage() {
   const [modalTitle, setModalTitle] = useState('Request Access');
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [scrollPassed, setScrollPassed] = useState(false);
 
   const agents = [
     {
@@ -109,6 +110,15 @@ export default function LandingPage() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [searchOpen]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollPassed(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen" style={{ background: '#FFFFFF' }}>
@@ -234,61 +244,102 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* ═══════════ HERO SECTION ═══════════ */}
-      <section className="pt-40 pb-16 px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
+      {/* ═══════════ HERO SECTION - PALANTIR VIDEO HERO ═══════════ */}
+      <section className="hero-section" style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', left: 'calc(-50vw + 50%)' }}>
+        {/* Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        >
+          <source src="https://videos.pexels.com/video-files/3130838/3130838-uhd_2560_1440_24fps.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Dark Overlay */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'rgba(0,0,0,0.45)',
+          }}
+        />
+
+        {/* Centered Hero Text */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            textAlign: 'center',
+            zIndex: 10,
+            width: '100%',
+            padding: '0 20px',
+          }}
+        >
+          <h1
+            style={{
+              fontSize: 'clamp(3.5rem, 8vw, 7rem)',
+              fontWeight: 300,
+              color: '#ffffff',
+              letterSpacing: '-0.02em',
+              fontFamily: "'DM Sans', sans-serif",
+              margin: 0,
+            }}
           >
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6" style={{ color: '#000000' }}>
-              Intelligent Threat Detection
-              <br />
-              for Modern Infrastructure
-            </h1>
-            <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: '#666666' }}>
-              Sentinel delivers comprehensive security monitoring and incident response for enterprises at any scale.
-            </p>
+            God's Eye
+          </h1>
+        </motion.div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button
-                onClick={() => openModal('Request a Demo')}
-                className="px-8 py-3 rounded-lg font-medium transition-all"
-                style={{ background: '#000000', color: '#FFFFFF' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#1A1A1A'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#000000'}
-              >
-                Request a Demo
-              </button>
-              <button
-                onClick={() => document.getElementById('architecture')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-3 rounded-lg font-medium border transition-all"
-                style={{ borderColor: '#000000', color: '#000000' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#F5F5F5';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                }}
-              >
-                Agent Architecture
-              </button>
-            </div>
+        {/* Scroll Indicator */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            bottom: '40px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            textAlign: 'center',
+            zIndex: 10,
+            opacity: scrollPassed ? 0 : 1,
+            transition: 'opacity 0.3s ease-out',
+          }}
+        >
+          <div
+            style={{
+              fontSize: '12px',
+              letterSpacing: '0.12em',
+              color: 'rgba(255,255,255,0.6)',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase',
+              marginBottom: '12px',
+            }}
+          >
+            Scroll to Explore
+          </div>
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              fontSize: '18px',
+              color: 'rgba(255,255,255,0.6)',
+            }}
+          >
+            ↓
           </motion.div>
-
-          {/* Hero Image */}
-          <motion.img
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            src={agents[0].image}
-            alt="Sentinel Platform"
-            className="w-full rounded-xl shadow-lg"
-            style={{ maxHeight: '500px', objectFit: 'cover' }}
-          />
-        </div>
+        </motion.div>
       </section>
 
       {/* ═══════════ AGENT ARCHITECTURE SECTION (PALANTIR STYLE) ═══════════ */}
