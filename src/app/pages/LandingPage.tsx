@@ -808,105 +808,190 @@ export default function LandingPage() {
         ))}
       </section>
 
-      {/* ═══════════ GOD'S EYE PLATFORM MODULES SECTION ═══════════ */}
-      <section id="platform-modules" className="py-0 px-0" style={{ background: '#ffffff', fontFamily: "'DM Sans', sans-serif" }}>
+      {/* ═══════════ OUR SOFTWARE SECTION ═══════════ */}
+      <section id="our-software" className="py-0 px-0" style={{ background: '#ffffff', fontFamily: "'DM Sans', sans-serif" }}>
         <style>{`
-          .module-row {
-            animation: fadeIn 0.6s ease-in;
+          .software-heading {
+            padding: 40px 60px;
+            border-bottom: 1px solid #e0e0e0;
           }
 
-          @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+          .software-row {
+            position: relative;
+            padding: 48px 0;
+            border-top: 1px solid #e0e0e0;
+            overflow: hidden;
+            min-height: 300px;
           }
 
-          @media (min-width: 769px) {
-            .module-row {
-              grid-template-columns: 160px 1fr auto !important;
-            }
+          .software-row:last-of-type {
+            border-bottom: 1px solid #e0e0e0;
+          }
+
+          .software-row-content {
+            position: relative;
+            height: 100%;
+            padding: 0 60px;
+          }
+
+          .software-version {
+            position: absolute;
+            left: 60px;
+            top: 48px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #999999;
+            font-weight: 400;
+          }
+
+          .software-description {
+            position: absolute;
+            left: 60px;
+            top: 80px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333333;
+            font-weight: 400;
+            max-width: 220px;
+          }
+
+          .software-learn-more {
+            position: absolute;
+            left: 60px;
+            top: 200px;
+            font-size: 13px;
+            color: #c0392b;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+          }
+
+          .software-symbol {
+            position: absolute;
+            left: 280px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            height: 120px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+          }
+
+          .software-wordmark {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 700;
+            color: #111111;
+            opacity: 0.12;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            user-select: none;
+            pointer-events: none;
+          }
+
+          .software-row:hover .software-symbol {
+            opacity: 0;
+          }
+
+          .software-row:hover .software-wordmark {
+            opacity: 0.06;
+          }
+
+          .software-row:hover .software-learn-more {
+            opacity: 1;
           }
 
           @media (max-width: 768px) {
-            .module-row {
-              grid-template-columns: 1fr !important;
-              padding: 24px !important;
-              min-height: auto !important;
-              gap: 16px !important;
+            .software-heading {
+              padding: 32px 24px;
             }
 
-            .module-row [data-wordmark] {
-              display: none !important;
+            .software-heading h1 {
+              font-size: 28px !important;
             }
 
-            .module-row [data-mockup] {
-              display: none !important;
+            .software-row {
+              padding: 32px 0;
+              min-height: auto;
             }
 
-            .platform-header {
-              padding: 40px 24px !important;
-            }
-          }
-
-          @media (max-width: 480px) {
-            .platform-header {
-              padding: 32px 16px !important;
+            .software-row-content {
+              padding: 0 24px;
             }
 
-            .platform-header h1 {
-              font-size: 24px !important;
+            .software-version {
+              left: 24px;
+              top: 0;
             }
 
-            .module-row {
-              padding: 16px !important;
+            .software-description {
+              left: 24px;
+              top: 24px;
+              font-size: 14px;
+              max-width: 100%;
+            }
+
+            .software-learn-more {
+              left: 24px;
+              top: 120px;
+            }
+
+            .software-symbol {
+              display: none;
+            }
+
+            .software-wordmark {
+              display: none;
             }
           }
         `}</style>
+
         {/* Section Header */}
-        <div className="platform-header" style={{ padding: '80px 60px', borderBottom: '1px solid #e5e5e5' }}>
-          <div className="font-mono tracking-widest mb-4" style={{ fontSize: '11px', color: 'rgba(0,0,0,0.4)', letterSpacing: '0.15em' }}>
-            GOD'S EYE — PLATFORM MODULES
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-light mb-2" style={{ color: '#111111', fontWeight: 400, fontFamily: "'DM Sans', sans-serif" }}>
+        <div className="software-heading">
+          <h1 className="text-4xl lg:text-5xl mb-4" style={{ color: '#111111', fontWeight: 400, fontSize: '42px' }}>
             Our Software
           </h1>
         </div>
 
-        {/* Platform Modules Grid */}
+        {/* Software Rows */}
         {[
           {
             version: '/0.1',
             title: 'SOC',
             desc: 'Unified security operations center — triage, investigate, and respond from a single pane of glass.',
-            mockupTabs: ['SOC Workbench', 'Live Alerts', 'Investigations'],
-            mockupContent: 'soc',
+            icon: 'shield',
           },
           {
             version: '/0.2',
             title: 'Kill Chain',
             desc: 'Visualize multi-stage attacks mapped to MITRE ATT&CK in real time.',
-            mockupTabs: ['Kill Chain', 'ATT&CK Heatmap'],
-            mockupContent: 'killchain',
+            icon: 'chain',
           },
           {
             version: '/0.3',
             title: 'Topology',
             desc: 'Live network graph — see every device, connection, and anomaly as it happens.',
-            mockupTabs: ['Network Topology'],
-            mockupContent: 'topology',
+            icon: 'network',
           },
           {
             version: '/0.4',
             title: 'Compliance',
             desc: 'Automated compliance tracking across NIST, ISO 27001, SOC 2, and custom frameworks.',
-            mockupTabs: ['Compliance'],
-            mockupContent: 'compliance',
+            icon: 'checkmark',
           },
           {
             version: '/0.5',
             title: 'Threat Intel',
             desc: 'Aggregated threat intelligence — IOCs, actor profiles, and real-time feed correlation.',
-            mockupTabs: ['Threat Intel'],
-            mockupContent: 'threatintel',
+            icon: 'radar',
           },
         ].map((module, idx) => (
           <motion.div
@@ -915,206 +1000,62 @@ export default function LandingPage() {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="module-row group relative overflow-hidden border-b"
-            style={{
-              background: '#ffffff',
-              borderColor: '#e5e5e5',
-              cursor: 'default',
-              display: 'grid',
-              gridTemplateColumns: '160px 1fr auto',
-              minHeight: '120px',
-              alignItems: 'center',
-              padding: '0 60px',
-              gap: '40px',
-            }}
-            onMouseEnter={(e) => {
-              const row = e.currentTarget as HTMLElement;
-              const learnMore = row.querySelector('[data-learn-more]') as HTMLElement;
-              const mockup = row.querySelector('[data-mockup]') as HTMLElement;
-              const wordmark = row.querySelector('[data-wordmark]') as HTMLElement;
-              if (learnMore) learnMore.style.opacity = '1';
-              if (mockup) {
-                mockup.style.opacity = '1';
-                mockup.style.transform = 'translateY(0)';
-              }
-              if (wordmark) wordmark.style.opacity = '0.07';
-            }}
-            onMouseLeave={(e) => {
-              const row = e.currentTarget as HTMLElement;
-              const learnMore = row.querySelector('[data-learn-more]') as HTMLElement;
-              const mockup = row.querySelector('[data-mockup]') as HTMLElement;
-              const wordmark = row.querySelector('[data-wordmark]') as HTMLElement;
-              if (learnMore) learnMore.style.opacity = '0';
-              if (mockup) {
-                mockup.style.opacity = '0';
-                mockup.style.transform = 'translateY(10px)';
-              }
-              if (wordmark) wordmark.style.opacity = '0.15';
-            }}
+            className="software-row group"
           >
-            {/* Column 1: Version + Description + Learn More */}
-            <div style={{ display: 'flex', flexDirection: 'column', minWidth: '160px' }}>
-              <div className="font-mono" style={{ fontSize: '11px', color: 'rgba(0,0,0,0.4)', marginBottom: '8px', letterSpacing: '0.05em' }}>
-                {module.version}
-              </div>
-              <p className="leading-relaxed" style={{ fontSize: '13px', fontWeight: 300, color: 'rgba(0,0,0,0.6)', lineHeight: '1.5', marginBottom: '12px' }}>
-                {module.desc}
-              </p>
-              <button
-                onClick={() => openModal(module.title)}
-                data-learn-more="true"
-                className="inline-flex items-center gap-1 transition-all duration-250 opacity-0"
-                style={{ fontSize: '12px', color: '#c0392b', fontWeight: 500 }}
-              >
+            <div className="software-row-content">
+              <div className="software-version">{module.version}</div>
+              <p className="software-description">{module.desc}</p>
+              <button onClick={() => openModal(module.title)} className="software-learn-more">
                 Learn more ›
               </button>
-            </div>
 
-            {/* Column 2: Mockup */}
-            <div
-              data-mockup="true"
-              className="transition-all duration-400 opacity-0"
-              style={{ transform: 'translateY(10px)', maxWidth: '440px' }}
-            >
-              <div
-                style={{
-                  background: '#0d0d0d',
-                  borderRadius: '8px',
-                  overflow: 'hidden',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
-                }}
-              >
-                {/* macOS-style Top Bar */}
-                <div style={{ background: '#1a1a1a', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {/* Colored Dots */}
-                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#ff5f56' }} />
-                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#ffbd2e' }} />
-                  <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#27c93f' }} />
-                  {/* Tab Labels */}
-                  <div style={{ marginLeft: '12px', display: 'flex', gap: '16px' }}>
-                    {module.mockupTabs.map((tab, tabIdx) => (
-                      <div key={tabIdx} style={{ fontSize: '9px', fontFamily: 'monospace', color: tabIdx === 0 ? '#ffffff' : '#888888', fontWeight: tabIdx === 0 ? 500 : 400 }}>
-                        {tab}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Mockup Body */}
-                <div style={{ padding: '10px', color: '#ffffff', fontSize: '11px', fontFamily: 'monospace', minHeight: '140px' }}>
-                  {module.mockupContent === 'soc' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <div style={{ padding: '6px 8px', background: 'rgba(255,95,86,0.1)', borderLeft: '3px solid #ff5f56', fontSize: '9px' }}>
-                        <div style={{ color: '#ff5f56', fontWeight: 500 }}>CRITICAL</div>
-                        <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Unauthorized access attempt - 10.1.2.15</div>
-                      </div>
-                      <div style={{ padding: '6px 8px', background: 'rgba(255,189,46,0.1)', borderLeft: '3px solid #ffbd2e', fontSize: '9px' }}>
-                        <div style={{ color: '#ffbd2e', fontWeight: 500 }}>HIGH</div>
-                        <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Suspicious port scan detected</div>
-                      </div>
-                      <div style={{ padding: '6px 8px', background: 'rgba(255,95,86,0.1)', borderLeft: '3px solid #ff5f56', fontSize: '9px' }}>
-                        <div style={{ color: '#ff5f56', fontWeight: 500 }}>CRITICAL</div>
-                        <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Malware signature match - endpoint-08</div>
-                      </div>
-                    </div>
-                  )}
-                  {module.mockupContent === 'killchain' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <div style={{ display: 'flex', gap: '4px', alignItems: 'center', fontSize: '8px', color: '#aaa' }}>
-                        <div style={{ padding: '3px 6px', background: '#4a90e2', borderRadius: '2px', color: '#fff' }}>Recon</div>
-                        <span>→</span>
-                        <div style={{ padding: '3px 6px', background: '#f5a623', borderRadius: '2px', color: '#000' }}>Init Access</div>
-                        <span>→</span>
-                        <div style={{ padding: '3px 6px', background: '#7ed321', borderRadius: '2px', color: '#000' }}>Lateral</div>
-                      </div>
-                      <div style={{ display: 'flex', gap: '8px', fontSize: '8px', color: '#aaa' }}>
-                        <div style={{ padding: '3px 6px', background: 'rgba(74,144,226,0.2)', borderRadius: '2px' }}>Spear-Phishing: 3</div>
-                        <div style={{ padding: '3px 6px', background: 'rgba(245,166,35,0.2)', borderRadius: '2px' }}>Exploit: 2</div>
-                      </div>
-                    </div>
-                  )}
-                  {module.mockupContent === 'topology' && (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
-                      {['FW', 'SW', 'DC', 'AS', 'EP', 'EP', 'IoT', 'DB'].map((label, i) => {
-                        const colors = ['#ff5f56', '#27c93f', '#ffbd2e', '#4a90e2'];
-                        return (
-                          <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
-                            <div
-                              style={{
-                                width: '24px',
-                                height: '24px',
-                                borderRadius: '50%',
-                                background: colors[i % colors.length],
-                                opacity: 0.8,
-                              }}
-                            />
-                            <div style={{ fontSize: '7px', color: '#aaa', textAlign: 'center' }}>{label}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                  {module.mockupContent === 'compliance' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      {[
-                        { name: 'NIST CSF', score: 82, color: '#27c93f' },
-                        { name: 'ISO 27001', score: 67, color: '#ffbd2e' },
-                        { name: 'SOC 2', score: 91, color: '#27c93f' },
-                        { name: 'PCI-DSS', score: 44, color: '#ff5f56' },
-                      ].map((fw, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8px' }}>
-                          <div style={{ color: '#aaa' }}>{fw.name}</div>
-                          <div style={{ width: '80px', height: '2px', background: '#333', borderRadius: '1px', overflow: 'hidden' }}>
-                            <div
-                              style={{
-                                height: '100%',
-                                width: fw.score + '%',
-                                background: fw.color,
-                              }}
-                            />
-                          </div>
-                          <div style={{ color: '#aaa', minWidth: '20px', textAlign: 'right' }}>{fw.score}%</div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {module.mockupContent === 'threatintel' && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      {[
-                        { name: 'APT28', tag: 'Nation-State', color: '#ff5f56' },
-                        { name: '192.168.1.100', tag: 'IOC', color: '#ffbd2e' },
-                        { name: 'LockBit', tag: 'Ransomware', color: '#ff5f56' },
-                        { name: 'Mimikatz', tag: 'TTP', color: '#4a90e2' },
-                      ].map((threat, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8px' }}>
-                          <div style={{ color: '#aaa' }}>{threat.name}</div>
-                          <div style={{ padding: '2px 6px', background: threat.color, borderRadius: '2px', color: '#fff', fontWeight: 500, fontSize: '7px' }}>
-                            {threat.tag}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+              {/* Ghost Symbol */}
+              <div className="software-symbol" data-symbol={module.icon}>
+                {module.icon === 'shield' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <path d="M60 20L25 35v25c0 20 35 35 35 35s35-15 35-35v-25L60 20z" />
+                  </svg>
+                )}
+                {module.icon === 'chain' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <circle cx="30" cy="40" r="12" />
+                    <circle cx="60" cy="60" r="12" />
+                    <circle cx="90" cy="40" r="12" />
+                    <line x1="42" y1="46" x2="48" y2="54" />
+                    <line x1="72" y1="54" x2="78" y2="46" />
+                  </svg>
+                )}
+                {module.icon === 'network' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <circle cx="30" cy="30" r="8" />
+                    <circle cx="90" cy="30" r="8" />
+                    <circle cx="30" cy="90" r="8" />
+                    <circle cx="90" cy="90" r="8" />
+                    <line x1="38" y1="30" x2="82" y2="30" />
+                    <line x1="30" y1="38" x2="30" y2="82" />
+                    <line x1="38" y1="90" x2="82" y2="90" />
+                    <line x1="90" y1="38" x2="90" y2="82" />
+                  </svg>
+                )}
+                {module.icon === 'checkmark' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <path d="M30 60L50 80L90 30" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="60" cy="60" r="45" />
+                  </svg>
+                )}
+                {module.icon === 'radar' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <circle cx="60" cy="60" r="30" />
+                    <circle cx="60" cy="60" r="20" />
+                    <circle cx="60" cy="60" r="10" />
+                    <line x1="60" y1="30" x2="60" y2="90" />
+                    <line x1="30" y1="60" x2="90" y2="60" />
+                  </svg>
+                )}
               </div>
-            </div>
 
-            {/* Column 3: Wordmark */}
-            <div
-              data-wordmark="true"
-              style={{
-                fontSize: 'clamp(52px, 8vw, 100px)',
-                fontWeight: 700,
-                color: '#111111',
-                opacity: 0.15,
-                transition: 'opacity 0.4s ease',
-                textAlign: 'right',
-                lineHeight: 1,
-                whiteSpace: 'nowrap',
-                fontFamily: "'Space Grotesk', 'Courier New', monospace",
-              }}
-            >
-              {module.title}
+              {/* Wordmark */}
+              <div className="software-wordmark">{module.title}</div>
             </div>
           </motion.div>
         ))}
