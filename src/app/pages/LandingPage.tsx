@@ -263,11 +263,11 @@ export default function LandingPage() {
               <button
                 key={idx}
                 onClick={() => {
-                  if ('id' in item) {
+                  if ('id' in item && item.id) {
                     document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
-                  } else if ('action' in item) {
+                  } else if ('action' in item && item.action) {
                     item.action();
-                  } else if ('nav' in item) {
+                  } else if ('nav' in item && item.nav) {
                     navigate(item.nav);
                   }
                 }}
