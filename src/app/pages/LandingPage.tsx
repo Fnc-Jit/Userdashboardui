@@ -818,10 +818,10 @@ export default function LandingPage() {
 
           .software-row {
             position: relative;
-            padding: 48px 0;
+            padding: 60px 0 48px 0;
             border-top: 1px solid #e0e0e0;
             overflow: hidden;
-            min-height: 320px;
+            min-height: 340px;
           }
 
           .software-row:last-of-type {
@@ -839,23 +839,25 @@ export default function LandingPage() {
             left: 60px;
             top: 48px;
             font-family: monospace;
-            font-size: 13px;
+            font-size: 11px;
             color: #999999;
             font-weight: 400;
+            margin-bottom: 12px;
           }
 
           .software-description {
             position: absolute;
             left: 60px;
-            top: 80px;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333333;
+            top: 72px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #555555;
             font-weight: 400;
-            max-width: 240px;
+            max-width: 280px;
             word-wrap: break-word;
             overflow-wrap: break-word;
             word-break: break-word;
+            padding-right: 20px;
           }
 
           .software-learn-more {
@@ -876,11 +878,11 @@ export default function LandingPage() {
 
           .software-symbol {
             position: absolute;
-            left: 280px;
+            left: 320px;
             top: 50%;
             transform: translateY(-50%);
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             opacity: 1;
             transition: opacity 0.3s ease;
             z-index: 10;
@@ -888,9 +890,9 @@ export default function LandingPage() {
 
           .software-mockup {
             position: absolute;
-            left: 250px;
+            left: 300px;
             top: 50%;
-            transform: translateY(calc(-50% + 8px));
+            transform: translateY(calc(-50% + 10px));
             opacity: 0;
             transition: opacity 0.4s ease, transform 0.4s ease;
             z-index: 5;
@@ -902,7 +904,7 @@ export default function LandingPage() {
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 24px rgba(0,0,0,0.3);
-            width: 380px;
+            width: 360px;
           }
 
           .software-mockup-bar {
@@ -978,7 +980,7 @@ export default function LandingPage() {
             }
 
             .software-row {
-              padding: 32px 0;
+              padding: 40px 0 32px 0;
               min-height: auto;
             }
 
@@ -989,6 +991,7 @@ export default function LandingPage() {
             .software-version {
               left: 24px;
               top: 0;
+              font-size: 11px;
             }
 
             .software-description {
@@ -996,6 +999,7 @@ export default function LandingPage() {
               top: 24px;
               font-size: 14px;
               max-width: 100%;
+              padding-right: 0;
             }
 
             .software-learn-more {
