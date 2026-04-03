@@ -743,7 +743,10 @@ export default function LandingPage() {
         {/* Our Software Heading */}
         <div className="px-6 lg:px-8 mb-16">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl lg:text-5xl font-bold" style={{ color: '#000000' }}>
+            <h2
+              className="text-4xl lg:text-5xl"
+              style={{ color: '#1F2336', fontWeight: 400, letterSpacing: '-0.02em' }}
+            >
               Our Software
             </h2>
           </div>
@@ -769,10 +772,13 @@ export default function LandingPage() {
                   transition={{ duration: 0.8 }}
                   viewport={{ once: true }}
                 >
-                  <h2 className="text-5xl lg:text-6xl font-bold mb-6" style={{ color: '#000000' }}>
+                  <h2
+                    className="text-5xl lg:text-6xl mb-6"
+                    style={{ color: '#1F2336', fontWeight: 400, letterSpacing: '-0.02em' }}
+                  >
                     {agent.name}
                   </h2>
-                  <p className="text-lg mb-8 leading-relaxed" style={{ color: '#666666' }}>
+                  <p className="text-lg mb-8 leading-relaxed" style={{ color: '#676b74', fontWeight: 400 }}>
                     {agent.description}
                   </p>
                   <button
@@ -832,38 +838,71 @@ export default function LandingPage() {
             position: relative;
             height: 100%;
             padding: 0 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            min-height: 240px;
+          }
+
+          .software-copy {
+            position: relative;
+            max-width: 320px;
+            flex: 0 0 320px;
+            min-height: 170px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            z-index: 12;
+          }
+
+          .software-preview-column {
+            position: relative;
+            flex: 1;
+            min-height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .software-brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: clamp(42px, 7vw, 112px);
+            width: 100%;
+            padding-left: clamp(190px, 19vw, 360px);
+            position: relative;
+            z-index: 8;
           }
 
           .software-version {
-            position: absolute;
-            left: 60px;
-            top: 48px;
+            position: static;
             font-family: monospace;
             font-size: 11px;
-            color: #999999;
+            color: #7f7f85;
             font-weight: 400;
-            margin-bottom: 12px;
+            margin-top: 0;
+            transition: color 0.25s ease;
           }
 
           .software-description {
-            position: absolute;
-            left: 60px;
-            top: 72px;
+            position: static;
             font-size: 15px;
             line-height: 1.5;
-            color: #555555;
+            color: #676b74;
             font-weight: 400;
-            max-width: 280px;
+            max-width: 300px;
             word-wrap: break-word;
             overflow-wrap: break-word;
             word-break: break-word;
-            padding-right: 20px;
+            margin-bottom: 0;
+            transition: color 0.25s ease;
           }
 
           .software-learn-more {
-            position: absolute;
-            left: 60px;
-            bottom: 48px;
+            position: static;
             font-size: 13px;
             color: #c0392b;
             font-weight: 500;
@@ -874,28 +913,26 @@ export default function LandingPage() {
             cursor: pointer;
             padding: 0;
             margin: 0;
+            margin-top: 14px;
           }
 
           .software-symbol {
-            position: absolute;
-            left: 320px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 100px;
-            height: 100px;
-            opacity: 1;
+            position: static;
+            width: 128px;
+            height: 128px;
+            opacity: 0.3;
             transition: opacity 0.3s ease;
-            z-index: 10;
+            z-index: 9;
           }
 
           .software-mockup {
             position: absolute;
-            left: 300px;
+            left: clamp(-24px, 0vw, 40px);
             top: 50%;
             transform: translateY(calc(-50% + 10px));
             opacity: 0;
             transition: opacity 0.4s ease, transform 0.4s ease;
-            z-index: 5;
+            z-index: 12;
             pointer-events: none;
           }
 
@@ -938,19 +975,18 @@ export default function LandingPage() {
           }
 
           .software-wordmark {
-            position: absolute;
-            right: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: clamp(80px, 12vw, 160px);
+            position: static;
+            font-size: clamp(48px, 6.8vw, 104px);
+            line-height: 0.95;
             font-weight: 700;
-            color: #111111;
-            opacity: 0.12;
-            transition: opacity 0.3s ease;
+            color: #c9ccd3;
+            opacity: 1;
+            transition: color 0.3s ease, opacity 0.3s ease;
             white-space: nowrap;
+            text-align: left;
             user-select: none;
             pointer-events: none;
-            z-index: 2;
+            z-index: 8;
           }
 
           .software-row:hover .software-symbol {
@@ -970,6 +1006,16 @@ export default function LandingPage() {
             opacity: 1;
           }
 
+          .software-row:hover .software-description,
+          .software-row:hover .software-version,
+          .software-row:hover .software-wordmark {
+            color: #111111;
+          }
+
+          .software-row:hover .software-wordmark {
+            opacity: 0.95;
+          }
+
           @media (max-width: 768px) {
             .software-heading {
               padding: 32px 24px;
@@ -986,29 +1032,36 @@ export default function LandingPage() {
 
             .software-row-content {
               padding: 0 24px;
+              min-height: auto;
+              display: block;
+            }
+
+            .software-copy {
+              max-width: 100%;
+              min-height: auto;
             }
 
             .software-version {
-              left: 24px;
-              top: 0;
               font-size: 11px;
+              margin-bottom: 12px;
+              margin-top: 0;
             }
 
             .software-description {
-              left: 24px;
-              top: 24px;
               font-size: 14px;
               max-width: 100%;
-              padding-right: 0;
+              margin-bottom: 14px;
             }
 
             .software-learn-more {
-              left: 24px;
-              top: auto;
-              bottom: 32px;
+              opacity: 1;
             }
 
             .software-symbol {
+              display: none;
+            }
+
+            .software-preview-column {
               display: none;
             }
 
@@ -1024,7 +1077,10 @@ export default function LandingPage() {
 
         {/* Section Header */}
         <div className="software-heading">
-          <h1 className="text-4xl lg:text-5xl mb-4" style={{ color: '#111111', fontWeight: 400, fontSize: '42px' }}>
+          <h1
+            className="text-4xl lg:text-5xl mb-4"
+            style={{ color: '#1F2336', fontWeight: 400, fontSize: '42px', letterSpacing: '-0.02em' }}
+          >
             Our Software
           </h1>
         </div>
@@ -1071,60 +1127,67 @@ export default function LandingPage() {
             className="software-row group"
           >
             <div className="software-row-content">
-              <div className="software-version">{module.version}</div>
-              <p className="software-description">{module.desc}</p>
-              <button onClick={() => openModal(module.title)} className="software-learn-more">
-                Learn more ›
-              </button>
-
-              {/* Ghost Symbol */}
-              <div className="software-symbol" data-symbol={module.icon}>
-                {module.icon === 'shield' && (
-                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
-                    <path d="M60 20L25 35v25c0 20 35 35 35 35s35-15 35-35v-25L60 20z" />
-                  </svg>
-                )}
-                {module.icon === 'chain' && (
-                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
-                    <circle cx="30" cy="40" r="12" />
-                    <circle cx="60" cy="60" r="12" />
-                    <circle cx="90" cy="40" r="12" />
-                    <line x1="42" y1="46" x2="48" y2="54" />
-                    <line x1="72" y1="54" x2="78" y2="46" />
-                  </svg>
-                )}
-                {module.icon === 'network' && (
-                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
-                    <circle cx="30" cy="30" r="8" />
-                    <circle cx="90" cy="30" r="8" />
-                    <circle cx="30" cy="90" r="8" />
-                    <circle cx="90" cy="90" r="8" />
-                    <line x1="38" y1="30" x2="82" y2="30" />
-                    <line x1="30" y1="38" x2="30" y2="82" />
-                    <line x1="38" y1="90" x2="82" y2="90" />
-                    <line x1="90" y1="38" x2="90" y2="82" />
-                  </svg>
-                )}
-                {module.icon === 'checkmark' && (
-                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
-                    <path d="M30 60L50 80L90 30" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="60" cy="60" r="45" />
-                  </svg>
-                )}
-                {module.icon === 'radar' && (
-                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
-                    <circle cx="60" cy="60" r="30" />
-                    <circle cx="60" cy="60" r="20" />
-                    <circle cx="60" cy="60" r="10" />
-                    <line x1="60" y1="30" x2="60" y2="90" />
-                    <line x1="30" y1="60" x2="90" y2="60" />
-                  </svg>
-                )}
+              <div className="software-copy">
+                <div className="software-version">{module.version}</div>
+                <p className="software-description">{module.desc}</p>
+                <button onClick={() => openModal(module.title)} className="software-learn-more">
+                  Learn more ›
+                </button>
               </div>
 
-              {/* Mockup Box (appears on hover) */}
-              <div className="software-mockup">
-                <div className="software-mockup-box">
+              <div className="software-preview-column">
+                <div className="software-brand-row">
+                  {/* Ghost Symbol */}
+                  <div className="software-symbol" data-symbol={module.icon}>
+                    {module.icon === 'shield' && (
+                      <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                        <path d="M60 20L25 35v25c0 20 35 35 35 35s35-15 35-35v-25L60 20z" />
+                      </svg>
+                    )}
+                    {module.icon === 'chain' && (
+                      <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                        <circle cx="30" cy="40" r="12" />
+                        <circle cx="60" cy="60" r="12" />
+                        <circle cx="90" cy="40" r="12" />
+                        <line x1="42" y1="46" x2="48" y2="54" />
+                        <line x1="72" y1="54" x2="78" y2="46" />
+                      </svg>
+                    )}
+                    {module.icon === 'network' && (
+                      <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                        <circle cx="30" cy="30" r="8" />
+                        <circle cx="90" cy="30" r="8" />
+                        <circle cx="30" cy="90" r="8" />
+                        <circle cx="90" cy="90" r="8" />
+                        <line x1="38" y1="30" x2="82" y2="30" />
+                        <line x1="30" y1="38" x2="30" y2="82" />
+                        <line x1="38" y1="90" x2="82" y2="90" />
+                        <line x1="90" y1="38" x2="90" y2="82" />
+                      </svg>
+                    )}
+                    {module.icon === 'checkmark' && (
+                      <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                        <path d="M30 60L50 80L90 30" strokeLinecap="round" strokeLinejoin="round" />
+                        <circle cx="60" cy="60" r="45" />
+                      </svg>
+                    )}
+                    {module.icon === 'radar' && (
+                      <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                        <circle cx="60" cy="60" r="30" />
+                        <circle cx="60" cy="60" r="20" />
+                        <circle cx="60" cy="60" r="10" />
+                        <line x1="60" y1="30" x2="60" y2="90" />
+                        <line x1="30" y1="60" x2="90" y2="60" />
+                      </svg>
+                    )}
+                  </div>
+
+                  <div className="software-wordmark">{module.title}</div>
+                </div>
+
+                {/* Mockup Box (appears on hover) */}
+                <div className="software-mockup">
+                  <div className="software-mockup-box">
                   {/* macOS-style Top Bar */}
                   <div className="software-mockup-bar">
                     <div className="software-mockup-dot" style={{ background: '#ff5f56' }} />
@@ -1239,9 +1302,8 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
+              </div>
 
-              {/* Wordmark */}
-              <div className="software-wordmark">{module.title}</div>
             </div>
           </motion.div>
         ))}
@@ -1466,10 +1528,13 @@ export default function LandingPage() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#FFFFFF' }}>
+              <h2
+                className="text-4xl lg:text-5xl mb-6"
+                style={{ color: '#FFFFFF', fontWeight: 400, letterSpacing: '-0.02em' }}
+              >
                 Ready to transform your security?
               </h2>
-              <p className="text-lg" style={{ color: '#CCCCCC' }}>
+              <p className="text-lg" style={{ color: '#B9BEC9', fontWeight: 400 }}>
                 Join leading enterprises using Sentinel for comprehensive threat detection and incident response.
               </p>
             </motion.div>
@@ -1505,6 +1570,7 @@ export default function LandingPage() {
                 cursor: 'pointer',
                 fontSize: '1.4rem',
                 fontWeight: '400',
+                letterSpacing: '-0.01em',
                 transition: 'background 0.25s ease',
               }}
               onMouseEnter={(e) => e.currentTarget.style.background = '#d4d4d4'}
@@ -1540,6 +1606,7 @@ export default function LandingPage() {
                 cursor: 'pointer',
                 fontSize: '1.4rem',
                 fontWeight: '400',
+                letterSpacing: '-0.01em',
                 transition: 'background 0.25s ease',
               }}
               onMouseEnter={(e) => e.currentTarget.style.background = '#1f1f1f'}
