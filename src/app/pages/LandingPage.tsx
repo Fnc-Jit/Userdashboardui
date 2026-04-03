@@ -821,7 +821,7 @@ export default function LandingPage() {
             padding: 48px 0;
             border-top: 1px solid #e0e0e0;
             overflow: hidden;
-            min-height: 300px;
+            min-height: 320px;
           }
 
           .software-row:last-of-type {
@@ -852,13 +852,16 @@ export default function LandingPage() {
             line-height: 1.6;
             color: #333333;
             font-weight: 400;
-            max-width: 220px;
+            max-width: 240px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
           }
 
           .software-learn-more {
             position: absolute;
             left: 60px;
-            top: 200px;
+            bottom: 48px;
             font-size: 13px;
             color: #c0392b;
             font-weight: 500;
@@ -880,6 +883,56 @@ export default function LandingPage() {
             height: 120px;
             opacity: 1;
             transition: opacity 0.3s ease;
+            z-index: 10;
+          }
+
+          .software-mockup {
+            position: absolute;
+            left: 250px;
+            top: 50%;
+            transform: translateY(calc(-50% + 8px));
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 5;
+            pointer-events: none;
+          }
+
+          .software-mockup-box {
+            background: #0d0d0d;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+            width: 380px;
+          }
+
+          .software-mockup-bar {
+            background: #1a1a1a;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+
+          .software-mockup-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+          }
+
+          .software-mockup-tabs {
+            margin-left: 12px;
+            display: flex;
+            gap: 16px;
+            font-family: monospace;
+            font-size: 9px;
+          }
+
+          .software-mockup-body {
+            padding: 10px;
+            color: #ffffff;
+            font-family: monospace;
+            font-size: 11px;
+            min-height: 140px;
           }
 
           .software-wordmark {
@@ -895,10 +948,16 @@ export default function LandingPage() {
             white-space: nowrap;
             user-select: none;
             pointer-events: none;
+            z-index: 2;
           }
 
           .software-row:hover .software-symbol {
             opacity: 0;
+          }
+
+          .software-row:hover .software-mockup {
+            opacity: 1;
+            transform: translateY(-50%);
           }
 
           .software-row:hover .software-wordmark {
@@ -941,10 +1000,15 @@ export default function LandingPage() {
 
             .software-learn-more {
               left: 24px;
-              top: 120px;
+              top: auto;
+              bottom: 32px;
             }
 
             .software-symbol {
+              display: none;
+            }
+
+            .software-mockup {
               display: none;
             }
 
@@ -1052,6 +1116,124 @@ export default function LandingPage() {
                     <line x1="30" y1="60" x2="90" y2="60" />
                   </svg>
                 )}
+              </div>
+
+              {/* Mockup Box (appears on hover) */}
+              <div className="software-mockup">
+                <div className="software-mockup-box">
+                  {/* macOS-style Top Bar */}
+                  <div className="software-mockup-bar">
+                    <div className="software-mockup-dot" style={{ background: '#ff5f56' }} />
+                    <div className="software-mockup-dot" style={{ background: '#ffbd2e' }} />
+                    <div className="software-mockup-dot" style={{ background: '#27c93f' }} />
+                    <div className="software-mockup-tabs">
+                      {module.title === 'SOC' && (
+                        <>
+                          <div style={{ color: '#fff', fontWeight: 500 }}>SOC Workbench</div>
+                          <div style={{ color: '#888' }}>Live Alerts</div>
+                        </>
+                      )}
+                      {module.title === 'Kill Chain' && (
+                        <>
+                          <div style={{ color: '#fff', fontWeight: 500 }}>Kill Chain</div>
+                          <div style={{ color: '#888' }}>ATT&CK Heatmap</div>
+                        </>
+                      )}
+                      {module.title === 'Topology' && (
+                        <div style={{ color: '#fff', fontWeight: 500 }}>Network Topology</div>
+                      )}
+                      {module.title === 'Compliance' && (
+                        <div style={{ color: '#fff', fontWeight: 500 }}>Compliance</div>
+                      )}
+                      {module.title === 'Threat Intel' && (
+                        <div style={{ color: '#fff', fontWeight: 500 }}>Threat Intel</div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Mockup Body */}
+                  <div className="software-mockup-body">
+                    {module.title === 'SOC' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ padding: '6px 8px', background: 'rgba(255,95,86,0.1)', borderLeft: '3px solid #ff5f56', fontSize: '9px' }}>
+                          <div style={{ color: '#ff5f56', fontWeight: 500 }}>CRITICAL</div>
+                          <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Unauthorized access attempt</div>
+                        </div>
+                        <div style={{ padding: '6px 8px', background: 'rgba(255,189,46,0.1)', borderLeft: '3px solid #ffbd2e', fontSize: '9px' }}>
+                          <div style={{ color: '#ffbd2e', fontWeight: 500 }}>HIGH</div>
+                          <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Suspicious port scan</div>
+                        </div>
+                        <div style={{ padding: '6px 8px', background: 'rgba(255,95,86,0.1)', borderLeft: '3px solid #ff5f56', fontSize: '9px' }}>
+                          <div style={{ color: '#ff5f56', fontWeight: 500 }}>CRITICAL</div>
+                          <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Malware signature match</div>
+                        </div>
+                      </div>
+                    )}
+                    {module.title === 'Kill Chain' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <div style={{ display: 'flex', gap: '4px', alignItems: 'center', fontSize: '8px', color: '#aaa' }}>
+                          <div style={{ padding: '3px 6px', background: '#4a90e2', borderRadius: '2px', color: '#fff' }}>Recon</div>
+                          <span>→</span>
+                          <div style={{ padding: '3px 6px', background: '#f5a623', borderRadius: '2px', color: '#000' }}>Access</div>
+                          <span>→</span>
+                          <div style={{ padding: '3px 6px', background: '#7ed321', borderRadius: '2px', color: '#000' }}>Lateral</div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', fontSize: '8px', color: '#aaa' }}>
+                          <div style={{ padding: '3px 6px', background: 'rgba(74,144,226,0.2)', borderRadius: '2px' }}>Phishing: 3</div>
+                          <div style={{ padding: '3px 6px', background: 'rgba(245,166,35,0.2)', borderRadius: '2px' }}>Exploit: 2</div>
+                        </div>
+                      </div>
+                    )}
+                    {module.title === 'Topology' && (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
+                        {['FW', 'SW', 'DC', 'AS', 'EP', 'EP', 'IoT', 'DB'].map((label, i) => {
+                          const colors = ['#ff5f56', '#27c93f', '#ffbd2e', '#4a90e2'];
+                          return (
+                            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                              <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: colors[i % colors.length], opacity: 0.8 }} />
+                              <div style={{ fontSize: '7px', color: '#aaa', textAlign: 'center' }}>{label}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {module.title === 'Compliance' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {[
+                          { name: 'NIST CSF', score: 82, color: '#27c93f' },
+                          { name: 'ISO 27001', score: 67, color: '#ffbd2e' },
+                          { name: 'SOC 2', score: 91, color: '#27c93f' },
+                          { name: 'PCI-DSS', score: 44, color: '#ff5f56' },
+                        ].map((fw, i) => (
+                          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8px' }}>
+                            <div style={{ color: '#aaa' }}>{fw.name}</div>
+                            <div style={{ width: '80px', height: '2px', background: '#333', borderRadius: '1px', overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: fw.score + '%', background: fw.color }} />
+                            </div>
+                            <div style={{ color: '#aaa', minWidth: '20px', textAlign: 'right' }}>{fw.score}%</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {module.title === 'Threat Intel' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {[
+                          { name: 'APT28', tag: 'Nation-State', color: '#ff5f56' },
+                          { name: '192.168.1.100', tag: 'IOC', color: '#ffbd2e' },
+                          { name: 'LockBit', tag: 'Ransomware', color: '#ff5f56' },
+                          { name: 'Mimikatz', tag: 'TTP', color: '#4a90e2' },
+                        ].map((threat, i) => (
+                          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8px' }}>
+                            <div style={{ color: '#aaa' }}>{threat.name}</div>
+                            <div style={{ padding: '2px 6px', background: threat.color, borderRadius: '2px', color: '#fff', fontWeight: 500, fontSize: '7px' }}>
+                              {threat.tag}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Wordmark */}
