@@ -808,237 +808,443 @@ export default function LandingPage() {
         ))}
       </section>
 
-      {/* ═══════════ SIEM SECTION - PALANTIR APOLLO STYLE ═══════════ */}
-      <section id="reports" className="py-0 px-0" style={{ background: '#FFFFFF', fontFamily: "'DM Sans', sans-serif" }}>
+      {/* ═══════════ OUR SOFTWARE SECTION ═══════════ */}
+      <section id="our-software" className="py-0 px-0" style={{ background: '#ffffff', fontFamily: "'DM Sans', sans-serif" }}>
+        <style>{`
+          .software-heading {
+            padding: 40px 60px;
+            border-bottom: 1px solid #e0e0e0;
+          }
+
+          .software-row {
+            position: relative;
+            padding: 60px 0 48px 0;
+            border-top: 1px solid #e0e0e0;
+            overflow: hidden;
+            min-height: 340px;
+          }
+
+          .software-row:last-of-type {
+            border-bottom: 1px solid #e0e0e0;
+          }
+
+          .software-row-content {
+            position: relative;
+            height: 100%;
+            padding: 0 60px;
+          }
+
+          .software-version {
+            position: absolute;
+            left: 60px;
+            top: 48px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #999999;
+            font-weight: 400;
+            margin-bottom: 12px;
+          }
+
+          .software-description {
+            position: absolute;
+            left: 60px;
+            top: 72px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: #555555;
+            font-weight: 400;
+            max-width: 280px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            padding-right: 20px;
+          }
+
+          .software-learn-more {
+            position: absolute;
+            left: 60px;
+            bottom: 48px;
+            font-size: 13px;
+            color: #c0392b;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+          }
+
+          .software-symbol {
+            position: absolute;
+            left: 320px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 100px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+          }
+
+          .software-mockup {
+            position: absolute;
+            left: 300px;
+            top: 50%;
+            transform: translateY(calc(-50% + 10px));
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 5;
+            pointer-events: none;
+          }
+
+          .software-mockup-box {
+            background: #0d0d0d;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+            width: 360px;
+          }
+
+          .software-mockup-bar {
+            background: #1a1a1a;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+
+          .software-mockup-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+          }
+
+          .software-mockup-tabs {
+            margin-left: 12px;
+            display: flex;
+            gap: 16px;
+            font-family: monospace;
+            font-size: 9px;
+          }
+
+          .software-mockup-body {
+            padding: 10px;
+            color: #ffffff;
+            font-family: monospace;
+            font-size: 11px;
+            min-height: 140px;
+          }
+
+          .software-wordmark {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: clamp(80px, 12vw, 160px);
+            font-weight: 700;
+            color: #111111;
+            opacity: 0.12;
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+            user-select: none;
+            pointer-events: none;
+            z-index: 2;
+          }
+
+          .software-row:hover .software-symbol {
+            opacity: 0;
+          }
+
+          .software-row:hover .software-mockup {
+            opacity: 1;
+            transform: translateY(-50%);
+          }
+
+          .software-row:hover .software-wordmark {
+            opacity: 0.06;
+          }
+
+          .software-row:hover .software-learn-more {
+            opacity: 1;
+          }
+
+          @media (max-width: 768px) {
+            .software-heading {
+              padding: 32px 24px;
+            }
+
+            .software-heading h1 {
+              font-size: 28px !important;
+            }
+
+            .software-row {
+              padding: 40px 0 32px 0;
+              min-height: auto;
+            }
+
+            .software-row-content {
+              padding: 0 24px;
+            }
+
+            .software-version {
+              left: 24px;
+              top: 0;
+              font-size: 11px;
+            }
+
+            .software-description {
+              left: 24px;
+              top: 24px;
+              font-size: 14px;
+              max-width: 100%;
+              padding-right: 0;
+            }
+
+            .software-learn-more {
+              left: 24px;
+              top: auto;
+              bottom: 32px;
+            }
+
+            .software-symbol {
+              display: none;
+            }
+
+            .software-mockup {
+              display: none;
+            }
+
+            .software-wordmark {
+              display: none;
+            }
+          }
+        `}</style>
+
+        {/* Section Header */}
+        <div className="software-heading">
+          <h1 className="text-4xl lg:text-5xl mb-4" style={{ color: '#111111', fontWeight: 400, fontSize: '42px' }}>
+            Our Software
+          </h1>
+        </div>
+
+        {/* Software Rows */}
         {[
-          { counter: '/0.1', title: 'SOC', desc: 'Unified security operations center — triage, investigate, and respond from a single pane of glass.' },
-          { counter: '/0.2', title: 'Kill Chain', desc: 'Visualize multi-stage attacks mapped to MITRE ATT&CK in real time.' },
-          { counter: '/0.3', title: 'Topology', desc: 'Live network graph showing every device, connection, and anomaly across your infrastructure.' },
-          { counter: '/0.4', title: 'Compliance', desc: 'Continuous NIST CSF / ISO 27443 compliance scoring with auto-generated audit reports.' },
-          { counter: '/0.5', title: 'Threat Intel', desc: 'Fuse global threat feeds with internal telemetry to surface contextual IOCs instantly.' },
-          { counter: '/0.6', title: 'Devices', desc: 'Full device inventory with behavioral baselines, risk scores, and real-time drift detection.' },
-          { counter: '/0.7', title: 'Overview', desc: 'Command-level situational awareness — every alert, asset, and action in one operational view.' },
-        ].map((item, idx) => (
+          {
+            version: '/0.1',
+            title: 'SOC',
+            desc: 'Unified security operations center — triage, investigate, and respond from a single pane of glass.',
+            icon: 'shield',
+          },
+          {
+            version: '/0.2',
+            title: 'Kill Chain',
+            desc: 'Visualize multi-stage attacks mapped to MITRE ATT&CK in real time.',
+            icon: 'chain',
+          },
+          {
+            version: '/0.3',
+            title: 'Topology',
+            desc: 'Live network graph — see every device, connection, and anomaly as it happens.',
+            icon: 'network',
+          },
+          {
+            version: '/0.4',
+            title: 'Compliance',
+            desc: 'Automated compliance tracking across NIST, ISO 27001, SOC 2, and custom frameworks.',
+            icon: 'checkmark',
+          },
+          {
+            version: '/0.5',
+            title: 'Threat Intel',
+            desc: 'Aggregated threat intelligence — IOCs, actor profiles, and real-time feed correlation.',
+            icon: 'radar',
+          },
+        ].map((module, idx) => (
           <motion.div
             key={idx}
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="group relative overflow-hidden border-b flex items-center"
-            style={{
-              background: '#FFFFFF',
-              height: '260px',
-              borderColor: 'rgba(0,0,0,0.07)',
-              cursor: 'default',
-              padding: '0 60px',
-              display: 'flex',
-            }}
-            onMouseEnter={(e) => {
-              const row = e.currentTarget as HTMLElement;
-              // Update symbol opacity
-              const symbol = row.querySelector('[data-symbol-icon]') as HTMLElement;
-              if (symbol) symbol.style.opacity = '0.3';
-              // Update title opacity
-              const title = row.querySelector('[data-title-word]') as HTMLElement;
-              if (title) title.style.opacity = '1';
-              // Update video overlay
-              const videoOverlay = row.querySelector('[data-video-overlay]') as HTMLElement;
-              if (videoOverlay) videoOverlay.style.opacity = '1';
-            }}
-            onMouseLeave={(e) => {
-              const row = e.currentTarget as HTMLElement;
-              // Reset symbol opacity
-              const symbol = row.querySelector('[data-symbol-icon]') as HTMLElement;
-              if (symbol) symbol.style.opacity = '0.12';
-              // Reset title opacity
-              const title = row.querySelector('[data-title-word]') as HTMLElement;
-              if (title) title.style.opacity = '0.08';
-              // Reset video overlay
-              const videoOverlay = row.querySelector('[data-video-overlay]') as HTMLElement;
-              if (videoOverlay) videoOverlay.style.opacity = '0';
-            }}
+            className="software-row group"
           >
-            {/* Column 1 - 20% */}
-            <div
-              style={{
-                width: '20%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                paddingRight: '40px',
-              }}
-            >
-              {/* Counter Label */}
-              <div
-                className="font-mono tracking-wider mb-4"
-                style={{
-                  fontSize: '13px',
-                  color: 'rgba(0,0,0,0.35)',
-                }}
-              >
-                {item.counter}
-              </div>
-
-              {/* Description */}
-              <p
-                className="leading-relaxed mb-6"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: 'rgba(0,0,0,0.55)',
-                  lineHeight: '1.5',
-                }}
-              >
-                {item.desc}
-              </p>
-
-              {/* Learn More Link */}
-              <button
-                onClick={() => openModal(item.title)}
-                className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-300"
-                style={{ color: '#d4500a' }}
-              >
-                Learn more
-                <ChevronRight size={14} className="transition-transform duration-200 group-hover:translate-x-0.5" />
+            <div className="software-row-content">
+              <div className="software-version">{module.version}</div>
+              <p className="software-description">{module.desc}</p>
+              <button onClick={() => openModal(module.title)} className="software-learn-more">
+                Learn more ›
               </button>
-            </div>
 
-            {/* Column 2 - 15% Symbol */}
-            <div
-              style={{
-                width: '15%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingRight: '40px',
-              }}
-            >
-              <div
-                data-symbol-icon="true"
-                className="transition-all duration-400"
-                style={{
-                  width: '80px',
-                  height: '80px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  opacity: 0.12,
-                }}
-              >
-                {/* Sentinel Shield Icon - White Stroke */}
-                <svg
-                  className="transition-all duration-400"
-                  width="64"
-                  height="64"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 22s-8-4-8-10V6l8-3 8 3v6c0 6-8 10-8 10z" />
-                </svg>
+              {/* Ghost Symbol */}
+              <div className="software-symbol" data-symbol={module.icon}>
+                {module.icon === 'shield' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <path d="M60 20L25 35v25c0 20 35 35 35 35s35-15 35-35v-25L60 20z" />
+                  </svg>
+                )}
+                {module.icon === 'chain' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <circle cx="30" cy="40" r="12" />
+                    <circle cx="60" cy="60" r="12" />
+                    <circle cx="90" cy="40" r="12" />
+                    <line x1="42" y1="46" x2="48" y2="54" />
+                    <line x1="72" y1="54" x2="78" y2="46" />
+                  </svg>
+                )}
+                {module.icon === 'network' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <circle cx="30" cy="30" r="8" />
+                    <circle cx="90" cy="30" r="8" />
+                    <circle cx="30" cy="90" r="8" />
+                    <circle cx="90" cy="90" r="8" />
+                    <line x1="38" y1="30" x2="82" y2="30" />
+                    <line x1="30" y1="38" x2="30" y2="82" />
+                    <line x1="38" y1="90" x2="82" y2="90" />
+                    <line x1="90" y1="38" x2="90" y2="82" />
+                  </svg>
+                )}
+                {module.icon === 'checkmark' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <path d="M30 60L50 80L90 30" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="60" cy="60" r="45" />
+                  </svg>
+                )}
+                {module.icon === 'radar' && (
+                  <svg viewBox="0 0 120 120" fill="none" stroke="#e8e8e8" strokeWidth="1.5">
+                    <circle cx="60" cy="60" r="30" />
+                    <circle cx="60" cy="60" r="20" />
+                    <circle cx="60" cy="60" r="10" />
+                    <line x1="60" y1="30" x2="60" y2="90" />
+                    <line x1="30" y1="60" x2="90" y2="60" />
+                  </svg>
+                )}
               </div>
-            </div>
 
-            {/* Column 3 - 65% Title + Video */}
-            <div
-              style={{
-                width: '65%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                position: 'relative',
-              }}
-            >
-              {/* Video Box - Fixed 380x220px */}
-              <div
-                style={{
-                  width: '380px',
-                  height: '220px',
-                  borderRadius: '6px',
-                  overflow: 'hidden',
-                  boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
-                  position: 'relative',
-                  marginRight: '40px',
-                }}
-              >
-                {/* Static Thumbnail */}
-                <img
-                  src={siemImages[idx % siemImages.length]}
-                  alt={item.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    filter: 'grayscale(20%)',
-                  }}
-                />
-
-                {/* Video Overlay - Fades In On Hover */}
-                <div
-                  data-video-overlay="true"
-                  className="absolute inset-0 transition-all duration-350 opacity-0 flex items-center justify-center"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(15,15,20,0.8) 0%, rgba(15,15,20,0.5) 100%)',
-                  }}
-                >
-                  <div className="text-center">
-                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3 backdrop-blur">
-                      <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                      </svg>
+              {/* Mockup Box (appears on hover) */}
+              <div className="software-mockup">
+                <div className="software-mockup-box">
+                  {/* macOS-style Top Bar */}
+                  <div className="software-mockup-bar">
+                    <div className="software-mockup-dot" style={{ background: '#ff5f56' }} />
+                    <div className="software-mockup-dot" style={{ background: '#ffbd2e' }} />
+                    <div className="software-mockup-dot" style={{ background: '#27c93f' }} />
+                    <div className="software-mockup-tabs">
+                      {module.title === 'SOC' && (
+                        <>
+                          <div style={{ color: '#fff', fontWeight: 500 }}>SOC Workbench</div>
+                          <div style={{ color: '#888' }}>Live Alerts</div>
+                        </>
+                      )}
+                      {module.title === 'Kill Chain' && (
+                        <>
+                          <div style={{ color: '#fff', fontWeight: 500 }}>Kill Chain</div>
+                          <div style={{ color: '#888' }}>ATT&CK Heatmap</div>
+                        </>
+                      )}
+                      {module.title === 'Topology' && (
+                        <div style={{ color: '#fff', fontWeight: 500 }}>Network Topology</div>
+                      )}
+                      {module.title === 'Compliance' && (
+                        <div style={{ color: '#fff', fontWeight: 500 }}>Compliance</div>
+                      )}
+                      {module.title === 'Threat Intel' && (
+                        <div style={{ color: '#fff', fontWeight: 500 }}>Threat Intel</div>
+                      )}
                     </div>
-                    <p className="text-white text-xs font-medium">Feature Video</p>
+                  </div>
+
+                  {/* Mockup Body */}
+                  <div className="software-mockup-body">
+                    {module.title === 'SOC' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ padding: '6px 8px', background: 'rgba(255,95,86,0.1)', borderLeft: '3px solid #ff5f56', fontSize: '9px' }}>
+                          <div style={{ color: '#ff5f56', fontWeight: 500 }}>CRITICAL</div>
+                          <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Unauthorized access attempt</div>
+                        </div>
+                        <div style={{ padding: '6px 8px', background: 'rgba(255,189,46,0.1)', borderLeft: '3px solid #ffbd2e', fontSize: '9px' }}>
+                          <div style={{ color: '#ffbd2e', fontWeight: 500 }}>HIGH</div>
+                          <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Suspicious port scan</div>
+                        </div>
+                        <div style={{ padding: '6px 8px', background: 'rgba(255,95,86,0.1)', borderLeft: '3px solid #ff5f56', fontSize: '9px' }}>
+                          <div style={{ color: '#ff5f56', fontWeight: 500 }}>CRITICAL</div>
+                          <div style={{ color: '#aaa', fontSize: '8px', marginTop: '2px' }}>Malware signature match</div>
+                        </div>
+                      </div>
+                    )}
+                    {module.title === 'Kill Chain' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        <div style={{ display: 'flex', gap: '4px', alignItems: 'center', fontSize: '8px', color: '#aaa' }}>
+                          <div style={{ padding: '3px 6px', background: '#4a90e2', borderRadius: '2px', color: '#fff' }}>Recon</div>
+                          <span>→</span>
+                          <div style={{ padding: '3px 6px', background: '#f5a623', borderRadius: '2px', color: '#000' }}>Access</div>
+                          <span>→</span>
+                          <div style={{ padding: '3px 6px', background: '#7ed321', borderRadius: '2px', color: '#000' }}>Lateral</div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', fontSize: '8px', color: '#aaa' }}>
+                          <div style={{ padding: '3px 6px', background: 'rgba(74,144,226,0.2)', borderRadius: '2px' }}>Phishing: 3</div>
+                          <div style={{ padding: '3px 6px', background: 'rgba(245,166,35,0.2)', borderRadius: '2px' }}>Exploit: 2</div>
+                        </div>
+                      </div>
+                    )}
+                    {module.title === 'Topology' && (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px' }}>
+                        {['FW', 'SW', 'DC', 'AS', 'EP', 'EP', 'IoT', 'DB'].map((label, i) => {
+                          const colors = ['#ff5f56', '#27c93f', '#ffbd2e', '#4a90e2'];
+                          return (
+                            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                              <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: colors[i % colors.length], opacity: 0.8 }} />
+                              <div style={{ fontSize: '7px', color: '#aaa', textAlign: 'center' }}>{label}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {module.title === 'Compliance' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {[
+                          { name: 'NIST CSF', score: 82, color: '#27c93f' },
+                          { name: 'ISO 27001', score: 67, color: '#ffbd2e' },
+                          { name: 'SOC 2', score: 91, color: '#27c93f' },
+                          { name: 'PCI-DSS', score: 44, color: '#ff5f56' },
+                        ].map((fw, i) => (
+                          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8px' }}>
+                            <div style={{ color: '#aaa' }}>{fw.name}</div>
+                            <div style={{ width: '80px', height: '2px', background: '#333', borderRadius: '1px', overflow: 'hidden' }}>
+                              <div style={{ height: '100%', width: fw.score + '%', background: fw.color }} />
+                            </div>
+                            <div style={{ color: '#aaa', minWidth: '20px', textAlign: 'right' }}>{fw.score}%</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {module.title === 'Threat Intel' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {[
+                          { name: 'APT28', tag: 'Nation-State', color: '#ff5f56' },
+                          { name: '192.168.1.100', tag: 'IOC', color: '#ffbd2e' },
+                          { name: 'LockBit', tag: 'Ransomware', color: '#ff5f56' },
+                          { name: 'Mimikatz', tag: 'TTP', color: '#4a90e2' },
+                        ].map((threat, i) => (
+                          <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '8px' }}>
+                            <div style={{ color: '#aaa' }}>{threat.name}</div>
+                            <div style={{ padding: '2px 6px', background: threat.color, borderRadius: '2px', color: '#fff', fontWeight: 500, fontSize: '7px' }}>
+                              {threat.tag}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
 
-              {/* Title Word - Always Visible */}
-              <div
-                data-title-word="true"
-                style={{
-                  fontSize: 'clamp(4rem, 9vw, 8rem)',
-                  fontWeight: 700,
-                  color: '#0d0d14',
-                  opacity: 0.08,
-                  transition: 'opacity 0.4s ease-out',
-                  textAlign: 'right',
-                  lineHeight: 1,
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {item.title}
-              </div>
+              {/* Wordmark */}
+              <div className="software-wordmark">{module.title}</div>
             </div>
           </motion.div>
         ))}
-
-        {/* Section intro text */}
-        <div
-          style={{
-            padding: '80px 60px',
-            background: '#FFFFFF',
-            borderTop: '1px solid rgba(0,0,0,0.08)',
-            marginTop: '-1px',
-          }}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6" style={{ color: '#000000' }}>
-              Security Information & Event Management
-            </h2>
-            <p className="text-lg" style={{ color: '#666666' }}>
-              Sentinel provides comprehensive SIEM capabilities designed for modern security operations centers. Monitor, detect, investigate, and respond to threats across your entire infrastructure.
-            </p>
-          </motion.div>
-        </div>
       </section>
 
       {/* ═══════════ FEATURED INSIGHTS SECTION - MARQUEE LAYOUT ═══════════ */}
